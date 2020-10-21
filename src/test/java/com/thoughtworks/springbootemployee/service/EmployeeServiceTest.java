@@ -5,15 +5,10 @@ import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import javax.management.openmbean.CompositeDataSupport;
-import javax.swing.plaf.basic.BasicTextUI;
-import javax.xml.crypto.dsig.Reference;
-import java.time.ZoneOffset;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 class EmployeeServiceTest {
