@@ -34,6 +34,6 @@ public class EmployeeService {
     }
 
     public List<Employee> getByGender(String employeeGender) {
-        return null;
+        return repository.getByGender(employeeGender);
     }
 }
