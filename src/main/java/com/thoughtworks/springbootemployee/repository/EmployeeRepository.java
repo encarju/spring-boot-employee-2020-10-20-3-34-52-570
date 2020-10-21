@@ -33,4 +33,8 @@ public class EmployeeRepository {
                 });
         return updatedEmployee;
     }
+
+    public void remove(Integer employeeId) {
+
+    }
 }

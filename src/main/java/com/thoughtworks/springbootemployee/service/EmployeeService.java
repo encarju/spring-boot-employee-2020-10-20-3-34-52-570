@@ -28,4 +28,8 @@ public class EmployeeService {
     public Employee update(Integer employeeId, Employee updatedEmployee) {
         return repository.update(employeeId,updatedEmployee);
     }
+
+    public void remove(Integer employeeId) {
+
+    }
 }
