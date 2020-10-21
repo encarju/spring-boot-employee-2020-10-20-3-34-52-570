@@ -30,6 +30,6 @@ public class EmployeeService {
     }
 
     public void remove(Integer employeeId) {
-
+        repository.remove(employeeId);
     }
 }
