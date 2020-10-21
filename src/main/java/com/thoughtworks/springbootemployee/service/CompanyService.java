@@ -26,6 +26,6 @@ public class CompanyService {
     }
 
     public Company update(Integer companyId, Company updatedCompany) {
-        return null;
+        return repository.update(companyId,updatedCompany);
     }
 }
