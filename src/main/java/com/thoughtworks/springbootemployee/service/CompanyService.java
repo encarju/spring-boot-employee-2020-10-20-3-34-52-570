@@ -24,4 +24,8 @@ public class CompanyService {
     public Company getById(Integer companyId) {
         return repository.getById(companyId);
     }
+
+    public Company update(Integer companyId, Company updatedCompany) {
+        return null;
+    }
 }
