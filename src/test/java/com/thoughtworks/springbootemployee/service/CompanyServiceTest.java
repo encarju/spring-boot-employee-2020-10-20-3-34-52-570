@@ -44,4 +44,21 @@ class CompanyServiceTest {
         //then
         assertEquals(1, actual.getCompanyId());
     }
+
+    @Test
+    public void should_return_specific_company_when_get_company_give_company_id() {
+        //given
+        CompanyRepository repository = Mockito.mock(CompanyRepository.class);
+        CompanyService service = new CompanyService(repository);
+        Company company = new Company(1, "Alibaba",
+                2, asList(new Employee(),new Employee()));
+        Integer companyId = company.getCompanyId();
+        when(repository.getById(companyId)).thenReturn(company);
+
+        //when
+        Company actual = service.getById(companyId);
+
+        //then
+        assertEquals(1, actual.getCompanyId());
+    }
 }
