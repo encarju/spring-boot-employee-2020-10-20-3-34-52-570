@@ -116,4 +116,25 @@ class CompanyServiceTest {
         //then
         assertEquals(2, actual.size());
     }
+
+    @Test
+    public void should_return_all_employee_when_get_employees_given_company_id() {
+        //given
+        CompanyRepository repository = Mockito.mock(CompanyRepository.class);
+        CompanyService service = new CompanyService(repository);
+        List<Employee> employees = asList(
+                new Employee(1, "Justine", 2, "Male", 2000),
+                new Employee(2, "Lily", 2, "Female", 2000)
+        );
+        Company company = new Company(1, "Alibaba",
+                        2, employees);
+        Integer companyID = company.getCompanyId();
+
+        when(repository.getCompanyEmployees(companyID)).thenReturn(employees);
+        //when
+        List<Employee> actual = service.getCompanyEmployees(companyID);
+        //then
+        assertEquals(2, actual.size());
+    }
+
 }
