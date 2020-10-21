@@ -39,6 +39,6 @@ public class CompanyService {
     }
 
     public List<Employee> getCompanyEmployees(Integer companyID) {
-        return null;
+        return repository.getCompanyEmployees(companyID);
     }
 }
