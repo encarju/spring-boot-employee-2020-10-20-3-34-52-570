@@ -12,4 +12,8 @@ public class CompanyRepository {
     public List<Company> findAll() {
         return companies;
     }
+
+    public Company save(Company company) {
+        return null;
+    }
 }
