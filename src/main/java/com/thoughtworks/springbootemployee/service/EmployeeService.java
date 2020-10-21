@@ -38,6 +38,6 @@ public class EmployeeService {
     }
 
     public List<Employee> getByPage(Integer page, Integer pageSize) {
-        return null;
+        return repository.getByPage(page, pageSize);
     }
 }
