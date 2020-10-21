@@ -33,10 +33,7 @@ public class CompanyController {
 
     @GetMapping("/{companyId}")
     public Company getCompany(@PathVariable Integer companyId) {
-        return companies.stream()
-                .filter(employee -> employee.getCompanyId().equals(companyId))
-                .findFirst()
-                .orElse(null);
+        return companyService.getById(companyId);
     }
 
     @GetMapping("/{companyId}/employees")
