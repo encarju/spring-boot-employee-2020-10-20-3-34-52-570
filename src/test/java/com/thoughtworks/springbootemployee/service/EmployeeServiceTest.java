@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import javax.management.openmbean.CompositeDataSupport;
+import javax.swing.plaf.basic.BasicTextUI;
+import javax.xml.crypto.dsig.Reference;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -26,5 +28,20 @@ class EmployeeServiceTest {
 
         //then
         assertEquals(2, actual.size());
+    }
+
+    @Test
+    public void should_create_employee_when_create_given_one_employee() {
+        //given
+        EmployeeRepository repository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService service = new EmployeeService(repository);
+        Employee employee = new Employee(1, "Justine", 2, "Male", 2000);
+        when(repository.save(employee)).thenReturn(employee);
+
+        //when
+        Employee actual  = service.create(employee);
+
+        //then
+        assertEquals(1, actual.getId());
     }
 }

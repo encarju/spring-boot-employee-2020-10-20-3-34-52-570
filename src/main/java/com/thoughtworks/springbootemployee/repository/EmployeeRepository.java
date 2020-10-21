@@ -9,4 +9,8 @@ public class EmployeeRepository {
     public List<Employee> findAll() {
         return null;
     }
+
+    public Employee save(Employee employee) {
+        return null;
+    }
 }
