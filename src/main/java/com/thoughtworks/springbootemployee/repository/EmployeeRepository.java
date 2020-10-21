@@ -46,4 +46,8 @@ public class EmployeeRepository {
                 .filter(employee -> employee.getGender().equalsIgnoreCase(employeeGender))
                 .collect(Collectors.toList());
     }
+
+    public List<Employee> getByPage(Integer page, Integer pageSize) {
+        return null;
+    }
 }

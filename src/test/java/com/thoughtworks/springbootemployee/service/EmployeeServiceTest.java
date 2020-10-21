@@ -5,6 +5,7 @@ import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.awt.*;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -111,5 +112,23 @@ class EmployeeServiceTest {
 
         //then
         assertSame(returnedEmployees, actual);
+    }
+
+    @Test
+    public void should_return_2_employee_when_get_by_page_given_2_page_size() {
+        //given
+        EmployeeRepository repository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService service = new EmployeeService(repository);
+        List<Employee> returnedEmployees = asList(
+                new Employee(1, "Justine", 2, "Male", 2000),
+                new Employee(2, "Lily", 2, "Female", 2000));
+
+        Integer page = 1;
+        Integer pageSize = 2;
+        when(repository.getByPage(page, pageSize)).thenReturn(returnedEmployees);
+        //when
+        List<Employee> actual = service.getByPage(page, pageSize);
+        //then
+        assertEquals(2, actual.size());
     }
 }

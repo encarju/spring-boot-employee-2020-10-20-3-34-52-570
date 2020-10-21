@@ -36,4 +36,8 @@ public class EmployeeService {
     public List<Employee> getByGender(String employeeGender) {
         return repository.getByGender(employeeGender);
     }
+
+    public List<Employee> getByPage(Integer page, Integer pageSize) {
+        return null;
+    }
 }
