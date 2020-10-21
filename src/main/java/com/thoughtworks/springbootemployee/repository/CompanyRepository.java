@@ -28,4 +28,8 @@ public class CompanyRepository {
     public Company update(Integer companyId, Company updatedCompany) {
         return null;
     }
+
+    public void remove(Integer companyId) {
+
+    }
 }

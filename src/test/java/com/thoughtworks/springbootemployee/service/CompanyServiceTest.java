@@ -80,4 +80,20 @@ class CompanyServiceTest {
         //then
         assertEquals("Alibabas", actual.getCompanyName());
     }
+
+    @Test
+    void should_delete_company_when_delete_company_given_company_id(){
+        //given
+        CompanyRepository repository = Mockito.mock(CompanyRepository.class);
+        CompanyService service = new CompanyService(repository);
+        Company company = new Company(1, "Alibaba",
+                2, asList(new Employee(),new Employee()));
+        Integer companyId = company.getCompanyId();
+
+        //when
+        service.remove(companyId);
+
+        //then
+        Mockito.verify(repository,Mockito.times(1)).remove(companyId);
+    }
 }

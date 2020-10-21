@@ -28,4 +28,8 @@ public class CompanyService {
     public Company update(Integer companyId, Company updatedCompany) {
         return repository.update(companyId,updatedCompany);
     }
+
+    public void remove(Integer companyId) {
+
+    }
 }
