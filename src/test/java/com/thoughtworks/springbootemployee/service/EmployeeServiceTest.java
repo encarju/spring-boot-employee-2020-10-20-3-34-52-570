@@ -55,9 +55,11 @@ class EmployeeServiceTest {
         Employee employee = new Employee(1, "Justine", 2, "Male", 2000);
         Integer employeeId = employee.getId();
         when(repository.getById(employeeId)).thenReturn(employee);
+
         //when
-        //then
         Employee actual = service.getById(employeeId);
+
+        //then
         assertEquals(1, actual.getId());
     }
 }
