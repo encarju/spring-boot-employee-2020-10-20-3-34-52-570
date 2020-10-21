@@ -56,4 +56,18 @@ public class CompanyController {
         }
         return null;
     }
+
+    @DeleteMapping("/{companyId}")
+    public Company removeCompany(@PathVariable Integer companyId){
+        companies.stream()
+                .filter(company -> company.getCompanyId().equals(companyId))
+                .findFirst()
+                .ifPresent(company -> {
+                    company.getEmployees().removeAll(company.getEmployees());
+                });
+        return companies.stream()
+                .filter(company -> company.getCompanyId().equals(companyId))
+                .findFirst()
+                .orElse(null);
+    }
 }
