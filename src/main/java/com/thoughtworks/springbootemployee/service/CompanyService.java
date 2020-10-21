@@ -34,6 +34,6 @@ public class CompanyService {
     }
 
     public List<Company> getByPage(Integer page, Integer pageSize) {
-        return null;
+        return repository.getByPage(page,pageSize);
     }
 }
