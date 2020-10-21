@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/companies")
@@ -42,12 +41,12 @@ public class CompanyController {
     }
 
     @PutMapping("/{companyId}")
-    public Company updateCompany(@PathVariable Integer companyId,  @RequestBody Company updatedCompany){
+    public Company updateCompany(@PathVariable Integer companyId, @RequestBody Company updatedCompany) {
         return companyService.update(companyId, updatedCompany);
     }
 
     @DeleteMapping("/{companyId}")
-    public Company removeCompanyEmployees(@PathVariable Integer companyId){
+    public Company removeCompanyEmployees(@PathVariable Integer companyId) {
         return companyService.remove(companyId);
     }
 

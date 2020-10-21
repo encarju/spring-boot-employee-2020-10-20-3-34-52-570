@@ -6,6 +6,7 @@ import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class CompanyService {
     private CompanyRepository repository;
@@ -27,7 +28,7 @@ public class CompanyService {
     }
 
     public Company update(Integer companyId, Company updatedCompany) {
-        return repository.update(companyId,updatedCompany);
+        return repository.update(companyId, updatedCompany);
     }
 
     public Company remove(Integer companyId) {
@@ -35,7 +36,7 @@ public class CompanyService {
     }
 
     public List<Company> getByPage(Integer page, Integer pageSize) {
-        return repository.getByPage(page,pageSize);
+        return repository.getByPage(page, pageSize);
     }
 
     public List<Employee> getCompanyEmployees(Integer companyID) {

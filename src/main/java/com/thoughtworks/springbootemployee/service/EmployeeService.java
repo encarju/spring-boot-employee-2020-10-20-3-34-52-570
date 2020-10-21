@@ -5,6 +5,7 @@ import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class EmployeeService {
     private EmployeeRepository repository;
@@ -26,7 +27,7 @@ public class EmployeeService {
     }
 
     public Employee update(Integer employeeId, Employee updatedEmployee) {
-        return repository.update(employeeId,updatedEmployee);
+        return repository.update(employeeId, updatedEmployee);
     }
 
     public void remove(Integer employeeId) {

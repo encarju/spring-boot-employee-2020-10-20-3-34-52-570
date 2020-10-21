@@ -5,7 +5,6 @@ import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.awt.*;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -38,7 +37,7 @@ class EmployeeServiceTest {
         when(repository.save(employee)).thenReturn(employee);
 
         //when
-        Employee actual  = service.create(employee);
+        Employee actual = service.create(employee);
 
         //then
         assertEquals(1, actual.getId());
@@ -61,24 +60,24 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_updated_employee_when_update_employee_given_employee_id_updated_name(){
+    void should_return_updated_employee_when_update_employee_given_employee_id_updated_name() {
         //given
         EmployeeRepository repository = Mockito.mock(EmployeeRepository.class);
         EmployeeService service = new EmployeeService(repository);
         Employee employee = new Employee(1, "Justine", 2, "Male", 2000);
         Employee updatedEmployee = new Employee(1, "Bryan", 2, "Male", 2000);
         Integer employeeId = employee.getId();
-        when(repository.update(employeeId,updatedEmployee)).thenReturn(updatedEmployee);
+        when(repository.update(employeeId, updatedEmployee)).thenReturn(updatedEmployee);
 
         //when
-        Employee actual = service.update(employeeId,updatedEmployee);
+        Employee actual = service.update(employeeId, updatedEmployee);
 
         //then
         assertEquals("Bryan", actual.getName());
     }
 
     @Test
-    void should_delete_employee_when_delete_employee_given_employee_id(){
+    void should_delete_employee_when_delete_employee_given_employee_id() {
         //given
         EmployeeRepository repository = Mockito.mock(EmployeeRepository.class);
         EmployeeService service = new EmployeeService(repository);
@@ -89,7 +88,7 @@ class EmployeeServiceTest {
         service.remove(employeeId);
 
         //then
-        Mockito.verify(repository,Mockito.times(1)).remove(employeeId);
+        Mockito.verify(repository, Mockito.times(1)).remove(employeeId);
     }
 
     @Test
@@ -131,6 +130,4 @@ class EmployeeServiceTest {
         //then
         assertEquals(2, actual.size());
     }
-
-
 }

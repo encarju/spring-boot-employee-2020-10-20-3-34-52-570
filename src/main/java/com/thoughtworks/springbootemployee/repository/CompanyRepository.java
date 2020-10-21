@@ -29,8 +29,8 @@ public class CompanyRepository {
     }
 
     public Company update(Integer companyId, Company updatedCompany) {
-        if(companies.stream()
-                .anyMatch(company -> company.getCompanyId().equals(companyId))){
+        if (companies.stream()
+                .anyMatch(company -> company.getCompanyId().equals(companyId))) {
             companies.stream()
                     .filter(company -> company.getCompanyId().equals(companyId))
                     .findFirst()
