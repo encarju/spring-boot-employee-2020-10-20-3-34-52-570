@@ -19,4 +19,8 @@ public class EmployeeService {
     public Employee create(Employee employee) {
         return repository.save(employee);
     }
+
+    public Employee getById(Integer employeeId) {
+        return null;
+    }
 }

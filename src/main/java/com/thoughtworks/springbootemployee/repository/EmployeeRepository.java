@@ -13,4 +13,8 @@ public class EmployeeRepository {
     public Employee save(Employee employee) {
         return null;
     }
+
+    public Employee getById(Integer employeeId) {
+        return null;
+    }
 }
