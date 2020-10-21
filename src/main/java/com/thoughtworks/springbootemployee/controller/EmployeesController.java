@@ -60,9 +60,6 @@ public class EmployeesController {
 
     @GetMapping(params = {"page", "pageSize"})
     public List<Employee> getByPage(@RequestParam Integer page, @RequestParam Integer pageSize) {
-        return employees.stream()
-                .skip(pageSize * page)
-                .limit(pageSize)
-                .collect(Collectors.toList());
+        return employeeService.getByPage(page, pageSize);
     }
 }
