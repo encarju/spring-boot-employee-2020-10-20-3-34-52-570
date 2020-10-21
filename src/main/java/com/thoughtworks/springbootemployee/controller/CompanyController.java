@@ -13,7 +13,7 @@ public class CompanyController {
     private final List<Company> companies = new ArrayList<>();
 
     @GetMapping
-    public List<Company> getAll(){
+    public List<Company> getAll() {
         return companies;
     }
 
@@ -23,4 +23,13 @@ public class CompanyController {
         companies.add(company);
         return company;
     }
+
+    @GetMapping("/{companyId}")
+    public Company getCompany(@PathVariable Integer companyId) {
+        return companies.stream()
+                .filter(employee -> employee.getCompanyId().equals(companyId))
+                .findFirst()
+                .orElse(null);
+    }
+
 }
