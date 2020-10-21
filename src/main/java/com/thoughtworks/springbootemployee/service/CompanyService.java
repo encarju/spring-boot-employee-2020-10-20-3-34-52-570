@@ -32,4 +32,8 @@ public class CompanyService {
     public void remove(Integer companyId) {
         repository.remove(companyId);
     }
+
+    public List<Company> getByPage(Integer page, Integer pageSize) {
+        return null;
+    }
 }

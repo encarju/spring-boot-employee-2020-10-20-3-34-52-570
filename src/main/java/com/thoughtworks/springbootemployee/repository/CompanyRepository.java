@@ -32,4 +32,8 @@ public class CompanyRepository {
     public void remove(Integer companyId) {
 
     }
+
+    public List<Company> getByPage(Integer page, Integer pageSize) {
+        return null;
+    }
 }

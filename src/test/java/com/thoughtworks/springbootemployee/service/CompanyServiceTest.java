@@ -96,4 +96,24 @@ class CompanyServiceTest {
         //then
         Mockito.verify(repository,Mockito.times(1)).remove(companyId);
     }
+
+    @Test
+    public void should_return_2_company_when_get_by_page_given_2_page_size() {
+        //given
+        CompanyRepository repository = Mockito.mock(CompanyRepository.class);
+        CompanyService service = new CompanyService(repository);
+        List<Company> returnedCompanies = asList(
+                new Company(1, "Alibaba",
+                        2, asList(new Employee(),new Employee())),
+                new Company(2, "Alibabas",
+                        2, asList(new Employee(),new Employee())));
+
+        Integer page = 1;
+        Integer pageSize = 2;
+        when(repository.getByPage(page, pageSize)).thenReturn(returnedCompanies);
+        //when
+        List<Company> actual = service.getByPage(page, pageSize);
+        //then
+        assertEquals(2, actual.size());
+    }
 }
