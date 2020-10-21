@@ -88,13 +88,16 @@ class CompanyServiceTest {
         CompanyService service = new CompanyService(repository);
         Company company = new Company(1, "Alibaba",
                 2, asList(new Employee(),new Employee()));
+        Company expectedCompany = new Company(1, "Alibaba",
+                2, asList());
         Integer companyId = company.getCompanyId();
-
+        when(repository.remove(companyId)).thenReturn(expectedCompany);
         //when
-        service.remove(companyId);
+        Company actualCompany = service.remove(companyId);
 
         //then
         Mockito.verify(repository,Mockito.times(1)).remove(companyId);
+        assertEquals(expectedCompany, actualCompany);
     }
 
     @Test

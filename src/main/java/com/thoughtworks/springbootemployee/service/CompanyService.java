@@ -30,8 +30,8 @@ public class CompanyService {
         return repository.update(companyId,updatedCompany);
     }
 
-    public void remove(Integer companyId) {
-        repository.remove(companyId);
+    public Company remove(Integer companyId) {
+        return repository.remove(companyId);
     }
 
     public List<Company> getByPage(Integer page, Integer pageSize) {

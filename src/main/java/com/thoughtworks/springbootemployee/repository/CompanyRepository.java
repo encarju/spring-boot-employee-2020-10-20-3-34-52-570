@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Repository
 public class CompanyRepository {
     private List<Company> companies = new ArrayList<>();
@@ -27,18 +29,44 @@ public class CompanyRepository {
     }
 
     public Company update(Integer companyId, Company updatedCompany) {
+        if(companies.stream()
+                .anyMatch(company -> company.getCompanyId().equals(companyId))){
+            companies.stream()
+                    .filter(company -> company.getCompanyId().equals(companyId))
+                    .findFirst()
+                    .ifPresent(company -> {
+                        companies.remove(company);
+                        companies.add(updatedCompany);
+                    });
+            return updatedCompany;
+        }
         return null;
     }
 
-    public void remove(Integer companyId) {
-
+    public Company remove(Integer companyId) {
+        companies.stream()
+                .filter(company -> company.getCompanyId().equals(companyId))
+                .findFirst()
+                .ifPresent(company -> {
+                    company.getEmployees().removeAll(company.getEmployees());
+                });
+        return companies.stream()
+                .filter(company -> company.getCompanyId().equals(companyId))
+                .findFirst()
+                .orElse(null);
     }
 
     public List<Company> getByPage(Integer page, Integer pageSize) {
-        return null;
+        return companies.stream()
+                .skip(pageSize * page)
+                .limit(pageSize)
+                .collect(Collectors.toList());
     }
 
-    public List<Employee> getCompanyEmployees(Integer companyID) {
-        return null;
+    public List<Employee> getCompanyEmployees(Integer companyId) {
+        return companies.stream()
+                .filter(company -> company.getCompanyId().equals(companyId))
+                .findFirst()
+                .orElse(null).getEmployees();
     }
 }
