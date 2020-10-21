@@ -6,11 +6,13 @@ import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import java.util.List;
 
 public class EmployeeService {
-    public EmployeeService(EmployeeRepository repository) {
+    private EmployeeRepository repository;
 
+    public EmployeeService(EmployeeRepository repository) {
+        this.repository = repository;
     }
 
     public List<Employee> getAll() {
-        return null;
+        return repository.findAll();
     }
 }
