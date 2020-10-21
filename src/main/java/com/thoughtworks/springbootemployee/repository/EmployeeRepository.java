@@ -24,4 +24,8 @@ public class EmployeeRepository {
                 .findFirst()
                 .orElse(null);
     }
+
+    public Employee update(Integer employeeId, Employee updatedEmployee) {
+        return null;
+    }
 }

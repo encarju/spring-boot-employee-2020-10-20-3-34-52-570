@@ -24,4 +24,8 @@ public class EmployeeService {
     public Employee getById(Integer employeeId) {
         return repository.getById(employeeId);
     }
+
+    public Employee update(Integer employeeId, Employee updatedEmployee) {
+        return null;
+    }
 }
