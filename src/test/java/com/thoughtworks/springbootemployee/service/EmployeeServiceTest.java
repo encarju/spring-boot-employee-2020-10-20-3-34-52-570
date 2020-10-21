@@ -9,6 +9,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.when;
 
 class EmployeeServiceTest {
@@ -88,5 +89,27 @@ class EmployeeServiceTest {
 
         //then
         Mockito.verify(repository,Mockito.times(1)).remove(employeeId);
+    }
+
+    @Test
+    public void should_return_employees_when_get_employee_by_gender_given_employee_gender() {
+        //given
+        EmployeeRepository repository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService service = new EmployeeService(repository);
+        List<Employee> returnedEmployees = asList(
+                new Employee(1, "Justine", 2, "Male", 2000));
+
+        Employee employee = new Employee(1, "Justine", 2, "Male", 2000);
+        Employee employee2 = new Employee(2, "Lily", 2, "Female", 2000);
+        when(repository.save(employee)).thenReturn(employee);
+        when(repository.save(employee)).thenReturn(employee2);
+        String employeeGender = "male";
+        when(repository.getByGender(employeeGender)).thenReturn(returnedEmployees);
+
+        //when
+        List<Employee> actual = service.getByGender(employeeGender);
+
+        //then
+        assertSame(returnedEmployees, actual);
     }
 }

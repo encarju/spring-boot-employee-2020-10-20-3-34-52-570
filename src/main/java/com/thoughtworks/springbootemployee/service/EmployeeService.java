@@ -32,4 +32,8 @@ public class EmployeeService {
     public void remove(Integer employeeId) {
         repository.remove(employeeId);
     }
+
+    public List<Employee> getByGender(String employeeGender) {
+        return null;
+    }
 }
