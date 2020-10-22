@@ -2,10 +2,11 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static org.springframework.data.domain.PageRequest.of;
 
 @Service
 public class EmployeeService {
@@ -40,6 +41,6 @@ public class EmployeeService {
     }
 
     public List<Employee> getByPage(Integer page, Integer pageSize) {
-        return repository.findAll(PageRequest.of(page, pageSize)).toList();
+        return repository.findAll(of(page, pageSize)).toList();
     }
 }
