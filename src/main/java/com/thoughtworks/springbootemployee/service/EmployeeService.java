@@ -30,7 +30,8 @@ public class EmployeeService {
     }
 
     public Employee update(Integer employeeId, Employee updatedEmployee) {
-        return repository.findById(employeeId).map(employee -> repository.save(updatedEmployee)).orElse(null);
+        return repository.findById(employeeId).map(employee -> repository.save(updatedEmployee))
+                .orElseThrow(() -> new NoEmployeeFoundException());
     }
 
     public void remove(Integer employeeId) {
