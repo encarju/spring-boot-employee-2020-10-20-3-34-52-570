@@ -191,4 +191,37 @@ public class EmployeeIntegrationTest {
                     .andExpect(status().isBadRequest());
         }).hasCause(new NoEmployeeFoundException());
     }
+
+    @Test
+    public void should_return_exception_when_update_given_wrong_employee_id_and_updated_employee_request() throws Exception {
+        // given
+        Employee employee = new Employee(JUSTINE, 22, MALE, SALARY);
+        Integer returnedEmployeeId = employeeRepository.save(employee).getId();
+        Integer wrongEmployeeId = returnedEmployeeId + 1;
+
+        String employeeJson = "{\n" +
+                "            \"id\": 4,\n" +
+                "            \"name\": \"" + JUSTINE + "\",\n" +
+                "            \"age\": " + AGE_23 + ",\n" +
+                "            \"gender\": \"" + MALE + "\",\n" +
+                "            \"salary\": " + SALARY + ",\n" +
+                "            \"companyId\": null\n" +
+                "        }";
+
+        // when
+        // then
+        assertThatThrownBy(() -> {
+            mockMvc.perform(put(String.format("/employees/%d", wrongEmployeeId))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(employeeJson))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.id").isNumber())
+                    .andExpect(jsonPath("$.name").value(JUSTINE))
+                    .andExpect(jsonPath("$.age").value(AGE_23))
+                    .andExpect(jsonPath("$.gender").value(MALE))
+                    .andExpect(jsonPath("$.salary").value(SALARY));
+        }).hasCause(new NoEmployeeFoundException());
+
+
+    }
 }
