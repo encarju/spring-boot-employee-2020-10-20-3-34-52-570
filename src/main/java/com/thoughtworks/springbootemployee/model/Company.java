@@ -32,20 +32,20 @@ public class Company {
         return companyId;
     }
 
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public List<Employee> getEmployees() {
-        return employees;
-    }
-
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
     }
 
+    public String getCompanyName() {
+        return companyName;
+    }
+
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
     }
 
     public void setEmployees(List<Employee> employees) {
