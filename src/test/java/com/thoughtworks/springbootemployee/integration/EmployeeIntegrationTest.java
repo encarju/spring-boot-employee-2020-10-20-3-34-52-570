@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -59,7 +60,9 @@ public class EmployeeIntegrationTest {
 
         // when
         // then
-        mockMvc.perform(post("/employees").contentType(MediaType.APPLICATION_JSON).content(employeeJson))
+        mockMvc.perform(post("/employees")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(employeeJson))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.name").value("Justine"))
@@ -78,6 +81,35 @@ public class EmployeeIntegrationTest {
         // when
         // then
         mockMvc.perform(get("/employees/" + id))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.name").value("Justine"))
+                .andExpect(jsonPath("$.age").value(23))
+                .andExpect(jsonPath("$.gender").value("Male"))
+                .andExpect(jsonPath("$.salary").value(2000000));
+    }
+
+    @Test
+    public void should_update_employee_when_update_given_employee_id_and_updated_employee_request() throws Exception {
+        // given
+        Integer id = 1;
+        Employee employee = new Employee(id, "Justine", 22, "Male", 2000000);
+        employeeRepository.save(employee);
+
+        String employeeJson = "{\n" +
+                "            \"id\": 1,\n" +
+                "            \"name\": \"Justine\",\n" +
+                "            \"age\": 23,\n" +
+                "            \"gender\": \"Male\",\n" +
+                "            \"salary\": 2000000,\n" +
+                "            \"companyId\": null\n" +
+                "        }";
+
+        // when
+        // then
+        mockMvc.perform(put(String.format("/employees/%d", id))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(employeeJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.name").value("Justine"))
