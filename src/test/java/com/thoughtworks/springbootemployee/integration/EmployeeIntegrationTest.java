@@ -20,6 +20,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class EmployeeIntegrationTest {
+    private static final String JUSTINE = "Justine";
+    private static final int AGE_23 = 23;
+    private static final String MALE = "Male";
+    private static final int SALARY = 2000000;
+
     @Autowired
     private EmployeeRepository employeeRepository;
 
@@ -34,7 +39,7 @@ public class EmployeeIntegrationTest {
     @Test
     public void should_get_all_employees_when_get_all() throws Exception {
         // given
-        Employee employee = new Employee(1, "Justine", 23, "Male", 2000000);
+        Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY);
         employeeRepository.save(employee);
 
         // when
@@ -42,20 +47,20 @@ public class EmployeeIntegrationTest {
         mockMvc.perform(get("/employees"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").isNumber())
-                .andExpect(jsonPath("$[0].name").value("Justine"))
-                .andExpect(jsonPath("$[0].age").value(23))
-                .andExpect(jsonPath("$[0].gender").value("Male"))
-                .andExpect(jsonPath("$[0].salary").value(2000000));
+                .andExpect(jsonPath("$[0].name").value(JUSTINE))
+                .andExpect(jsonPath("$[0].age").value(AGE_23))
+                .andExpect(jsonPath("$[0].gender").value(MALE))
+                .andExpect(jsonPath("$[0].salary").value(SALARY));
     }
 
     @Test
     public void should_create_employee_when_create_given_employee_request() throws Exception {
         // given
         String employeeJson = "{\n" +
-                "            \"name\": \"Justine\",\n" +
-                "            \"age\": 23,\n" +
-                "            \"gender\": \"Male\",\n" +
-                "            \"salary\": 2000000,\n" +
+                "            \"name\": \"" + JUSTINE + "\",\n" +
+                "            \"age\": " + AGE_23 + ",\n" +
+                "            \"gender\": \"" + MALE + "\",\n" +
+                "            \"salary\": " + SALARY + ",\n" +
                 "            \"companyId\": null\n" +
                 "        }";
 
@@ -66,17 +71,17 @@ public class EmployeeIntegrationTest {
                 .content(employeeJson))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("Justine"))
-                .andExpect(jsonPath("$.age").value(23))
-                .andExpect(jsonPath("$.gender").value("Male"))
-                .andExpect(jsonPath("$.salary").value(2000000));
+                .andExpect(jsonPath("$.name").value(JUSTINE))
+                .andExpect(jsonPath("$.age").value(AGE_23))
+                .andExpect(jsonPath("$.gender").value(MALE))
+                .andExpect(jsonPath("$.salary").value(SALARY));
     }
 
     @Test
     public void should_get_employee_when_get_given_employee_id() throws Exception {
         // given
         Integer id = 2;
-        Employee employee = new Employee(id, "Justine", 23, "Male", 2000000);
+        Employee employee = new Employee(id, JUSTINE, AGE_23, MALE, SALARY);
         Integer returnedEmployeeId = employeeRepository.save(employee).getId();
 
         // when
@@ -84,25 +89,25 @@ public class EmployeeIntegrationTest {
         mockMvc.perform(get("/employees/" + returnedEmployeeId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("Justine"))
-                .andExpect(jsonPath("$.age").value(23))
-                .andExpect(jsonPath("$.gender").value("Male"))
-                .andExpect(jsonPath("$.salary").value(2000000));
+                .andExpect(jsonPath("$.name").value(JUSTINE))
+                .andExpect(jsonPath("$.age").value(AGE_23))
+                .andExpect(jsonPath("$.gender").value(MALE))
+                .andExpect(jsonPath("$.salary").value(SALARY));
     }
 
     @Test
     public void should_update_employee_when_update_given_employee_id_and_updated_employee_request() throws Exception {
         // given
         Integer id = 4;
-        Employee employee = new Employee(id, "Justine", 22, "Male", 2000000);
+        Employee employee = new Employee(id, JUSTINE, 22, MALE, SALARY);
         Integer returnedEmployeeId = employeeRepository.save(employee).getId();
 
         String employeeJson = "{\n" +
                 "            \"id\": 4,\n" +
-                "            \"name\": \"Justine\",\n" +
-                "            \"age\": 23,\n" +
-                "            \"gender\": \"Male\",\n" +
-                "            \"salary\": 2000000,\n" +
+                "            \"name\": \"" + JUSTINE + "\",\n" +
+                "            \"age\": " + AGE_23 + ",\n" +
+                "            \"gender\": \"" + MALE + "\",\n" +
+                "            \"salary\": " + SALARY + ",\n" +
                 "            \"companyId\": null\n" +
                 "        }";
 
@@ -113,17 +118,17 @@ public class EmployeeIntegrationTest {
                 .content(employeeJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("Justine"))
-                .andExpect(jsonPath("$.age").value(23))
-                .andExpect(jsonPath("$.gender").value("Male"))
-                .andExpect(jsonPath("$.salary").value(2000000));
+                .andExpect(jsonPath("$.name").value(JUSTINE))
+                .andExpect(jsonPath("$.age").value(AGE_23))
+                .andExpect(jsonPath("$.gender").value(MALE))
+                .andExpect(jsonPath("$.salary").value(SALARY));
     }
 
     @Test
     public void should_delete_employee_when_delete_given_employee_id() throws Exception {
         // given
         Integer id = 4;
-        Employee employee = new Employee(id, "Justine", 22, "Male", 2000000);
+        Employee employee = new Employee(id, JUSTINE, 22, MALE, SALARY);
         employeeRepository.save(employee);
 
         // when
@@ -135,11 +140,11 @@ public class EmployeeIntegrationTest {
     @Test
     public void should_get_employees_when_get_given_gender() throws Exception {
         // given
-        String gender = "Male";
+        String gender = MALE;
         List<Employee> employeeList = new ArrayList<>();
-        employeeList.add(new Employee(1, "Justine", 23, "Male", 2000000));
-        employeeList.add(new Employee(2, "Justine", 23, "Male", 2000000));
-        employeeList.add(new Employee(3, "Justine", 23, "Female", 2000000));
+        employeeList.add(new Employee(1, JUSTINE, AGE_23, MALE, SALARY));
+        employeeList.add(new Employee(2, JUSTINE, AGE_23, MALE, SALARY));
+        employeeList.add(new Employee(3, JUSTINE, AGE_23, "Female", SALARY));
         employeeRepository.saveAll(employeeList);
 
         // when
@@ -155,12 +160,12 @@ public class EmployeeIntegrationTest {
         Integer page = 1;
         Integer pageSize = 2;
         employeeRepository
-                .save(new Employee(1, "Justine", 23, "Male", 2000000))
+                .save(new Employee(1, JUSTINE, AGE_23, MALE, SALARY))
                 .getId();
-        employeeRepository.save(new Employee(2, "Justine", 23, "Male", 2000000))
+        employeeRepository.save(new Employee(2, JUSTINE, AGE_23, MALE, SALARY))
                 .getId();
         Integer thirdEmployeeId = employeeRepository
-                .save(new Employee(2, "Justine", 23, "Male", 2000000))
+                .save(new Employee(2, JUSTINE, AGE_23, MALE, SALARY))
                 .getId();
 
         // when
