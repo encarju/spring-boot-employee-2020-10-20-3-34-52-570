@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +15,7 @@ public class Company {
     private Integer companyId;
     private String companyName;
 
-    @OneToMany(mappedBy = "companyId")
+    @OneToMany(mappedBy = "companyId", cascade = CascadeType.PERSIST)
     private List<Employee> employees;
 
     public Company(Integer companyId, String companyName, List<Employee> employees) {
