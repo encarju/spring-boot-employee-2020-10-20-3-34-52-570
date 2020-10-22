@@ -1,8 +1,10 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.NoEmployeeFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +14,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 class EmployeeServiceTest {
@@ -144,5 +147,23 @@ class EmployeeServiceTest {
         List<Employee> actual = service.getByPage(page, pageSize);
         //then
         assertEquals(2, actual.size());
+    }
+
+    @Test
+    public void should_return_exception_employee_when_get_employee_given_wrong_employee_id() {
+        //given
+        EmployeeRepository repository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService service = new EmployeeService(repository);
+        Employee employee = new Employee(1, JUSTINE, AGE_2, MALE, SALARY);
+        Integer employeeId = employee.getId();
+        String expectedMessage = "No Employee Found in the List";
+        when(repository.findById(2)).thenReturn(java.util.Optional.of(employee));
+
+        //when
+        Executable executable = () -> service.getById(employeeId);
+
+        //then
+        Exception exception = assertThrows(NoEmployeeFoundException.class, executable);
+        assertEquals(expectedMessage, exception.getMessage());
     }
 }
