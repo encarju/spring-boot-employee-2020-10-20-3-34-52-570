@@ -10,6 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -74,11 +77,11 @@ public class EmployeeIntegrationTest {
         // given
         Integer id = 2;
         Employee employee = new Employee(id, "Justine", 23, "Male", 2000000);
-        employeeRepository.save(employee);
+        Integer returnedEmployeeId = employeeRepository.save(employee).getId();
 
         // when
         // then
-        mockMvc.perform(get("/employees/" + id))
+        mockMvc.perform(get("/employees/" + returnedEmployeeId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.name").value("Justine"))
@@ -92,7 +95,7 @@ public class EmployeeIntegrationTest {
         // given
         Integer id = 4;
         Employee employee = new Employee(id, "Justine", 22, "Male", 2000000);
-        Employee employee1 = employeeRepository.save(employee);
+        Integer returnedEmployeeId = employeeRepository.save(employee).getId();
 
         String employeeJson = "{\n" +
                 "            \"id\": 4,\n" +
@@ -105,7 +108,7 @@ public class EmployeeIntegrationTest {
 
         // when
         // then
-        mockMvc.perform(put(String.format("/employees/%d", id))
+        mockMvc.perform(put(String.format("/employees/%d", returnedEmployeeId))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(employeeJson))
                 .andExpect(status().isOk())
@@ -127,5 +130,22 @@ public class EmployeeIntegrationTest {
         // then
         mockMvc.perform(delete(String.format("/employees/%d", id)))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void should_get_employees_when_get_given_gender() throws Exception {
+        // given
+        String gender = "Male";
+        List<Employee> employeeList = new ArrayList<>();
+        employeeList.add(new Employee(1, "Justine", 23, "Male", 2000000));
+        employeeList.add(new Employee(2, "Justine", 23, "Male", 2000000));
+        employeeList.add(new Employee(3, "Justine", 23, "Female", 2000000));
+        employeeRepository.saveAll(employeeList);
+
+        // when
+        // then
+        mockMvc.perform(get("/employees?gender=" + gender))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2));
     }
 }
