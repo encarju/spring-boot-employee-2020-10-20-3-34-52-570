@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.integration;
 
+import com.thoughtworks.springbootemployee.exception.NoEmployeeFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -13,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -174,5 +176,19 @@ public class EmployeeIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].id").value(thirdEmployeeId));
+    }
+
+    @Test
+    public void should_return_exception_when_get_given_wrong_employee_id() throws Exception {
+        // given
+        Employee employee = new Employee(JUSTINE, AGE_23, MALE, SALARY);
+        Integer returnedEmployeeId = employeeRepository.save(employee).getId();
+        Integer wrongEmployeeId = returnedEmployeeId + 1;
+        // when
+        // then
+        assertThatThrownBy(() -> {
+            mockMvc.perform(get("/employees/" + wrongEmployeeId))
+                    .andExpect(status().isBadRequest());
+        }).hasCause(new NoEmployeeFoundException());
     }
 }
