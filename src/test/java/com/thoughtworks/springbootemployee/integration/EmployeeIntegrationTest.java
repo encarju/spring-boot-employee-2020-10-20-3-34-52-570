@@ -39,7 +39,7 @@ public class EmployeeIntegrationTest {
     @Test
     public void should_get_all_employees_when_get_all() throws Exception {
         // given
-        Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY);
+        Employee employee = new Employee(JUSTINE, AGE_23, MALE, SALARY);
         employeeRepository.save(employee);
 
         // when
@@ -80,8 +80,7 @@ public class EmployeeIntegrationTest {
     @Test
     public void should_get_employee_when_get_given_employee_id() throws Exception {
         // given
-        Integer id = 2;
-        Employee employee = new Employee(id, JUSTINE, AGE_23, MALE, SALARY);
+        Employee employee = new Employee(JUSTINE, AGE_23, MALE, SALARY);
         Integer returnedEmployeeId = employeeRepository.save(employee).getId();
 
         // when
@@ -98,8 +97,7 @@ public class EmployeeIntegrationTest {
     @Test
     public void should_update_employee_when_update_given_employee_id_and_updated_employee_request() throws Exception {
         // given
-        Integer id = 4;
-        Employee employee = new Employee(id, JUSTINE, 22, MALE, SALARY);
+        Employee employee = new Employee(JUSTINE, 22, MALE, SALARY);
         Integer returnedEmployeeId = employeeRepository.save(employee).getId();
 
         String employeeJson = "{\n" +
@@ -127,13 +125,12 @@ public class EmployeeIntegrationTest {
     @Test
     public void should_delete_employee_when_delete_given_employee_id() throws Exception {
         // given
-        Integer id = 4;
-        Employee employee = new Employee(id, JUSTINE, 22, MALE, SALARY);
-        employeeRepository.save(employee);
+        Employee employee = new Employee(JUSTINE, 22, MALE, SALARY);
+        Integer returnedEmployeeId = employeeRepository.save(employee).getId();
 
         // when
         // then
-        mockMvc.perform(delete(String.format("/employees/%d", id)))
+        mockMvc.perform(delete(String.format("/employees/%d", returnedEmployeeId)))
                 .andExpect(status().isOk());
     }
 
@@ -142,9 +139,9 @@ public class EmployeeIntegrationTest {
         // given
         String gender = MALE;
         List<Employee> employeeList = new ArrayList<>();
-        employeeList.add(new Employee(1, JUSTINE, AGE_23, MALE, SALARY));
-        employeeList.add(new Employee(2, JUSTINE, AGE_23, MALE, SALARY));
-        employeeList.add(new Employee(3, JUSTINE, AGE_23, "Female", SALARY));
+        employeeList.add(new Employee(JUSTINE, AGE_23, MALE, SALARY));
+        employeeList.add(new Employee(JUSTINE, AGE_23, MALE, SALARY));
+        employeeList.add(new Employee(JUSTINE, AGE_23, "Female", SALARY));
         employeeRepository.saveAll(employeeList);
 
         // when
@@ -160,12 +157,12 @@ public class EmployeeIntegrationTest {
         Integer page = 1;
         Integer pageSize = 2;
         employeeRepository
-                .save(new Employee(1, JUSTINE, AGE_23, MALE, SALARY))
+                .save(new Employee(JUSTINE, AGE_23, MALE, SALARY))
                 .getId();
-        employeeRepository.save(new Employee(2, JUSTINE, AGE_23, MALE, SALARY))
+        employeeRepository.save(new Employee(JUSTINE, AGE_23, MALE, SALARY))
                 .getId();
         Integer thirdEmployeeId = employeeRepository
-                .save(new Employee(2, JUSTINE, AGE_23, MALE, SALARY))
+                .save(new Employee(JUSTINE, AGE_23, MALE, SALARY))
                 .getId();
 
         // when
