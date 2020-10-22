@@ -43,4 +43,22 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$[0].gender").value("Male"))
                 .andExpect(jsonPath("$[0].salary").value(2000000));
     }
+
+    @Test
+    public void should_get_employee_when_get_given_employee_id() throws Exception {
+        // given
+        Integer id = 1;
+        Employee employee = new Employee(id, "Justine", 23, "Male", 2000000);
+        employeeRepository.save(employee);
+
+        // when
+        // then
+        mockMvc.perform(get("/employees/" + id))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.name").value("Justine"))
+                .andExpect(jsonPath("$.age").value(23))
+                .andExpect(jsonPath("$.gender").value("Male"))
+                .andExpect(jsonPath("$.salary").value(2000000));
+    }
 }
