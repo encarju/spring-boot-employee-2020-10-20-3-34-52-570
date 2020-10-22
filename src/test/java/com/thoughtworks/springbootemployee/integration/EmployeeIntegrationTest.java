@@ -148,4 +148,26 @@ public class EmployeeIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2));
     }
+
+    @Test
+    public void should_get_employees_when_get_given_page() throws Exception {
+        // given
+        Integer page = 1;
+        Integer pageSize = 2;
+        employeeRepository
+                .save(new Employee(1, "Justine", 23, "Male", 2000000))
+                .getId();
+        employeeRepository.save(new Employee(2, "Justine", 23, "Male", 2000000))
+                .getId();
+        Integer thirdEmployeeId = employeeRepository
+                .save(new Employee(2, "Justine", 23, "Male", 2000000))
+                .getId();
+
+        // when
+        // then
+        mockMvc.perform(get(String.format("/employees?page=%d&pageSize=%d", page, pageSize)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].id").value(thirdEmployeeId));
+    }
 }
