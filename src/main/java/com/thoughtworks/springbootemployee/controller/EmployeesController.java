@@ -2,20 +2,17 @@ package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepositoryLegacy;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeesController {
-    private EmployeeService employeeService = new EmployeeService(new EmployeeRepository());
-
-    public EmployeesController() {
-    }
+    private EmployeeService employeeService;
 
     public EmployeesController(EmployeeService employeeService) {
         this.employeeService = employeeService;

@@ -2,9 +2,14 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
+import java.lang.reflect.Parameter;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -50,7 +55,7 @@ class EmployeeServiceTest {
         EmployeeService service = new EmployeeService(repository);
         Employee employee = new Employee(1, "Justine", 2, "Male", 2000);
         Integer employeeId = employee.getId();
-        when(repository.getById(employeeId)).thenReturn(employee);
+        when(repository.findById(employeeId)).thenReturn(java.util.Optional.of(employee));
 
         //when
         Employee actual = service.getById(employeeId);
@@ -67,7 +72,8 @@ class EmployeeServiceTest {
         Employee employee = new Employee(1, "Justine", 2, "Male", 2000);
         Employee updatedEmployee = new Employee(1, "Bryan", 2, "Male", 2000);
         Integer employeeId = employee.getId();
-        when(repository.update(employeeId, updatedEmployee)).thenReturn(updatedEmployee);
+        when(repository.findById(employeeId)).thenReturn(java.util.Optional.of(employee));
+        when(repository.save(updatedEmployee)).thenReturn(updatedEmployee);
 
         //when
         Employee actual = service.update(employeeId, updatedEmployee);
@@ -83,12 +89,13 @@ class EmployeeServiceTest {
         EmployeeService service = new EmployeeService(repository);
         Employee employee = new Employee(1, "Justine", 2, "Male", 2000);
         Integer employeeId = employee.getId();
+        when(repository.findById(employeeId)).thenReturn(java.util.Optional.of(employee));
 
         //when
         service.remove(employeeId);
 
         //then
-        Mockito.verify(repository, Mockito.times(1)).remove(employeeId);
+        Mockito.verify(repository, Mockito.times(1)).delete(employee);
     }
 
     @Test
@@ -104,7 +111,7 @@ class EmployeeServiceTest {
         when(repository.save(employee)).thenReturn(employee);
         when(repository.save(employee)).thenReturn(employee2);
         String employeeGender = "male";
-        when(repository.getByGender(employeeGender)).thenReturn(returnedEmployees);
+        when(repository.findByGender(employeeGender)).thenReturn(returnedEmployees);
 
         //when
         List<Employee> actual = service.getByGender(employeeGender);
@@ -122,9 +129,11 @@ class EmployeeServiceTest {
                 new Employee(1, "Justine", 2, "Male", 2000),
                 new Employee(2, "Lily", 2, "Female", 2000));
 
-        Integer page = 1;
+        Integer page = 0;
         Integer pageSize = 2;
-        when(repository.getByPage(page, pageSize)).thenReturn(returnedEmployees);
+        Page<Employee> employeePage = Mockito.mock(Page.class);
+        when(repository.findAll(PageRequest.of(page, pageSize))).thenReturn(employeePage);
+        when(employeePage.toList()).thenReturn(returnedEmployees);
         //when
         List<Employee> actual = service.getByPage(page, pageSize);
         //then
