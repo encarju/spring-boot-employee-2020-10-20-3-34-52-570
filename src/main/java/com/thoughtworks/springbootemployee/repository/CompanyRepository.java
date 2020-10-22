@@ -48,7 +48,7 @@ public class CompanyRepository {
                 .filter(company -> company.getCompanyId().equals(companyId))
                 .findFirst()
                 .ifPresent(company -> {
-                    company.getEmployees().removeAll(company.getEmployees());
+                    company.getEmployees().clear();
                 });
         return companies.stream()
                 .filter(company -> company.getCompanyId().equals(companyId))
