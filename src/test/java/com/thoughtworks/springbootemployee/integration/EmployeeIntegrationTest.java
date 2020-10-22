@@ -10,9 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -74,7 +72,7 @@ public class EmployeeIntegrationTest {
     @Test
     public void should_get_employee_when_get_given_employee_id() throws Exception {
         // given
-        Integer id = 1;
+        Integer id = 2;
         Employee employee = new Employee(id, "Justine", 23, "Male", 2000000);
         employeeRepository.save(employee);
 
@@ -92,12 +90,12 @@ public class EmployeeIntegrationTest {
     @Test
     public void should_update_employee_when_update_given_employee_id_and_updated_employee_request() throws Exception {
         // given
-        Integer id = 1;
+        Integer id = 4;
         Employee employee = new Employee(id, "Justine", 22, "Male", 2000000);
-        employeeRepository.save(employee);
+        Employee employee1 = employeeRepository.save(employee);
 
         String employeeJson = "{\n" +
-                "            \"id\": 1,\n" +
+                "            \"id\": 4,\n" +
                 "            \"name\": \"Justine\",\n" +
                 "            \"age\": 23,\n" +
                 "            \"gender\": \"Male\",\n" +
@@ -116,5 +114,18 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$.age").value(23))
                 .andExpect(jsonPath("$.gender").value("Male"))
                 .andExpect(jsonPath("$.salary").value(2000000));
+    }
+
+    @Test
+    public void should_delete_employee_when_delete_given_employee_id() throws Exception {
+        // given
+        Integer id = 4;
+        Employee employee = new Employee(id, "Justine", 22, "Male", 2000000);
+        employeeRepository.save(employee);
+
+        // when
+        // then
+        mockMvc.perform(delete(String.format("/employees/%d", id)))
+                .andExpect(status().isOk());
     }
 }
