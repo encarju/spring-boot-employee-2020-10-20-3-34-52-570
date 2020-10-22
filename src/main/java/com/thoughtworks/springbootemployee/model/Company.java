@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -12,7 +13,7 @@ public class Company {
     private Integer companyId;
     private String companyName;
 
-    @OneToMany(mappedBy = "company_id", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "company_id", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Employee> employees;
 
     public Company(Integer companyId, String companyName, List<Employee> employees) {

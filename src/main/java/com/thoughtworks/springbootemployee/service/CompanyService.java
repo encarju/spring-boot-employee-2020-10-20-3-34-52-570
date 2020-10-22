@@ -3,8 +3,10 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -24,22 +26,34 @@ public class CompanyService {
     }
 
     public Company getById(Integer companyId) {
-        return repository.getById(companyId);
+        return repository.findById(companyId).orElse(null);
     }
 
     public Company update(Integer companyId, Company updatedCompany) {
-        return repository.update(companyId, updatedCompany);
+        return repository.findById(companyId)
+                .map(company -> repository.save(updatedCompany))
+                .orElse(null);
     }
 
     public Company remove(Integer companyId) {
-        return repository.remove(companyId);
+        return repository.findById(companyId)
+                .map(company -> {
+                    company.getEmployees().clear();
+                    repository.save(company);
+
+                    return company;
+                })
+                .orElse(null);
     }
 
     public List<Company> getByPage(Integer page, Integer pageSize) {
-        return repository.getByPage(page, pageSize);
+        return repository.findAll(PageRequest.of(page, pageSize))
+                .toList();
     }
 
     public List<Employee> getCompanyEmployees(Integer companyID) {
-        return repository.getCompanyEmployees(companyID);
+        return repository.findById(companyID)
+                .map(Company::getEmployees)
+                .orElse(Collections.emptyList());
     }
 }
