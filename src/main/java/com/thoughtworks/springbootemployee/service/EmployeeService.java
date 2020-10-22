@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.NoEmployeeFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class EmployeeService {
     }
 
     public Employee getById(Integer employeeId) {
-        return repository.findById(employeeId).orElse(null);
+        return repository.findById(employeeId).orElseThrow(() -> new NoEmployeeFoundException());
     }
 
     public Employee update(Integer employeeId, Employee updatedEmployee) {
