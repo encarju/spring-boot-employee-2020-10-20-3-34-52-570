@@ -26,7 +26,8 @@ public class EmployeeService {
     }
 
     public Employee getById(Integer employeeId) {
-        return repository.findById(employeeId).orElseThrow(() -> new NoEmployeeFoundException(employeeId));
+        return repository.findById(employeeId)
+                .orElseThrow(() -> new NoEmployeeFoundException(employeeId));
     }
 
     public Employee update(Integer employeeId, Employee updatedEmployee) {
@@ -36,7 +37,8 @@ public class EmployeeService {
     }
 
     public void remove(Integer employeeId) {
-        repository.findById(employeeId).ifPresent(repository::delete);
+        repository.findById(employeeId)
+                .ifPresent(repository::delete);
     }
 
     public List<Employee> getByGender(String employeeGender) {
