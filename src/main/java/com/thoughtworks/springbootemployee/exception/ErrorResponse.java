@@ -5,15 +5,17 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 
 public class ErrorResponse {
-    String errorCode;
-    String errorMsg;
-    int status;
+    private final String errorCode;
+    private final String errorMessage;
+    private final int status;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
-    LocalDateTime timestamp;
+    private final LocalDateTime timestamp;
 
-    public ErrorResponse(String errorCode, String errorMsg) {
+    public ErrorResponse(String errorCode, String errorMessage, int status, LocalDateTime timestamp) {
         this.errorCode = errorCode;
-        this.errorMsg = errorMsg;
+        this.errorMessage = errorMessage;
+        this.status = status;
+        this.timestamp = timestamp;
     }
 
     public String getErrorCode() {
@@ -21,22 +23,14 @@ public class ErrorResponse {
     }
 
     public String getErrorMsg() {
-        return errorMsg;
+        return errorMessage;
     }
 
     public int getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
     public LocalDateTime getTimestamp() {
         return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
     }
 }

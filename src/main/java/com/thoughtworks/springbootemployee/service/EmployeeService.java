@@ -26,12 +26,13 @@ public class EmployeeService {
     }
 
     public Employee getById(Integer employeeId) {
-        return repository.findById(employeeId).orElseThrow(NoEmployeeFoundException::new);
+        return repository.findById(employeeId).orElseThrow(() -> new NoEmployeeFoundException(employeeId));
     }
 
     public Employee update(Integer employeeId, Employee updatedEmployee) {
-        return repository.findById(employeeId).map(employee -> repository.save(updatedEmployee))
-                .orElseThrow(NoEmployeeFoundException::new);
+        return repository.findById(employeeId)
+                .map(employee -> repository.save(updatedEmployee))
+                .orElseThrow(() -> new NoEmployeeFoundException(employeeId));
     }
 
     public void remove(Integer employeeId) {

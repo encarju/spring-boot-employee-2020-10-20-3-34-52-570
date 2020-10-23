@@ -1,6 +1,5 @@
 package com.thoughtworks.springbootemployee.integration;
 
-import com.thoughtworks.springbootemployee.exception.NoEmployeeFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -14,7 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -186,10 +184,9 @@ public class EmployeeIntegrationTest {
         Integer wrongEmployeeId = returnedEmployeeId + 1;
         // when
         // then
-        assertThatThrownBy(() -> {
-            mockMvc.perform(get("/employees/" + wrongEmployeeId))
-                    .andExpect(status().isBadRequest());
-        }).hasCause(new NoEmployeeFoundException());
+        mockMvc.perform(get("/employees/" + wrongEmployeeId))
+                .andExpect(status().isNotFound());
+
     }
 
     @Test
@@ -198,7 +195,6 @@ public class EmployeeIntegrationTest {
         Employee employee = new Employee(JUSTINE, 22, MALE, SALARY);
         Integer returnedEmployeeId = employeeRepository.save(employee).getId();
         Integer wrongEmployeeId = returnedEmployeeId + 1;
-
         String employeeJson = "{\n" +
                 "            \"id\": 4,\n" +
                 "            \"name\": \"" + JUSTINE + "\",\n" +
@@ -210,18 +206,9 @@ public class EmployeeIntegrationTest {
 
         // when
         // then
-        assertThatThrownBy(() -> {
-            mockMvc.perform(put(String.format("/employees/%d", wrongEmployeeId))
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(employeeJson))
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.id").isNumber())
-                    .andExpect(jsonPath("$.name").value(JUSTINE))
-                    .andExpect(jsonPath("$.age").value(AGE_23))
-                    .andExpect(jsonPath("$.gender").value(MALE))
-                    .andExpect(jsonPath("$.salary").value(SALARY));
-        }).hasCause(new NoEmployeeFoundException());
-
-
+        mockMvc.perform(put("/employees/" + wrongEmployeeId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(employeeJson))
+                .andExpect(status().isNotFound());
     }
 }
