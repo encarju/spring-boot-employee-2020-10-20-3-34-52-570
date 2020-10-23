@@ -3,11 +3,12 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
+
+import static java.util.Collections.emptyList;
+import static org.springframework.data.domain.PageRequest.of;
 
 @Service
 public class CompanyService {
@@ -47,13 +48,13 @@ public class CompanyService {
     }
 
     public List<Company> getByPage(Integer page, Integer pageSize) {
-        return repository.findAll(PageRequest.of(page, pageSize))
+        return repository.findAll(of(page, pageSize))
                 .toList();
     }
 
     public List<Employee> getCompanyEmployees(Integer companyID) {
         return repository.findById(companyID)
                 .map(Company::getEmployees)
-                .orElse(Collections.emptyList());
+                .orElse(emptyList());
     }
 }

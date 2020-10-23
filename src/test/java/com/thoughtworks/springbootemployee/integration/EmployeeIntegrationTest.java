@@ -13,6 +13,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.String.format;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -70,7 +72,7 @@ public class EmployeeIntegrationTest {
         // when
         // then
         mockMvc.perform(post("/employees")
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
                 .content(employeeJson))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
@@ -114,8 +116,8 @@ public class EmployeeIntegrationTest {
 
         // when
         // then
-        mockMvc.perform(put(String.format("/employees/%d", returnedEmployeeId))
-                .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(put(format("/employees/%d", returnedEmployeeId))
+                .contentType(APPLICATION_JSON)
                 .content(employeeJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
@@ -133,7 +135,7 @@ public class EmployeeIntegrationTest {
 
         // when
         // then
-        mockMvc.perform(delete(String.format("/employees/%d", returnedEmployeeId)))
+        mockMvc.perform(delete(format("/employees/%d", returnedEmployeeId)))
                 .andExpect(status().isOk());
     }
 
@@ -170,7 +172,7 @@ public class EmployeeIntegrationTest {
 
         // when
         // then
-        mockMvc.perform(get(String.format("/employees?page=%d&pageSize=%d", page, pageSize)))
+        mockMvc.perform(get(format("/employees?page=%d&pageSize=%d", page, pageSize)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].id").value(thirdEmployeeId));
@@ -207,7 +209,7 @@ public class EmployeeIntegrationTest {
         // when
         // then
         mockMvc.perform(put("/employees/" + wrongEmployeeId)
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
                 .content(employeeJson))
                 .andExpect(status().isNotFound());
     }

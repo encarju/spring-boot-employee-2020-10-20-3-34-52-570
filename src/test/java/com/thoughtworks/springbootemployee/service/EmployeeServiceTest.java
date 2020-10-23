@@ -12,9 +12,13 @@ import org.springframework.data.domain.PageRequest;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class EmployeeServiceTest {
@@ -30,7 +34,7 @@ class EmployeeServiceTest {
     @Test
     public void should_return_employees_when_get_all_employee() {
         //given
-        EmployeeRepository repository = Mockito.mock(EmployeeRepository.class);
+        EmployeeRepository repository = mock(EmployeeRepository.class);
         List<Employee> expectedEmployees = asList(new Employee(), new Employee());
         when(repository.findAll()).thenReturn(expectedEmployees);
         EmployeeService service = new EmployeeService(repository);
@@ -45,7 +49,7 @@ class EmployeeServiceTest {
     @Test
     public void should_create_employee_when_create_given_one_employee() {
         //given
-        EmployeeRepository repository = Mockito.mock(EmployeeRepository.class);
+        EmployeeRepository repository = mock(EmployeeRepository.class);
         EmployeeService service = new EmployeeService(repository);
         Employee employee = new Employee(1, JUSTINE, AGE_2, MALE, SALARY);
         when(repository.save(employee)).thenReturn(employee);
@@ -60,11 +64,11 @@ class EmployeeServiceTest {
     @Test
     public void should_return_specific_employee_when_get_employee_give_employee_id() {
         //given
-        EmployeeRepository repository = Mockito.mock(EmployeeRepository.class);
+        EmployeeRepository repository = mock(EmployeeRepository.class);
         EmployeeService service = new EmployeeService(repository);
         Employee employee = new Employee(1, JUSTINE, AGE_2, MALE, SALARY);
         Integer employeeId = employee.getId();
-        when(repository.findById(employeeId)).thenReturn(java.util.Optional.of(employee));
+        when(repository.findById(employeeId)).thenReturn(of(employee));
 
         //when
         Employee actual = service.getById(employeeId);
@@ -76,12 +80,12 @@ class EmployeeServiceTest {
     @Test
     void should_return_updated_employee_when_update_employee_given_employee_id_updated_name() {
         //given
-        EmployeeRepository repository = Mockito.mock(EmployeeRepository.class);
+        EmployeeRepository repository = mock(EmployeeRepository.class);
         EmployeeService service = new EmployeeService(repository);
         Employee employee = new Employee(1, JUSTINE, AGE_2, MALE, SALARY);
         Employee updatedEmployee = new Employee(1, BRYAN, AGE_2, MALE, SALARY);
         Integer employeeId = employee.getId();
-        when(repository.findById(employeeId)).thenReturn(java.util.Optional.of(employee));
+        when(repository.findById(employeeId)).thenReturn(of(employee));
         when(repository.save(updatedEmployee)).thenReturn(updatedEmployee);
 
         //when
@@ -94,23 +98,23 @@ class EmployeeServiceTest {
     @Test
     void should_delete_employee_when_delete_employee_given_employee_id() {
         //given
-        EmployeeRepository repository = Mockito.mock(EmployeeRepository.class);
+        EmployeeRepository repository = mock(EmployeeRepository.class);
         EmployeeService service = new EmployeeService(repository);
         Employee employee = new Employee(1, JUSTINE, AGE_2, MALE, SALARY);
         Integer employeeId = employee.getId();
-        when(repository.findById(employeeId)).thenReturn(java.util.Optional.of(employee));
+        when(repository.findById(employeeId)).thenReturn(of(employee));
 
         //when
         service.remove(employeeId);
 
         //then
-        Mockito.verify(repository, Mockito.times(1)).delete(employee);
+        verify(repository, times(1)).delete(employee);
     }
 
     @Test
     public void should_return_employees_when_get_employee_by_gender_given_employee_gender() {
         //given
-        EmployeeRepository repository = Mockito.mock(EmployeeRepository.class);
+        EmployeeRepository repository = mock(EmployeeRepository.class);
         EmployeeService service = new EmployeeService(repository);
         List<Employee> returnedEmployees = asList(
                 new Employee(1, JUSTINE, AGE_2, MALE, SALARY));
@@ -132,7 +136,7 @@ class EmployeeServiceTest {
     @Test
     public void should_return_2_employee_when_get_by_page_given_2_page_size() {
         //given
-        EmployeeRepository repository = Mockito.mock(EmployeeRepository.class);
+        EmployeeRepository repository = mock(EmployeeRepository.class);
         EmployeeService service = new EmployeeService(repository);
         List<Employee> returnedEmployees = asList(
                 new Employee(1, JUSTINE, AGE_2, MALE, SALARY),
@@ -140,7 +144,7 @@ class EmployeeServiceTest {
 
         Integer page = 0;
         Integer pageSize = 2;
-        Page<Employee> employeePage = Mockito.mock(Page.class);
+        Page<Employee> employeePage = mock(Page.class);
         when(repository.findAll(PageRequest.of(page, pageSize))).thenReturn(employeePage);
         when(employeePage.toList()).thenReturn(returnedEmployees);
         //when
@@ -152,12 +156,12 @@ class EmployeeServiceTest {
     @Test
     public void should_return_exception_employee_when_get_employee_given_wrong_employee_id() {
         //given
-        EmployeeRepository repository = Mockito.mock(EmployeeRepository.class);
+        EmployeeRepository repository = mock(EmployeeRepository.class);
         EmployeeService service = new EmployeeService(repository);
         Employee employee = new Employee(1, JUSTINE, AGE_2, MALE, SALARY);
         Integer employeeId = employee.getId();
         String expectedMessage = "No Employee Found in the List";
-        when(repository.findById(2)).thenReturn(java.util.Optional.of(employee));
+        when(repository.findById(2)).thenReturn(of(employee));
 
         //when
         Executable executable = () -> service.getById(employeeId);
@@ -170,14 +174,14 @@ class EmployeeServiceTest {
     @Test
     public void should_return_exception_employee_when_update_given_wrong_employee_id() {
         //given
-        EmployeeRepository repository = Mockito.mock(EmployeeRepository.class);
+        EmployeeRepository repository = mock(EmployeeRepository.class);
         EmployeeService service = new EmployeeService(repository);
         Employee employee = new Employee(1, JUSTINE, AGE_2, MALE, SALARY);
         Employee updatedEmployee = new Employee(1, BRYAN, AGE_2, MALE, SALARY);
         Integer employeeId = employee.getId();
         Integer wrongEmployeeId = 2;
         String expectedMessage = "No Employee Found in the List";
-        when(repository.findById(wrongEmployeeId)).thenReturn(java.util.Optional.of(employee));
+        when(repository.findById(wrongEmployeeId)).thenReturn(of(employee));
         when(repository.save(updatedEmployee)).thenReturn(updatedEmployee);
 
         //when
