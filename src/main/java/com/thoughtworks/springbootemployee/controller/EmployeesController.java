@@ -1,5 +1,8 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.dto.EmployeeRequest;
+import com.thoughtworks.springbootemployee.dto.EmployeeResponse;
+import com.thoughtworks.springbootemployee.mapper.EmployeeMapper;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.http.HttpStatus;
@@ -20,30 +23,36 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeesController {
     private EmployeeService employeeService;
+    private EmployeeMapper employeeMapper;
 
     public EmployeesController(EmployeeService employeeService) {
         this.employeeService = employeeService;
+        employeeMapper = new EmployeeMapper();
     }
 
     @GetMapping
-    public List<Employee> getAll() {
-        return employeeService.getAll();
+    public List<EmployeeResponse> getAll() {
+        return employeeMapper.toResponse(employeeService.getAll());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee addEmployee(@RequestBody Employee employee) {
-        return employeeService.create(employee);
+    public EmployeeResponse addEmployee(@RequestBody EmployeeRequest employeeRequest) {
+        Employee employee = employeeService.create(employeeMapper.toEntity(employeeRequest));
+
+        return employeeMapper.toResponse(employee);
     }
 
     @GetMapping("/{employeeId}")
-    public Employee getEmployee(@PathVariable Integer employeeId) {
-        return employeeService.getById(employeeId);
+    public EmployeeResponse getEmployee(@PathVariable Integer employeeId) {
+        return employeeMapper.toResponse(employeeService.getById(employeeId));
     }
 
     @PutMapping("/{employeeId}")
-    public Employee updateEmployee(@PathVariable Integer employeeId, @RequestBody Employee employeeUpdate) {
-        return employeeService.update(employeeId, employeeUpdate);
+    public EmployeeResponse updateEmployee(@PathVariable Integer employeeId, @RequestBody EmployeeRequest employeeRequest) {
+        Employee employee = employeeMapper.toEntity(employeeRequest);
+
+        return employeeMapper.toResponse(employeeService.update(employeeId, employee));
     }
 
     @DeleteMapping("/{employeeId}")
@@ -52,12 +61,12 @@ public class EmployeesController {
     }
 
     @GetMapping(params = "gender")
-    public List<Employee> getByGender(@RequestParam String gender) {
-        return employeeService.getByGender(gender);
+    public List<EmployeeResponse> getByGender(@RequestParam String gender) {
+        return employeeMapper.toResponse(employeeService.getByGender(gender));
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    public List<Employee> getByPage(@RequestParam Integer page, @RequestParam Integer pageSize) {
-        return employeeService.getByPage(page, pageSize);
+    public List<EmployeeResponse> getByPage(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        return employeeMapper.toResponse(employeeService.getByPage(page, pageSize));
     }
 }
