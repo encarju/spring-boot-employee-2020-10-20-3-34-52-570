@@ -5,12 +5,12 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
+import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -160,8 +160,9 @@ class EmployeeServiceTest {
         EmployeeService service = new EmployeeService(repository);
         Employee employee = new Employee(1, JUSTINE, AGE_2, MALE, SALARY);
         Integer employeeId = employee.getId();
-        String expectedMessage = "No Employee Found in the List";
-        when(repository.findById(2)).thenReturn(of(employee));
+        Integer wrongEmployeeId = employeeId + 1;
+        String expectedMessage = format("Employee with ID %d does not exist", employeeId);
+        when(repository.findById(wrongEmployeeId)).thenReturn(of(employee));
 
         //when
         Executable executable = () -> service.getById(employeeId);
@@ -179,8 +180,8 @@ class EmployeeServiceTest {
         Employee employee = new Employee(1, JUSTINE, AGE_2, MALE, SALARY);
         Employee updatedEmployee = new Employee(1, BRYAN, AGE_2, MALE, SALARY);
         Integer employeeId = employee.getId();
-        Integer wrongEmployeeId = 2;
-        String expectedMessage = "No Employee Found in the List";
+        Integer wrongEmployeeId = employeeId + 1;
+        String expectedMessage = format("Employee with ID %d does not exist", employeeId);
         when(repository.findById(wrongEmployeeId)).thenReturn(of(employee));
         when(repository.save(updatedEmployee)).thenReturn(updatedEmployee);
 

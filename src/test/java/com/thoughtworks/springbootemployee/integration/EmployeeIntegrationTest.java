@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
@@ -90,7 +89,7 @@ public class EmployeeIntegrationTest {
 
         // when
         // then
-        mockMvc.perform(get("/employees/" + returnedEmployeeId))
+        mockMvc.perform(get(format("/employees/%d", returnedEmployeeId)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.name").value(JUSTINE))
@@ -151,7 +150,7 @@ public class EmployeeIntegrationTest {
 
         // when
         // then
-        mockMvc.perform(get("/employees?gender=" + gender))
+        mockMvc.perform(get(format("/employees?gender=%s", gender)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2));
     }
@@ -186,7 +185,7 @@ public class EmployeeIntegrationTest {
         Integer wrongEmployeeId = returnedEmployeeId + 1;
         // when
         // then
-        mockMvc.perform(get("/employees/" + wrongEmployeeId))
+        mockMvc.perform(get(format("/employees/%d", wrongEmployeeId)))
                 .andExpect(status().isNotFound());
 
     }
