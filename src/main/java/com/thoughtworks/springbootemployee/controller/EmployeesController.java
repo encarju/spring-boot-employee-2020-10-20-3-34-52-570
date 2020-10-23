@@ -25,20 +25,17 @@ public class EmployeesController {
         this.employeeService = employeeService;
     }
 
-    //Getting all employees
     @GetMapping
     public List<Employee> getAll() {
         return employeeService.getAll();
     }
 
-    //Add an employee
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Employee addEmployee(@RequestBody Employee employee) {
         return employeeService.create(employee);
     }
 
-    //Get specific employee
     @GetMapping("/{employeeId}")
     public Employee getEmployee(@PathVariable Integer employeeId) {
         return employeeService.getById(employeeId);
@@ -63,5 +60,4 @@ public class EmployeesController {
     public List<Employee> getByPage(@RequestParam Integer page, @RequestParam Integer pageSize) {
         return employeeService.getByPage(page, pageSize);
     }
-
 }
