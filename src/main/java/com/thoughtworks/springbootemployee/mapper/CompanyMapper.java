@@ -2,7 +2,6 @@ package com.thoughtworks.springbootemployee.mapper;
 
 import com.thoughtworks.springbootemployee.dto.CompanyRequest;
 import com.thoughtworks.springbootemployee.dto.CompanyResponse;
-import com.thoughtworks.springbootemployee.dto.EmployeeRequest;
 import com.thoughtworks.springbootemployee.dto.EmployeeResponse;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
@@ -48,4 +47,7 @@ public class CompanyMapper {
 
     }
 
+    public List<CompanyResponse> toResponse(List<Company> companies) {
+        return null;
+    }
 }

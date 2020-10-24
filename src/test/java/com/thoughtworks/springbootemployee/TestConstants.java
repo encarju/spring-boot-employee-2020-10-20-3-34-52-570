@@ -3,6 +3,7 @@ package com.thoughtworks.springbootemployee;
 public final class TestConstants {
 
     public static final String OOCL = "OOCL";
+    public static final String COSCO = "COSCO";
     public static final String JUSTINE = "Justine";
     public static final int AGE_23 = 23;
     public static final String MALE = "Male";
