@@ -9,8 +9,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Collections;
-
 import static java.util.Collections.emptyList;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -84,5 +82,4 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$.employees[0].salary").value(SALARY))
                 .andExpect(jsonPath("$.employees[0].companyId").isNumber());
     }
-
 }
