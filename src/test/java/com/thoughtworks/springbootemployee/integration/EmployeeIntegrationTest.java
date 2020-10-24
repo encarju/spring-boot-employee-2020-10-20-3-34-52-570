@@ -111,7 +111,7 @@ public class EmployeeIntegrationTest {
         Integer returnedEmployeeId = employeeRepository.save(employee).getId();
 
         String employeeJson = "{\n" +
-                "            \"id\": 4,\n" +
+//                "            \"id\": 4,\n" +
                 "            \"name\": \"" + JUSTINE + "\",\n" +
                 "            \"age\": " + AGE_23 + ",\n" +
                 "            \"gender\": \"" + MALE + "\",\n" +
@@ -126,6 +126,7 @@ public class EmployeeIntegrationTest {
                 .content(employeeJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.id").value(returnedEmployeeId))
                 .andExpect(jsonPath("$.name").value(JUSTINE))
                 .andExpect(jsonPath("$.age").value(AGE_23))
                 .andExpect(jsonPath("$.gender").value(MALE))
