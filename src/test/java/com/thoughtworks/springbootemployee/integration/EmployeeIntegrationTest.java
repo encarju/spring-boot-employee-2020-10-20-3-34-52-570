@@ -111,7 +111,6 @@ public class EmployeeIntegrationTest {
         Integer returnedEmployeeId = employeeRepository.save(employee).getId();
 
         String employeeJson = "{\n" +
-//                "            \"id\": 4,\n" +
                 "            \"name\": \"" + JUSTINE + "\",\n" +
                 "            \"age\": " + AGE_23 + ",\n" +
                 "            \"gender\": \"" + MALE + "\",\n" +
