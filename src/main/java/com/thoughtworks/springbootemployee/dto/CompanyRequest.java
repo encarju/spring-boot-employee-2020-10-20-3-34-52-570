@@ -11,6 +11,11 @@ public class CompanyRequest {
     public CompanyRequest() {
     }
 
+    public CompanyRequest(String name, List<EmployeeRequest> employeeRequests) {
+        this.name = name;
+        this.employeeRequests = employeeRequests;
+    }
+
     public String getName() {
         return name;
     }

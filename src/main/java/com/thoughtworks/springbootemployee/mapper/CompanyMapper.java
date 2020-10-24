@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.mapper;
 
+import com.thoughtworks.springbootemployee.dto.CompanyRequest;
 import com.thoughtworks.springbootemployee.dto.CompanyResponse;
 import com.thoughtworks.springbootemployee.dto.EmployeeResponse;
 import com.thoughtworks.springbootemployee.model.Company;
@@ -26,5 +27,9 @@ public class CompanyMapper {
         companyResponse.setEmployeeResponses(employeeResponses);
 
         return companyResponse;
+    }
+
+    public Company toEntity(CompanyRequest companyRequest) {
+        return null;
     }
 }
