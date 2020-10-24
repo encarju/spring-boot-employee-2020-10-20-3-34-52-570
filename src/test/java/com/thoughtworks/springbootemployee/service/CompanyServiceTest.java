@@ -47,7 +47,7 @@ class CompanyServiceTest {
         Company actual = service.create(company);
 
         //then
-        assertEquals(1, actual.getCompanyId());
+        assertEquals(1, actual.getId());
     }
 
     @Test
@@ -56,14 +56,14 @@ class CompanyServiceTest {
         CompanyRepository repository = mock(CompanyRepository.class);
         CompanyService service = new CompanyService(repository);
         Company company = new Company(1, "Alibaba", asList(new Employee(), new Employee()));
-        Integer companyId = company.getCompanyId();
+        Integer companyId = company.getId();
         when(repository.findById(companyId)).thenReturn(of(company));
 
         //when
         Company actual = service.getById(companyId);
 
         //then
-        assertEquals(1, actual.getCompanyId());
+        assertEquals(1, actual.getId());
     }
 
     @Test
@@ -75,7 +75,7 @@ class CompanyServiceTest {
                 asList(new Employee(), new Employee()));
         Company updatedCompany = new Company(1, "Alibabas",
                 asList(new Employee(), new Employee()));
-        Integer companyId = company.getCompanyId();
+        Integer companyId = company.getId();
         when(repository.findById(companyId)).thenReturn(of(company));
         when(repository.save(updatedCompany)).thenReturn(updatedCompany);
 
@@ -83,7 +83,7 @@ class CompanyServiceTest {
         Company actual = service.update(companyId, updatedCompany);
 
         //then
-        assertEquals("Alibabas", actual.getCompanyName());
+        assertEquals("Alibabas", actual.getName());
     }
 
     @Test
@@ -101,7 +101,7 @@ class CompanyServiceTest {
         company.getEmployees().clear();
         Company expectedCompany = company;
 
-        Integer companyId = company.getCompanyId();
+        Integer companyId = company.getId();
 
         when(repository.findById(companyId)).thenReturn(of(company));
         when(repository.save(expectedCompany)).thenReturn(expectedCompany);
@@ -147,7 +147,7 @@ class CompanyServiceTest {
         );
         Company company = new Company(1, "Alibaba",
                 employees);
-        Integer companyID = company.getCompanyId();
+        Integer companyID = company.getId();
 
         when(repository.findById(companyID)).thenReturn(of(company));
         //when

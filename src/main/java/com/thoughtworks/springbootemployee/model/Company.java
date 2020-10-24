@@ -12,36 +12,40 @@ import java.util.List;
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer companyId;
-    private String companyName;
+    private Integer id;
+    private String name;
 
     @OneToMany(mappedBy = "companyId", cascade = CascadeType.PERSIST)
     private List<Employee> employees;
 
-    public Company(Integer companyId, String companyName, List<Employee> employees) {
-        this.companyId = companyId;
-        this.companyName = companyName;
+    public Company(Integer id, String name, List<Employee> employees) {
+        this.id = id;
+        this.name = name;
         this.employees = employees;
+    }
+
+    public Company(String name) {
+        this.name = name;
     }
 
     public Company() {
 
     }
 
-    public Integer getCompanyId() {
-        return companyId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public String getName() {
+        return name;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Employee> getEmployees() {
