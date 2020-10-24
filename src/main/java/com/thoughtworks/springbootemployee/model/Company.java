@@ -2,10 +2,12 @@ package com.thoughtworks.springbootemployee.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import java.util.List;
 
 @Entity
@@ -15,7 +17,7 @@ public class Company {
     private Integer id;
     private String name;
 
-    @OneToMany(mappedBy = "companyId", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.PERSIST)
     private List<Employee> employees;
 
     public Company(Integer id, String name, List<Employee> employees) {
@@ -58,5 +60,10 @@ public class Company {
 
     public Integer getEmployeesNumber() {
         return employees.size();
+    }
+
+    @PrePersist
+    private void prePersist() {
+        employees.forEach(employee -> employee.setCompany(this));
     }
 }

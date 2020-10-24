@@ -1,10 +1,13 @@
 package com.thoughtworks.springbootemployee.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Employee {
@@ -15,7 +18,10 @@ public class Employee {
     private Integer age;
     private String gender;
     private Integer salary;
-    private Integer companyId;
+
+    @ManyToOne(optional = false)
+    @JsonIgnore
+    private Company company;
 
     public Employee() {
     }
@@ -75,11 +81,11 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Integer getCompanyId() {
-        return companyId;
+    public Company getCompany() {
+        return company;
     }
 
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }
