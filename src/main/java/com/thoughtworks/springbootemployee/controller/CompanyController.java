@@ -65,12 +65,12 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{companyId}")
-    public Company removeCompanyEmployees(@PathVariable Integer companyId) {
-        return companyService.remove(companyId);
+    public CompanyResponse removeCompanyEmployees(@PathVariable Integer companyId) {
+        return companyMapper.toResponse(companyService.remove(companyId));
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    public List<Company> getByPage(@RequestParam Integer page, @RequestParam Integer pageSize) {
-        return companyService.getByPage(page, pageSize);
+    public List<CompanyResponse> getByPage(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        return companyMapper.toResponse(companyService.getByPage(page, pageSize));
     }
 }
