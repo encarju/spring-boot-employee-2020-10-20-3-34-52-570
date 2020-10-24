@@ -48,6 +48,8 @@ public class CompanyMapper {
     }
 
     public List<CompanyResponse> toResponse(List<Company> companies) {
-        return null;
+        return companies.stream()
+                .map(this::toResponse)
+                .collect(toList());
     }
 }
