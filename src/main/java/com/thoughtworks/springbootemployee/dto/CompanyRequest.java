@@ -6,14 +6,14 @@ import java.util.List;
 public class CompanyRequest {
 
     private String name;
-    private List<EmployeeRequest> employeeRequests;
+    private List<EmployeeRequest> employees;
 
     public CompanyRequest() {
     }
 
-    public CompanyRequest(String name, List<EmployeeRequest> employeeRequests) {
+    public CompanyRequest(String name, List<EmployeeRequest> employees) {
         this.name = name;
-        this.employeeRequests = employeeRequests;
+        this.employees = employees;
     }
 
     public String getName() {
@@ -24,11 +24,11 @@ public class CompanyRequest {
         this.name = name;
     }
 
-    public List<EmployeeRequest> getEmployeeRequests() {
-        return employeeRequests;
+    public List<EmployeeRequest> getEmployees() {
+        return employees;
     }
 
-    public void setEmployeeRequests(List<EmployeeRequest> employeeRequests) {
-        this.employeeRequests = employeeRequests;
+    public void setEmployees(List<EmployeeRequest> employees) {
+        this.employees = employees;
     }
 }

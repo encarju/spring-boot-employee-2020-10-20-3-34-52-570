@@ -6,7 +6,7 @@ public class CompanyResponse {
     private Integer id;
     private String name;
     private Integer employeesNumber;
-    private List<EmployeeResponse> employeeResponses;
+    private List<EmployeeResponse> employees;
 
     public CompanyResponse() {
     }
@@ -35,11 +35,11 @@ public class CompanyResponse {
         this.employeesNumber = employeesNumber;
     }
 
-    public List<EmployeeResponse> getEmployeeResponses() {
-        return employeeResponses;
+    public List<EmployeeResponse> getEmployees() {
+        return employees;
     }
 
-    public void setEmployeeResponses(List<EmployeeResponse> employeeResponses) {
-        this.employeeResponses = employeeResponses;
+    public void setEmployees(List<EmployeeResponse> employees) {
+        this.employees = employees;
     }
 }

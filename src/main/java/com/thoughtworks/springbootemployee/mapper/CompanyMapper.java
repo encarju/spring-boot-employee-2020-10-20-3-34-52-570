@@ -28,7 +28,7 @@ public class CompanyMapper {
                 .stream()
                 .map(employeeMapper::toResponse)
                 .collect(toList());
-        companyResponse.setEmployeeResponses(employeeResponses);
+        companyResponse.setEmployees(employeeResponses);
 
         return companyResponse;
     }
@@ -37,7 +37,7 @@ public class CompanyMapper {
         Company company = new Company();
         copyProperties(companyRequest, company);
 
-        List<Employee> employees = companyRequest.getEmployeeRequests()
+        List<Employee> employees = companyRequest.getEmployees()
                 .stream()
                 .map(employeeMapper::toEntity)
                 .collect(toList());

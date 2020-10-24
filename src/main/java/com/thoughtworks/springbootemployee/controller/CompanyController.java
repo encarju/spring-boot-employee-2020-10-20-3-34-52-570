@@ -1,5 +1,7 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.dto.CompanyResponse;
+import com.thoughtworks.springbootemployee.mapper.CompanyMapper;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
@@ -21,14 +23,16 @@ import java.util.List;
 @RequestMapping("/companies")
 public class CompanyController {
     private CompanyService companyService;
+    private CompanyMapper companyMapper;
 
     public CompanyController(CompanyService companyService) {
         this.companyService = companyService;
+        companyMapper = new CompanyMapper();
     }
 
     @GetMapping
-    public List<Company> getAll() {
-        return companyService.getAll();
+    public List<CompanyResponse> getAll() {
+        return companyMapper.toResponse(companyService.getAll());
     }
 
     @PostMapping

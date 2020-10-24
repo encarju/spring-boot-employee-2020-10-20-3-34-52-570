@@ -6,7 +6,6 @@ import com.thoughtworks.springbootemployee.dto.EmployeeRequest;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,17 +41,17 @@ class CompanyMapperTest {
         assertEquals(1, companyResponse.getId());
         assertEquals(2, companyResponse.getEmployeesNumber());
 
-        assertEquals(JUSTINE, companyResponse.getEmployeeResponses().get(0).getName());
-        assertEquals(AGE_23, companyResponse.getEmployeeResponses().get(0).getAge());
-        assertEquals(MALE, companyResponse.getEmployeeResponses().get(0).getGender());
-        assertEquals(SALARY, companyResponse.getEmployeeResponses().get(0).getSalary());
-        assertEquals(company.getId(), companyResponse.getEmployeeResponses().get(0).getCompanyId());
+        assertEquals(JUSTINE, companyResponse.getEmployees().get(0).getName());
+        assertEquals(AGE_23, companyResponse.getEmployees().get(0).getAge());
+        assertEquals(MALE, companyResponse.getEmployees().get(0).getGender());
+        assertEquals(SALARY, companyResponse.getEmployees().get(0).getSalary());
+        assertEquals(company.getId(), companyResponse.getEmployees().get(0).getCompanyId());
 
-        assertEquals(JOHN, companyResponse.getEmployeeResponses().get(1).getName());
-        assertEquals(AGE_23, companyResponse.getEmployeeResponses().get(1).getAge());
-        assertEquals(MALE, companyResponse.getEmployeeResponses().get(1).getGender());
-        assertEquals(SALARY, companyResponse.getEmployeeResponses().get(1).getSalary());
-        assertEquals(company.getId(), companyResponse.getEmployeeResponses().get(1).getCompanyId());
+        assertEquals(JOHN, companyResponse.getEmployees().get(1).getName());
+        assertEquals(AGE_23, companyResponse.getEmployees().get(1).getAge());
+        assertEquals(MALE, companyResponse.getEmployees().get(1).getGender());
+        assertEquals(SALARY, companyResponse.getEmployees().get(1).getSalary());
+        assertEquals(company.getId(), companyResponse.getEmployees().get(1).getCompanyId());
     }
 
 
@@ -70,7 +69,7 @@ class CompanyMapperTest {
 
         //Then
         assertEquals(OOCL, company.getName());
-        assertEquals(2, companyRequest.getEmployeeRequests().size());
+        assertEquals(2, companyRequest.getEmployees().size());
 
         assertEquals(JUSTINE, company.getEmployees().get(0).getName());
         assertEquals(AGE_23, company.getEmployees().get(0).getAge());
@@ -104,17 +103,17 @@ class CompanyMapperTest {
         assertEquals(1, companyResponses.get(0).getId());
         assertEquals(2, companyResponses.get(0).getEmployeesNumber());
 
-        assertEquals(JUSTINE, companyResponses.get(0).getEmployeeResponses().get(0).getName());
-        assertEquals(AGE_23, companyResponses.get(0).getEmployeeResponses().get(0).getAge());
-        assertEquals(MALE, companyResponses.get(0).getEmployeeResponses().get(0).getGender());
-        assertEquals(SALARY, companyResponses.get(0).getEmployeeResponses().get(0).getSalary());
-        assertEquals(firstCompany.getId(), companyResponses.get(0).getEmployeeResponses().get(0).getCompanyId());
+        assertEquals(JUSTINE, companyResponses.get(0).getEmployees().get(0).getName());
+        assertEquals(AGE_23, companyResponses.get(0).getEmployees().get(0).getAge());
+        assertEquals(MALE, companyResponses.get(0).getEmployees().get(0).getGender());
+        assertEquals(SALARY, companyResponses.get(0).getEmployees().get(0).getSalary());
+        assertEquals(firstCompany.getId(), companyResponses.get(0).getEmployees().get(0).getCompanyId());
 
-        assertEquals(JOHN, companyResponses.get(0).getEmployeeResponses().get(1).getName());
-        assertEquals(AGE_23, companyResponses.get(0).getEmployeeResponses().get(1).getAge());
-        assertEquals(MALE, companyResponses.get(0).getEmployeeResponses().get(1).getGender());
-        assertEquals(SALARY, companyResponses.get(0).getEmployeeResponses().get(1).getSalary());
-        assertEquals(firstCompany.getId(), companyResponses.get(0).getEmployeeResponses().get(1).getCompanyId());
+        assertEquals(JOHN, companyResponses.get(0).getEmployees().get(1).getName());
+        assertEquals(AGE_23, companyResponses.get(0).getEmployees().get(1).getAge());
+        assertEquals(MALE, companyResponses.get(0).getEmployees().get(1).getGender());
+        assertEquals(SALARY, companyResponses.get(0).getEmployees().get(1).getSalary());
+        assertEquals(firstCompany.getId(), companyResponses.get(0).getEmployees().get(1).getCompanyId());
 
         assertEquals(COSCO, companyResponses.get(1).getName());
         assertEquals(2, companyResponses.get(1).getId());
