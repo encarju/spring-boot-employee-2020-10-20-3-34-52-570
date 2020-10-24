@@ -9,6 +9,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Collections;
+
+import static java.util.Collections.emptyList;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -38,7 +41,7 @@ public class CompanyIntegrationTest {
     @Test
     public void should_get_all_company_when_get_all() throws Exception {
         // given
-        Company company = new Company("OOCL");
+        Company company = new Company("OOCL", emptyList());
         companyRepository.save(company);
 
         // when
