@@ -16,6 +16,7 @@ public class EmployeeMapper {
     public EmployeeResponse toResponse(Employee employee) {
         EmployeeResponse employeeResponse = new EmployeeResponse();
         copyProperties(employee, employeeResponse);
+        employeeResponse.setCompanyId(employee.getCompany().getId());
 
         return employeeResponse;
     }
