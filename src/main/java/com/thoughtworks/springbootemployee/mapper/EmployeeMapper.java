@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.nonNull;
 import static org.springframework.beans.BeanUtils.copyProperties;
 
 @Component
@@ -16,7 +17,10 @@ public class EmployeeMapper {
     public EmployeeResponse toResponse(Employee employee) {
         EmployeeResponse employeeResponse = new EmployeeResponse();
         copyProperties(employee, employeeResponse);
-        employeeResponse.setCompanyId(employee.getCompany().getId());
+
+        if (nonNull(employee.getCompany())) {
+            employeeResponse.setCompanyId(employee.getCompany().getId());
+        }
 
         return employeeResponse;
     }

@@ -19,7 +19,7 @@ public class Employee {
     private String gender;
     private Integer salary;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JsonIgnore
     private Company company;
 
