@@ -10,6 +10,13 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
+import static com.thoughtworks.springbootemployee.TestConstants.AGE_23;
+import static com.thoughtworks.springbootemployee.TestConstants.BRYAN;
+import static com.thoughtworks.springbootemployee.TestConstants.FEMALE;
+import static com.thoughtworks.springbootemployee.TestConstants.JUSTINE;
+import static com.thoughtworks.springbootemployee.TestConstants.LILY;
+import static com.thoughtworks.springbootemployee.TestConstants.MALE;
+import static com.thoughtworks.springbootemployee.TestConstants.SALARY;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Optional.of;
@@ -22,14 +29,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class EmployeeServiceTest {
-
-    private static final String JUSTINE = "Justine";
-    private static final int AGE_2 = 2;
-    private static final String MALE = "Male";
-    private static final int SALARY = 2000;
-    private static final String BRYAN = "Bryan";
-    private static final String LILY = "Lily";
-    private static final String FEMALE = "Female";
 
     @Test
     public void should_return_employees_when_get_all_employee() {
@@ -51,7 +50,7 @@ class EmployeeServiceTest {
         //given
         EmployeeRepository repository = mock(EmployeeRepository.class);
         EmployeeService service = new EmployeeService(repository);
-        Employee employee = new Employee(1, JUSTINE, AGE_2, MALE, SALARY);
+        Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY);
         when(repository.save(employee)).thenReturn(employee);
 
         //when
@@ -66,7 +65,7 @@ class EmployeeServiceTest {
         //given
         EmployeeRepository repository = mock(EmployeeRepository.class);
         EmployeeService service = new EmployeeService(repository);
-        Employee employee = new Employee(1, JUSTINE, AGE_2, MALE, SALARY);
+        Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY);
         Integer employeeId = employee.getId();
         when(repository.findById(employeeId)).thenReturn(of(employee));
 
@@ -82,8 +81,8 @@ class EmployeeServiceTest {
         //given
         EmployeeRepository repository = mock(EmployeeRepository.class);
         EmployeeService service = new EmployeeService(repository);
-        Employee employee = new Employee(1, JUSTINE, AGE_2, MALE, SALARY);
-        Employee updatedEmployee = new Employee(1, BRYAN, AGE_2, MALE, SALARY);
+        Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY);
+        Employee updatedEmployee = new Employee(1, BRYAN, AGE_23, MALE, SALARY);
         Integer employeeId = employee.getId();
         when(repository.findById(employeeId)).thenReturn(of(employee));
         when(repository.save(updatedEmployee)).thenReturn(updatedEmployee);
@@ -100,7 +99,7 @@ class EmployeeServiceTest {
         //given
         EmployeeRepository repository = mock(EmployeeRepository.class);
         EmployeeService service = new EmployeeService(repository);
-        Employee employee = new Employee(1, JUSTINE, AGE_2, MALE, SALARY);
+        Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY);
         Integer employeeId = employee.getId();
         when(repository.findById(employeeId)).thenReturn(of(employee));
 
@@ -117,10 +116,10 @@ class EmployeeServiceTest {
         EmployeeRepository repository = mock(EmployeeRepository.class);
         EmployeeService service = new EmployeeService(repository);
         List<Employee> returnedEmployees = asList(
-                new Employee(1, JUSTINE, AGE_2, MALE, SALARY));
+                new Employee(1, JUSTINE, AGE_23, MALE, SALARY));
 
-        Employee employee = new Employee(1, JUSTINE, AGE_2, MALE, SALARY);
-        Employee employee2 = new Employee(2, LILY, AGE_2, FEMALE, SALARY);
+        Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY);
+        Employee employee2 = new Employee(2, LILY, AGE_23, FEMALE, SALARY);
         when(repository.save(employee)).thenReturn(employee);
         when(repository.save(employee)).thenReturn(employee2);
         String employeeGender = MALE;
@@ -139,8 +138,8 @@ class EmployeeServiceTest {
         EmployeeRepository repository = mock(EmployeeRepository.class);
         EmployeeService service = new EmployeeService(repository);
         List<Employee> returnedEmployees = asList(
-                new Employee(1, JUSTINE, AGE_2, MALE, SALARY),
-                new Employee(2, LILY, AGE_2, FEMALE, SALARY));
+                new Employee(1, JUSTINE, AGE_23, MALE, SALARY),
+                new Employee(2, LILY, AGE_23, FEMALE, SALARY));
 
         Integer page = 0;
         Integer pageSize = 2;
@@ -158,7 +157,7 @@ class EmployeeServiceTest {
         //given
         EmployeeRepository repository = mock(EmployeeRepository.class);
         EmployeeService service = new EmployeeService(repository);
-        Employee employee = new Employee(1, JUSTINE, AGE_2, MALE, SALARY);
+        Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY);
         Integer employeeId = employee.getId();
         Integer wrongEmployeeId = employeeId + 1;
         String expectedMessage = format("Employee with ID %d does not exist", employeeId);
@@ -177,8 +176,8 @@ class EmployeeServiceTest {
         //given
         EmployeeRepository repository = mock(EmployeeRepository.class);
         EmployeeService service = new EmployeeService(repository);
-        Employee employee = new Employee(1, JUSTINE, AGE_2, MALE, SALARY);
-        Employee updatedEmployee = new Employee(1, BRYAN, AGE_2, MALE, SALARY);
+        Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY);
+        Employee updatedEmployee = new Employee(1, BRYAN, AGE_23, MALE, SALARY);
         Integer employeeId = employee.getId();
         Integer wrongEmployeeId = employeeId + 1;
         String expectedMessage = format("Employee with ID %d does not exist", employeeId);

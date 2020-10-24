@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.integration;
 
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.thoughtworks.springbootemployee.TestConstants.AGE_23;
+import static com.thoughtworks.springbootemployee.TestConstants.JUSTINE;
+import static com.thoughtworks.springbootemployee.TestConstants.MALE;
+import static com.thoughtworks.springbootemployee.TestConstants.SALARY;
 import static java.lang.String.format;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -24,16 +29,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class EmployeeIntegrationTest {
-    private static final String JUSTINE = "Justine";
-    private static final int AGE_23 = 23;
-    private static final String MALE = "Male";
-    private static final int SALARY = 2000000;
 
     @Autowired
     private EmployeeRepository employeeRepository;
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Before
+    void setUp() {
+        employeeRepository.deleteAll();
+    }
 
     @AfterEach
     void tearDown() {
