@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.integration;
 
 import com.thoughtworks.springbootemployee.model.Company;
+import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.thoughtworks.springbootemployee.TestConstants.JOHN;
 import static java.lang.String.format;
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -97,5 +104,31 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.name").value("OOCL"))
                 .andExpect(jsonPath("$.employees").isArray());
+    }
+
+    @Test
+    public void should_get_employees_when_get_employees_given_company_id() throws Exception {
+        // given
+        List<Employee> employees = asList(
+                new Employee(JUSTINE, AGE_23, MALE, SALARY),
+                new Employee(JOHN, AGE_23, MALE, SALARY)
+        );
+        Company company = new Company("OOCL", employees);
+        Integer returnedCompanyId = companyRepository.save(company).getId();
+
+        // when
+        // then
+        mockMvc.perform(get(format("/companies/%d/employees", returnedCompanyId)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].id").isNumber())
+                .andExpect(jsonPath("$[0].name").value(JUSTINE))
+                .andExpect(jsonPath("$[0].age").value(AGE_23))
+                .andExpect(jsonPath("$[0].gender").value(MALE))
+                .andExpect(jsonPath("$[0].salary").value(SALARY))
+                .andExpect(jsonPath("$[1].name").value(JOHN))
+                .andExpect(jsonPath("$[1].age").value(AGE_23))
+                .andExpect(jsonPath("$[1].gender").value(MALE))
+                .andExpect(jsonPath("$[1].salary").value(SALARY));
     }
 }
