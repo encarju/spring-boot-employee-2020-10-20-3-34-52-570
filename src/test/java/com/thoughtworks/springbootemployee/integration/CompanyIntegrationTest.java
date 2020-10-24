@@ -10,15 +10,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import static com.thoughtworks.springbootemployee.TestConstants.COSCO;
 import static com.thoughtworks.springbootemployee.TestConstants.JOHN;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -130,5 +130,41 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$[1].age").value(AGE_23))
                 .andExpect(jsonPath("$[1].gender").value(MALE))
                 .andExpect(jsonPath("$[1].salary").value(SALARY));
+    }
+
+    @Test
+    public void should_delete_company_when_delete_given_company_id() throws Exception {
+        // given
+        Company company = new Company("OOCL", emptyList());
+        Integer returnedCompanyId = companyRepository.save(company).getId();
+
+        // when
+        // then
+        mockMvc.perform(delete(format("/companies/%d", returnedCompanyId)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get(format("/companies/%d", returnedCompanyId)))
+                .andExpect(jsonPath("$.id").isEmpty());
+    }
+
+    @Test
+    public void should_get_companies_when_get_companies_given_page_and_page_size() throws Exception {
+        // given
+        Integer page = 1;
+        Integer pageSize = 2;
+        companyRepository.save(new Company("Oracle", emptyList()));
+        companyRepository.save(new Company("Google", emptyList()));
+        companyRepository.save(new Company(COSCO, emptyList()));
+        Integer returnedCompanyId = companyRepository.save(new Company(OOCL, emptyList())).getId();
+
+        // when
+        // then
+        mockMvc.perform(get(format("/companies?page=%d&pageSize=%d", page, pageSize)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].name").value(COSCO))
+                .andExpect(jsonPath("$[1].id").value(returnedCompanyId))
+                .andExpect(jsonPath("$[1].name").value(OOCL));
+
     }
 }
