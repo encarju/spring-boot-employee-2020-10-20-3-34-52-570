@@ -8,7 +8,6 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
 import static org.mapstruct.factory.Mappers.getMapper;
 
 @Mapper
@@ -21,9 +20,5 @@ public interface EmployeeMapper {
     @Mapping(target = "id", ignore = true)
     Employee toEntity(EmployeeRequest employeeRequest);
 
-    default List<EmployeeResponse> toResponse(List<Employee> employeeList) {
-        return employeeList.stream()
-                .map(this::toResponse)
-                .collect(toList());
-    }
+    List<EmployeeResponse> toResponse(List<Employee> employeeList);
 }

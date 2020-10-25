@@ -36,9 +36,5 @@ public interface CompanyMapper {
     @Mapping(target = "employees", ignore = true)
     Company toEntity(CompanyRequest companyRequest);
 
-    default List<CompanyResponse> toResponse(List<Company> companies) {
-        return companies.stream()
-                .map(this::toResponse)
-                .collect(toList());
-    }
+    List<CompanyResponse> toResponse(List<Company> companies);
 }
