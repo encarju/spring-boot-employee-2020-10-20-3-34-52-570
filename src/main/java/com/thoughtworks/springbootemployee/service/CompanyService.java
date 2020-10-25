@@ -40,7 +40,7 @@ public class CompanyService {
 
                     return repository.findById(companyId).get();
                 })
-                .orElseThrow(()-> new CompanyNotFoundException(companyId));
+                .orElseThrow(() -> new CompanyNotFoundException(companyId));
     }
 
     public Company remove(Integer companyId) {
@@ -51,7 +51,7 @@ public class CompanyService {
 
                     return company;
                 })
-                .orElse(null);
+                .orElseThrow(() -> new CompanyNotFoundException(companyId));
     }
 
     public List<Company> getByPage(Integer page, Integer pageSize) {
