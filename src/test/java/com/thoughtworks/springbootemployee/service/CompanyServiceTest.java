@@ -8,17 +8,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.thoughtworks.springbootemployee.TestConstants.ALIBABA;
-import static com.thoughtworks.springbootemployee.TestConstants.ALIBABAS;
-import static com.thoughtworks.springbootemployee.TestConstants.FEMALE;
-import static com.thoughtworks.springbootemployee.TestConstants.JUSTINE;
-import static com.thoughtworks.springbootemployee.TestConstants.LILY;
-import static com.thoughtworks.springbootemployee.TestConstants.MALE;
-import static com.thoughtworks.springbootemployee.TestConstants.ONCE;
-import static com.thoughtworks.springbootemployee.TestConstants.SALARY;
+import static com.thoughtworks.springbootemployee.TestHelper.ALIBABA;
+import static com.thoughtworks.springbootemployee.TestHelper.ALIBABAS;
+import static com.thoughtworks.springbootemployee.TestHelper.FEMALE;
+import static com.thoughtworks.springbootemployee.TestHelper.JUSTINE;
+import static com.thoughtworks.springbootemployee.TestHelper.LILY;
+import static com.thoughtworks.springbootemployee.TestHelper.MALE;
+import static com.thoughtworks.springbootemployee.TestHelper.ONCE;
+import static com.thoughtworks.springbootemployee.TestHelper.SALARY;
+import static com.thoughtworks.springbootemployee.TestHelper.generateDummyEmployees;
 import static java.util.Arrays.asList;
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -55,7 +55,7 @@ class CompanyServiceTest {
     @Test
     public void should_create_companies_when_create_given_one_companies() {
         //given
-        Company company = new Company(1, ALIBABA, asList(new Employee(), new Employee()));
+        Company company = new Company(1, ALIBABA, generateDummyEmployees(2));
 
         when(repository.save(company)).thenReturn(company);
 
@@ -69,7 +69,7 @@ class CompanyServiceTest {
     @Test
     public void should_return_specific_company_when_get_company_give_company_id() {
         //given
-        Company company = new Company(1, ALIBABA, asList(new Employee(), new Employee()));
+        Company company = new Company(1, ALIBABA, generateDummyEmployees(2));
         Integer companyId = company.getId();
 
         when(repository.findById(companyId)).thenReturn(of(company));
@@ -84,8 +84,7 @@ class CompanyServiceTest {
     @Test
     void should_return_updated_company_when_update_company_given_company_id_updated_name() {
         //given
-        Company company = new Company(1, ALIBABA,
-                asList(new Employee(), new Employee()));
+        Company company = new Company(1, ALIBABA, generateDummyEmployees(2));
         Integer companyId = company.getId();
 
         Company updatedCompany = new Company(1, ALIBABAS,
@@ -104,11 +103,7 @@ class CompanyServiceTest {
     @Test
     void should_delete_company_when_delete_company_given_company_id() {
         //given
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee());
-        employees.add(new Employee());
-
-        Company company = new Company(1, ALIBABA, employees);
+        Company company = new Company(1, ALIBABA, generateDummyEmployees(2));
 
         company.getEmployees().clear();
         Company expectedCompany = company;

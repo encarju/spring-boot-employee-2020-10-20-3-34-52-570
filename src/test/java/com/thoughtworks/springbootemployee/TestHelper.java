@@ -1,6 +1,11 @@
 package com.thoughtworks.springbootemployee;
 
-public final class TestConstants {
+import com.thoughtworks.springbootemployee.model.Employee;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public final class TestHelper {
 
     public static final String ALIBABA = "Alibaba";
     public static final String ALIBABAS = "Alibabas";
@@ -19,6 +24,15 @@ public final class TestConstants {
     public static final String MALE = "Male";
     public static final String FEMALE = "Female";
 
-    private TestConstants() {
+    private TestHelper() {
+    }
+
+    public static List<Employee> generateDummyEmployees(int count) {
+        List<Employee> employees = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            employees.add(new Employee());
+        }
+
+        return employees;
     }
 }

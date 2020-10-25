@@ -12,11 +12,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.thoughtworks.springbootemployee.TestConstants.AGE_23;
-import static com.thoughtworks.springbootemployee.TestConstants.FEMALE;
-import static com.thoughtworks.springbootemployee.TestConstants.JUSTINE;
-import static com.thoughtworks.springbootemployee.TestConstants.MALE;
-import static com.thoughtworks.springbootemployee.TestConstants.SALARY;
+import static com.thoughtworks.springbootemployee.TestHelper.AGE_23;
+import static com.thoughtworks.springbootemployee.TestHelper.FEMALE;
+import static com.thoughtworks.springbootemployee.TestHelper.JUSTINE;
+import static com.thoughtworks.springbootemployee.TestHelper.MALE;
+import static com.thoughtworks.springbootemployee.TestHelper.SALARY;
 import static java.lang.String.format;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;

@@ -11,14 +11,15 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
-import static com.thoughtworks.springbootemployee.TestConstants.AGE_23;
-import static com.thoughtworks.springbootemployee.TestConstants.BRYAN;
-import static com.thoughtworks.springbootemployee.TestConstants.FEMALE;
-import static com.thoughtworks.springbootemployee.TestConstants.JUSTINE;
-import static com.thoughtworks.springbootemployee.TestConstants.LILY;
-import static com.thoughtworks.springbootemployee.TestConstants.MALE;
-import static com.thoughtworks.springbootemployee.TestConstants.ONCE;
-import static com.thoughtworks.springbootemployee.TestConstants.SALARY;
+import static com.thoughtworks.springbootemployee.TestHelper.AGE_23;
+import static com.thoughtworks.springbootemployee.TestHelper.BRYAN;
+import static com.thoughtworks.springbootemployee.TestHelper.FEMALE;
+import static com.thoughtworks.springbootemployee.TestHelper.JUSTINE;
+import static com.thoughtworks.springbootemployee.TestHelper.LILY;
+import static com.thoughtworks.springbootemployee.TestHelper.MALE;
+import static com.thoughtworks.springbootemployee.TestHelper.ONCE;
+import static com.thoughtworks.springbootemployee.TestHelper.SALARY;
+import static com.thoughtworks.springbootemployee.TestHelper.generateDummyEmployees;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Optional.of;
@@ -44,7 +45,7 @@ class EmployeeServiceTest {
     @Test
     public void should_return_employees_when_get_all_employee() {
         //given
-        List<Employee> expectedEmployees = asList(new Employee(), new Employee());
+        List<Employee> expectedEmployees = generateDummyEmployees(2);
 
         when(repository.findAll()).thenReturn(expectedEmployees);
 
