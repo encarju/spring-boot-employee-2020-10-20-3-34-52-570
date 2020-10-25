@@ -16,14 +16,13 @@ import static com.thoughtworks.springbootemployee.TestHelper.JUSTINE;
 import static com.thoughtworks.springbootemployee.TestHelper.MALE;
 import static com.thoughtworks.springbootemployee.TestHelper.OOCL;
 import static com.thoughtworks.springbootemployee.TestHelper.SALARY;
+import static com.thoughtworks.springbootemployee.mapper.CompanyMapper.COMPANY_MAPPER;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CompanyMapperTest {
-
-    private final CompanyMapper companyMapper = new CompanyMapper();
 
     @Test
     void should_return_company_response_when_to_response_given_company() {
@@ -37,7 +36,7 @@ class CompanyMapperTest {
         employeeList.add(new Employee(2, JOHN, AGE_23, MALE, SALARY, companyId));
 
         //When
-        CompanyResponse companyResponse = companyMapper.toResponse(company);
+        CompanyResponse companyResponse = COMPANY_MAPPER.toResponse(company);
 
         //Then
         assertEquals(OOCL, companyResponse.getName());
@@ -64,7 +63,7 @@ class CompanyMapperTest {
         CompanyRequest companyRequest = new CompanyRequest(OOCL);
 
         //When
-        Company company = companyMapper.toEntity(companyRequest);
+        Company company = COMPANY_MAPPER.toEntity(companyRequest);
 
         //Then
         assertEquals(OOCL, company.getName());
@@ -87,7 +86,7 @@ class CompanyMapperTest {
                 new Company(secondCompanyId, COSCO, emptyList()));
 
         //When
-        List<CompanyResponse> companyResponses = companyMapper.toResponse(companies);
+        List<CompanyResponse> companyResponses = COMPANY_MAPPER.toResponse(companies);
 
         //Then
         assertEquals(2, companyResponses.size());

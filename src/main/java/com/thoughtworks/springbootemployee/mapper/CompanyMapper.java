@@ -4,7 +4,9 @@ import com.thoughtworks.springbootemployee.dto.CompanyRequest;
 import com.thoughtworks.springbootemployee.dto.CompanyResponse;
 import com.thoughtworks.springbootemployee.dto.EmployeeResponse;
 import com.thoughtworks.springbootemployee.model.Company;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
@@ -12,10 +14,12 @@ import static com.thoughtworks.springbootemployee.mapper.EmployeeMapper.EMPLOYEE
 import static java.util.stream.Collectors.toList;
 import static org.springframework.beans.BeanUtils.copyProperties;
 
-@Component
-public class CompanyMapper {
+@Mapper
+public interface CompanyMapper {
 
-    public CompanyResponse toResponse(Company company) {
+    CompanyMapper COMPANY_MAPPER = Mappers.getMapper(CompanyMapper.class);
+
+    default CompanyResponse toResponse(Company company) {
         CompanyResponse companyResponse = new CompanyResponse();
         copyProperties(company, companyResponse);
 
@@ -28,15 +32,11 @@ public class CompanyMapper {
         return companyResponse;
     }
 
-    public Company toEntity(CompanyRequest companyRequest) {
-        Company company = new Company();
-        copyProperties(companyRequest, company);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "employees", ignore = true)
+    Company toEntity(CompanyRequest companyRequest);
 
-        return company;
-
-    }
-
-    public List<CompanyResponse> toResponse(List<Company> companies) {
+    default List<CompanyResponse> toResponse(List<Company> companies) {
         return companies.stream()
                 .map(this::toResponse)
                 .collect(toList());
