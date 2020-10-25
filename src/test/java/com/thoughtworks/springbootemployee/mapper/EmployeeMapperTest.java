@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.mapper;
 
+import com.thoughtworks.springbootemployee.dto.EmployeeRequest;
 import com.thoughtworks.springbootemployee.dto.EmployeeResponse;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
@@ -36,5 +37,23 @@ class EmployeeMapperTest {
         assertEquals(MALE, employeeResponse.getGender());
         assertEquals(SALARY, employeeResponse.getSalary());
         assertEquals(companyId, employeeResponse.getCompanyId());
+    }
+
+    @Test
+    void should_return_employee_when_to_entity_given_employee_request() {
+        //Given
+        Integer companyId = 10;
+        Company company = new Company(companyId, OOCL);
+
+        EmployeeRequest employeeRequest = new EmployeeRequest(JUSTINE, AGE_23, MALE, SALARY, companyId);
+
+        //When
+        Employee employee = employeeMapper.toEntity(employeeRequest);
+
+        //Then
+        assertEquals(JUSTINE, employee.getName());
+        assertEquals(AGE_23, employee.getAge());
+        assertEquals(MALE, employee.getGender());
+        assertEquals(SALARY, employee.getSalary());
     }
 }
