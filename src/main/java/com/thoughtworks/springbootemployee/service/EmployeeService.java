@@ -11,7 +11,7 @@ import static org.springframework.data.domain.PageRequest.of;
 
 @Service
 public class EmployeeService {
-    private EmployeeRepository repository;
+    private final EmployeeRepository repository;
 
     public EmployeeService(EmployeeRepository repository) {
         this.repository = repository;

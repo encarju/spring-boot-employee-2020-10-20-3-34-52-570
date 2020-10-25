@@ -6,7 +6,6 @@ import com.thoughtworks.springbootemployee.dto.EmployeeResponse;
 import com.thoughtworks.springbootemployee.mapper.CompanyMapper;
 import com.thoughtworks.springbootemployee.mapper.EmployeeMapper;
 import com.thoughtworks.springbootemployee.model.Company;
-import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,9 +24,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/companies")
 public class CompanyController {
-    private CompanyService companyService;
-    private CompanyMapper companyMapper;
-    private EmployeeMapper employeeMapper;
+    private final CompanyService companyService;
+    private final CompanyMapper companyMapper;
+    private final EmployeeMapper employeeMapper;
 
     public CompanyController(CompanyService companyService) {
         this.companyService = companyService;

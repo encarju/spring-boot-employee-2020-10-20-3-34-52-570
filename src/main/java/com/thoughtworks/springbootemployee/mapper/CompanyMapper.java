@@ -14,7 +14,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 
 @Component
 public class CompanyMapper {
-    private EmployeeMapper employeeMapper;
+    private final EmployeeMapper employeeMapper;
 
     public CompanyMapper() {
         employeeMapper = new EmployeeMapper();

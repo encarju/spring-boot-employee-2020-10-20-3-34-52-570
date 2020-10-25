@@ -12,7 +12,7 @@ import static org.springframework.data.domain.PageRequest.of;
 
 @Service
 public class CompanyService {
-    private CompanyRepository repository;
+    private final CompanyRepository repository;
 
     public CompanyService(CompanyRepository repository) {
         this.repository = repository;
