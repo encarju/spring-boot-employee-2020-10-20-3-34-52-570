@@ -4,10 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
+import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -18,21 +17,21 @@ public class Company {
     private Integer id;
     private String name;
 
-    @OneToMany(mappedBy = "company", fetch = LAZY, orphanRemoval = true, cascade = PERSIST)
+    @OneToMany(mappedBy = "companyId", fetch = LAZY)
     private List<Employee> employees;
 
     public Company(Integer id, String name, List<Employee> employees) {
-        this.id = id;
-        this.name = name;
+        this(id, name);
         this.employees = employees;
     }
 
     public Company(String name) {
+        this();
         this.name = name;
     }
 
     public Company() {
-
+        employees = new ArrayList<>();
     }
 
     public Company(Integer id, String name) {
@@ -71,10 +70,5 @@ public class Company {
 
     public Integer getEmployeesNumber() {
         return employees.size();
-    }
-
-    @PrePersist
-    private void prePersist() {
-        employees.forEach(employee -> employee.setCompany(this));
     }
 }

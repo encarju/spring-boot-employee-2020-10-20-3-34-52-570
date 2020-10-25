@@ -2,7 +2,6 @@ package com.thoughtworks.springbootemployee.mapper;
 
 import com.thoughtworks.springbootemployee.dto.CompanyRequest;
 import com.thoughtworks.springbootemployee.dto.CompanyResponse;
-import com.thoughtworks.springbootemployee.dto.EmployeeRequest;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,7 @@ import static com.thoughtworks.springbootemployee.TestHelper.SALARY;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CompanyMapperTest {
 
@@ -31,18 +30,19 @@ class CompanyMapperTest {
         //Given
         List<Employee> employeeList = new ArrayList<>();
 
-        Company company = new Company(1, OOCL, employeeList);
+        Integer companyId = 1;
+        Company company = new Company(companyId, OOCL, employeeList);
 
-        employeeList.add(new Employee(1, JUSTINE, AGE_23, MALE, SALARY, company));
-        employeeList.add(new Employee(2, JOHN, AGE_23, MALE, SALARY, company));
+        employeeList.add(new Employee(1, JUSTINE, AGE_23, MALE, SALARY, companyId));
+        employeeList.add(new Employee(2, JOHN, AGE_23, MALE, SALARY, companyId));
 
         //When
         CompanyResponse companyResponse = companyMapper.toResponse(company);
 
         //Then
         assertEquals(OOCL, companyResponse.getName());
-        assertEquals(1, companyResponse.getId());
-        assertEquals(2, companyResponse.getEmployeesNumber());
+        assertEquals(companyId, companyResponse.getId());
+        assertEquals(employeeList.size(), companyResponse.getEmployeesNumber());
 
         assertEquals(JUSTINE, companyResponse.getEmployees().get(0).getName());
         assertEquals(AGE_23, companyResponse.getEmployees().get(0).getAge());
@@ -61,29 +61,14 @@ class CompanyMapperTest {
     @Test
     void should_return_company_when_to_entity_given_company_request() {
         //Given
-        List<EmployeeRequest> employeeRequests = new ArrayList<>();
-
-        employeeRequests.add(new EmployeeRequest(JUSTINE, AGE_23, MALE, SALARY, null));
-        employeeRequests.add(new EmployeeRequest(JOHN, AGE_23, MALE, SALARY, null));
-
-        CompanyRequest companyRequest = new CompanyRequest(OOCL, employeeRequests);
+        CompanyRequest companyRequest = new CompanyRequest(OOCL);
 
         //When
         Company company = companyMapper.toEntity(companyRequest);
 
         //Then
         assertEquals(OOCL, company.getName());
-        assertEquals(2, companyRequest.getEmployees().size());
-
-        assertEquals(JUSTINE, company.getEmployees().get(0).getName());
-        assertEquals(AGE_23, company.getEmployees().get(0).getAge());
-        assertEquals(MALE, company.getEmployees().get(0).getGender());
-        assertEquals(SALARY, company.getEmployees().get(0).getSalary());
-
-        assertEquals(JOHN, company.getEmployees().get(1).getName());
-        assertEquals(AGE_23, company.getEmployees().get(1).getAge());
-        assertEquals(MALE, company.getEmployees().get(1).getGender());
-        assertEquals(SALARY, company.getEmployees().get(1).getSalary());
+        assertTrue(company.getEmployees().isEmpty());
     }
 
     @Test
@@ -91,12 +76,15 @@ class CompanyMapperTest {
         //Given
         List<Employee> employeeList = new ArrayList<>();
 
-        Company firstCompany = new Company(1, OOCL, employeeList);
+        Integer firstCompanyId = 1;
+        Integer secondCompanyId = 2;
 
-        employeeList.add(new Employee(1, JUSTINE, AGE_23, MALE, SALARY, firstCompany));
-        employeeList.add(new Employee(2, JOHN, AGE_23, MALE, SALARY, firstCompany));
+        employeeList.add(new Employee(1, JUSTINE, AGE_23, MALE, SALARY, firstCompanyId));
+        employeeList.add(new Employee(2, JOHN, AGE_23, MALE, SALARY, firstCompanyId));
 
-        List<Company> companies = asList(firstCompany, new Company(2, COSCO, emptyList()));
+        List<Company> companies = asList(
+                new Company(firstCompanyId, OOCL, employeeList),
+                new Company(secondCompanyId, COSCO, emptyList()));
 
         //When
         List<CompanyResponse> companyResponses = companyMapper.toResponse(companies);
@@ -105,23 +93,23 @@ class CompanyMapperTest {
         assertEquals(2, companyResponses.size());
 
         assertEquals(OOCL, companyResponses.get(0).getName());
-        assertEquals(1, companyResponses.get(0).getId());
-        assertEquals(2, companyResponses.get(0).getEmployeesNumber());
+        assertEquals(firstCompanyId, companyResponses.get(0).getId());
+        assertEquals(employeeList.size(), companyResponses.get(0).getEmployeesNumber());
 
         assertEquals(JUSTINE, companyResponses.get(0).getEmployees().get(0).getName());
         assertEquals(AGE_23, companyResponses.get(0).getEmployees().get(0).getAge());
         assertEquals(MALE, companyResponses.get(0).getEmployees().get(0).getGender());
         assertEquals(SALARY, companyResponses.get(0).getEmployees().get(0).getSalary());
-        assertEquals(firstCompany.getId(), companyResponses.get(0).getEmployees().get(0).getCompanyId());
+        assertEquals(firstCompanyId, companyResponses.get(0).getEmployees().get(0).getCompanyId());
 
         assertEquals(JOHN, companyResponses.get(0).getEmployees().get(1).getName());
         assertEquals(AGE_23, companyResponses.get(0).getEmployees().get(1).getAge());
         assertEquals(MALE, companyResponses.get(0).getEmployees().get(1).getGender());
         assertEquals(SALARY, companyResponses.get(0).getEmployees().get(1).getSalary());
-        assertEquals(firstCompany.getId(), companyResponses.get(0).getEmployees().get(1).getCompanyId());
+        assertEquals(firstCompanyId, companyResponses.get(0).getEmployees().get(1).getCompanyId());
 
         assertEquals(COSCO, companyResponses.get(1).getName());
-        assertEquals(2, companyResponses.get(1).getId());
+        assertEquals(secondCompanyId, companyResponses.get(1).getId());
         assertEquals(0, companyResponses.get(1).getEmployeesNumber());
     }
 }

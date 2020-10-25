@@ -33,7 +33,12 @@ public class CompanyService {
 
     public Company update(Integer companyId, Company updatedCompany) {
         return repository.findById(companyId)
-                .map(company -> repository.save(updatedCompany))
+                .map(company -> {
+                    updatedCompany.setId(companyId);
+                    repository.save(updatedCompany);
+
+                    return repository.findById(companyId).get();
+                })
                 .orElse(null);
     }
 

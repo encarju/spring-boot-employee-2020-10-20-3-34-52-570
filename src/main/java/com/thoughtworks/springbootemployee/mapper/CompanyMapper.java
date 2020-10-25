@@ -4,7 +4,6 @@ import com.thoughtworks.springbootemployee.dto.CompanyRequest;
 import com.thoughtworks.springbootemployee.dto.CompanyResponse;
 import com.thoughtworks.springbootemployee.dto.EmployeeResponse;
 import com.thoughtworks.springbootemployee.model.Company;
-import com.thoughtworks.springbootemployee.model.Employee;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -36,12 +35,6 @@ public class CompanyMapper {
     public Company toEntity(CompanyRequest companyRequest) {
         Company company = new Company();
         copyProperties(companyRequest, company);
-
-        List<Employee> employees = companyRequest.getEmployees()
-                .stream()
-                .map(employeeMapper::toEntity)
-                .collect(toList());
-        company.setEmployees(employees);
 
         return company;
 

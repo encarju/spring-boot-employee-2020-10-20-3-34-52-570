@@ -34,9 +34,8 @@ public class EmployeeService {
         return repository.findById(employeeId)
                 .map(employee -> {
                     updatedEmployee.setId(employeeId);
-                    repository.save(updatedEmployee);
 
-                    return updatedEmployee;
+                    return repository.save(updatedEmployee);
                 })
                 .orElseThrow(() -> new NoEmployeeFoundException(employeeId));
     }

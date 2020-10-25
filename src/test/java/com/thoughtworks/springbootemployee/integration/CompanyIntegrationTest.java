@@ -3,7 +3,8 @@ package com.thoughtworks.springbootemployee.integration;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
-import org.junit.jupiter.api.AfterEach;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,12 +22,12 @@ import static com.thoughtworks.springbootemployee.TestHelper.MALE;
 import static com.thoughtworks.springbootemployee.TestHelper.OOCL;
 import static com.thoughtworks.springbootemployee.TestHelper.SALARY;
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,9 +39,12 @@ public class CompanyIntegrationTest {
     private CompanyRepository companyRepository;
 
     @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
     private MockMvc mockMvc;
 
-    @AfterEach
+    @BeforeEach
     void tearDown() {
         companyRepository.deleteAll();
     }
@@ -83,13 +87,8 @@ public class CompanyIntegrationTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.name").value(OOCL))
-                .andExpect(jsonPath("$.employees.length()").value(1))
-                .andExpect(jsonPath("$.employees[0].id").isNumber())
-                .andExpect(jsonPath("$.employees[0].name").value(JUSTINE))
-                .andExpect(jsonPath("$.employees[0].age").value(AGE_23))
-                .andExpect(jsonPath("$.employees[0].gender").value(MALE))
-                .andExpect(jsonPath("$.employees[0].salary").value(SALARY))
-                .andExpect(jsonPath("$.employees[0].companyId").isNumber());
+                .andExpect(jsonPath("$.employees.length()").value(0))
+                .andExpect(jsonPath("$.employees").isEmpty());
     }
 
     @Test
@@ -110,13 +109,11 @@ public class CompanyIntegrationTest {
     @Test
     public void should_get_employees_when_get_employees_given_company_id() throws Exception {
         // given
-        List<Employee> employees = asList(
-                new Employee(JUSTINE, AGE_23, MALE, SALARY),
-                new Employee(JOHN, AGE_23, MALE, SALARY)
-        );
-
-        Company company = new Company(OOCL, employees);
+        Company company = new Company(OOCL, emptyList());
         Integer returnedCompanyId = companyRepository.save(company).getId();
+
+        employeeRepository.save(new Employee(JUSTINE, AGE_23, MALE, SALARY, returnedCompanyId));
+        employeeRepository.save(new Employee(JOHN, AGE_23, MALE, SALARY, returnedCompanyId));
 
         // when
         // then
@@ -128,10 +125,12 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$[0].age").value(AGE_23))
                 .andExpect(jsonPath("$[0].gender").value(MALE))
                 .andExpect(jsonPath("$[0].salary").value(SALARY))
+                .andExpect(jsonPath("$[0].companyId").value(returnedCompanyId))
                 .andExpect(jsonPath("$[1].name").value(JOHN))
                 .andExpect(jsonPath("$[1].age").value(AGE_23))
                 .andExpect(jsonPath("$[1].gender").value(MALE))
-                .andExpect(jsonPath("$[1].salary").value(SALARY));
+                .andExpect(jsonPath("$[1].salary").value(SALARY))
+                .andExpect(jsonPath("$[1].companyId").value(returnedCompanyId));
     }
 
     @Test
@@ -176,5 +175,44 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$[0].name").value(COSCO))
                 .andExpect(jsonPath("$[1].id").value(returnedCompanyId))
                 .andExpect(jsonPath("$[1].name").value(OOCL));
+    }
+
+    @Test
+    public void should_update_company_when_update_given_company_id_and_company_request() throws Exception {
+        // given
+        Company company = new Company(OOCL);
+        Integer returnedCompanyId = companyRepository.save(company).getId();
+
+        Employee employee = new Employee(JUSTINE, AGE_23, MALE, SALARY, returnedCompanyId);
+        Integer returnedEmployeeId = employeeRepository.save(employee).getId();
+
+        String employeeJson = "{\n" +
+                "    \"name\" : \"" + COSCO + "\",\n" +
+                "    \"employees\" : [\n" +
+                "        {\n" +
+                "            \"id\" : \"" + returnedEmployeeId + "\",\n" +
+                "            \"name\" : \"" + JOHN + "\",\n" +
+                "            \"age\" : " + AGE_23 + ",\n" +
+                "            \"gender\" : \"" + MALE + "\",\n" +
+                "            \"salary\" : " + SALARY + "\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}";
+
+        // when
+        // then
+        mockMvc.perform(put(format("/companies/%d", returnedCompanyId))
+                .contentType(APPLICATION_JSON)
+                .content(employeeJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(returnedCompanyId))
+                .andExpect(jsonPath("$.name").value(COSCO))
+                .andExpect(jsonPath("$.employees.length()").value(1))
+                .andExpect(jsonPath("$.employees[0].id").value(returnedEmployeeId))
+                .andExpect(jsonPath("$.employees[0].name").value(JUSTINE))
+                .andExpect(jsonPath("$.employees[0].age").value(AGE_23))
+                .andExpect(jsonPath("$.employees[0].gender").value(MALE))
+                .andExpect(jsonPath("$.employees[0].salary").value(SALARY))
+                .andExpect(jsonPath("$.employees[0].companyId").value(returnedCompanyId));
     }
 }

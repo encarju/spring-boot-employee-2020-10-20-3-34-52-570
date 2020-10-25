@@ -1,12 +1,10 @@
 package com.thoughtworks.springbootemployee.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -20,9 +18,8 @@ public class Employee {
     private String gender;
     private Integer salary;
 
-    @ManyToOne
-    @JsonIgnore
-    private Company company;
+    @JoinColumn(insertable = false, updatable = false)
+    private Integer companyId;
 
     public Employee() {
     }
@@ -42,13 +39,21 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Employee(Integer id, String name, Integer age, String gender, Integer salary, Company company) {
+    public Employee(Integer id, String name, Integer age, String gender, Integer salary, Integer companyId) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.gender = gender;
         this.salary = salary;
-        this.company = company;
+        this.companyId = companyId;
+    }
+
+    public Employee(String name, Integer age, String gender, Integer salary, Integer companyId) {
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.salary = salary;
+        this.companyId = companyId;
     }
 
     public Integer getId() {
@@ -91,11 +96,11 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Company getCompany() {
-        return company;
+    public Integer getCompanyId() {
+        return companyId;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 }

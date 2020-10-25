@@ -2,17 +2,14 @@ package com.thoughtworks.springbootemployee.mapper;
 
 import com.thoughtworks.springbootemployee.dto.EmployeeRequest;
 import com.thoughtworks.springbootemployee.dto.EmployeeResponse;
-import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import org.junit.jupiter.api.Test;
 
 import static com.thoughtworks.springbootemployee.TestHelper.AGE_23;
 import static com.thoughtworks.springbootemployee.TestHelper.JUSTINE;
 import static com.thoughtworks.springbootemployee.TestHelper.MALE;
-import static com.thoughtworks.springbootemployee.TestHelper.OOCL;
 import static com.thoughtworks.springbootemployee.TestHelper.SALARY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 
 class EmployeeMapperTest {
 
@@ -22,10 +19,9 @@ class EmployeeMapperTest {
     void should_return_employee_response_when_to_response_given_employee() {
         //Given
         Integer companyId = 10;
-        Company company = new Company(companyId, OOCL);
 
         Integer employeeId = 1;
-        Employee employee = new Employee(employeeId, JUSTINE, AGE_23, MALE, SALARY, company);
+        Employee employee = new Employee(employeeId, JUSTINE, AGE_23, MALE, SALARY, companyId);
 
         //When
         EmployeeResponse employeeResponse = employeeMapper.toResponse(employee);
@@ -43,7 +39,6 @@ class EmployeeMapperTest {
     void should_return_employee_when_to_entity_given_employee_request() {
         //Given
         Integer companyId = 10;
-        Company company = new Company(companyId, OOCL);
 
         EmployeeRequest employeeRequest = new EmployeeRequest(JUSTINE, AGE_23, MALE, SALARY, companyId);
 
