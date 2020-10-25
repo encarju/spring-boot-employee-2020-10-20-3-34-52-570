@@ -7,6 +7,7 @@ import javax.persistence.OneToMany;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
+import static java.util.Objects.isNull;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -67,6 +68,6 @@ public class Company {
     }
 
     public Integer getEmployeesNumber() {
-        return employees.size();
+        return (isNull(employees)) ? 0 : employees.size();
     }
 }

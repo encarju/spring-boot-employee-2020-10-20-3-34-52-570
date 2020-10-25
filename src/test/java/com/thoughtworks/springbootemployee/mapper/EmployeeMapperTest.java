@@ -15,6 +15,7 @@ import static com.thoughtworks.springbootemployee.TestHelper.MALE;
 import static com.thoughtworks.springbootemployee.TestHelper.SALARY;
 import static com.thoughtworks.springbootemployee.mapper.EmployeeMapper.EMPLOYEE_MAPPER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class EmployeeMapperTest {
 
@@ -83,5 +84,41 @@ class EmployeeMapperTest {
         assertEquals(MALE, employeeResponses.get(1).getGender());
         assertEquals(SALARY, employeeResponses.get(1).getSalary());
         assertEquals(companyId, employeeResponses.get(1).getCompanyId());
+    }
+
+    @Test
+    void should_return_null_employee_response_when_to_response_given_null_employee() {
+        //Given
+        Employee employee = null;
+
+        //When
+        EmployeeResponse employeeResponse = EMPLOYEE_MAPPER.toResponse(employee);
+
+        //Then
+        assertNull(employeeResponse);
+    }
+
+    @Test
+    void should_return_null_employee_when_to_entity_given_null_employee_request() {
+        //Given
+        EmployeeRequest employeeRequest = null;
+
+        //When
+        Employee employee = EMPLOYEE_MAPPER.toEntity(employeeRequest);
+
+        //Then
+        assertNull(employee);
+    }
+
+    @Test
+    void should_return_null_employee_response_list_when_to_response_given_null_employee_list() {
+        //Given
+        List<Employee> employees = null;
+
+        //When
+        List<EmployeeResponse> employeeResponses = EMPLOYEE_MAPPER.toResponse(employees);
+
+        //Then
+        assertNull(employeeResponses);
     }
 }

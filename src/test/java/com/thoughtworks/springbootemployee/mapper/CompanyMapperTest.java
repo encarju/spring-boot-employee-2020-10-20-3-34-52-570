@@ -20,6 +20,8 @@ import static com.thoughtworks.springbootemployee.mapper.CompanyMapper.COMPANY_M
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CompanyMapperTest {
@@ -110,5 +112,68 @@ class CompanyMapperTest {
         assertEquals(COSCO, companyResponses.get(1).getName());
         assertEquals(secondCompanyId, companyResponses.get(1).getId());
         assertEquals(0, companyResponses.get(1).getEmployeesNumber());
+    }
+
+    @Test
+    void should_return_null_company_response_when_to_response_given_null_company() {
+        //Given
+        Company company = null;
+
+        //When
+        CompanyResponse companyResponse = COMPANY_MAPPER.toResponse(company);
+
+        //Then
+        assertNull(companyResponse);
+    }
+
+    @Test
+    void should_return_null_employee_response_when_to_response_given_company_with_null_employee() {
+        //Given
+        Company company = new Company();
+        company.setEmployees(asList(null, new Employee()));
+
+        //When
+        CompanyResponse companyResponse = COMPANY_MAPPER.toResponse(company);
+
+        //Then
+        assertNull(companyResponse.getEmployees().get(0));
+        assertNotNull(companyResponse.getEmployees().get(1));
+    }
+
+    @Test
+    void should_return_null_employee_response_when_to_response_given_company_with_null_employee_list() {
+        //Given
+        Company company = new Company();
+        company.setEmployees(null);
+
+        //When
+        CompanyResponse companyResponse = COMPANY_MAPPER.toResponse(company);
+
+        //Then
+        assertNull(companyResponse.getEmployees());
+    }
+
+    @Test
+    void should_return_null_company_when_to_entity_given_null_company_response() {
+        //Given
+        CompanyRequest companyRequest = null;
+
+        //When
+        Company company = COMPANY_MAPPER.toEntity(companyRequest);
+
+        //Then
+        assertNull(company);
+    }
+
+    @Test
+    void should_return_null_company_response_list_when_to_response_given_null_company_list() {
+        //Given
+        List<Company> companies = null;
+
+        //When
+        List<CompanyResponse> companyResponses = COMPANY_MAPPER.toResponse(companies);
+
+        //Then
+        assertNull(companyResponses);
     }
 }

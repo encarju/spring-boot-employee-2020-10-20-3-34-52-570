@@ -1,15 +1,16 @@
 package com.thoughtworks.springbootemployee;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static com.thoughtworks.springbootemployee.SpringBootEmployeeApplication.main;
 
 @SpringBootTest
 class SpringBootEmployeeApplicationTests {
 
-    @Ignore
     @Test
     void contextLoads() {
+        main(new String[]{""});
     }
 
 }
