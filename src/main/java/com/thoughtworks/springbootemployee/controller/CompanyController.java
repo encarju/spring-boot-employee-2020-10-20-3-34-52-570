@@ -4,7 +4,6 @@ import com.thoughtworks.springbootemployee.dto.CompanyRequest;
 import com.thoughtworks.springbootemployee.dto.CompanyResponse;
 import com.thoughtworks.springbootemployee.dto.EmployeeResponse;
 import com.thoughtworks.springbootemployee.mapper.CompanyMapper;
-import com.thoughtworks.springbootemployee.mapper.EmployeeMapper;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static com.thoughtworks.springbootemployee.mapper.EmployeeMapper.EMPLOYEE_MAPPER;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
@@ -27,12 +27,10 @@ import static org.springframework.http.HttpStatus.CREATED;
 public class CompanyController {
     private final CompanyService companyService;
     private final CompanyMapper companyMapper;
-    private final EmployeeMapper employeeMapper;
 
     public CompanyController(CompanyService companyService) {
         this.companyService = companyService;
         companyMapper = new CompanyMapper();
-        employeeMapper = new EmployeeMapper();
     }
 
     @GetMapping
@@ -55,7 +53,7 @@ public class CompanyController {
 
     @GetMapping("/{companyId}/employees")
     public List<EmployeeResponse> getEmployees(@PathVariable Integer companyId) {
-        return employeeMapper.toResponse(companyService.getCompanyEmployees(companyId));
+        return EMPLOYEE_MAPPER.toResponse(companyService.getCompanyEmployees(companyId));
     }
 
     @PutMapping("/{companyId}")

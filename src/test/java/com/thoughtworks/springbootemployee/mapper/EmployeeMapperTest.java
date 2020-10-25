@@ -13,11 +13,10 @@ import static com.thoughtworks.springbootemployee.TestHelper.JOHN;
 import static com.thoughtworks.springbootemployee.TestHelper.JUSTINE;
 import static com.thoughtworks.springbootemployee.TestHelper.MALE;
 import static com.thoughtworks.springbootemployee.TestHelper.SALARY;
+import static com.thoughtworks.springbootemployee.mapper.EmployeeMapper.EMPLOYEE_MAPPER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EmployeeMapperTest {
-
-    private final EmployeeMapper employeeMapper = new EmployeeMapper();
 
     @Test
     void should_return_employee_response_when_to_response_given_employee() {
@@ -28,7 +27,7 @@ class EmployeeMapperTest {
         Employee employee = new Employee(employeeId, JUSTINE, AGE_23, MALE, SALARY, companyId);
 
         //When
-        EmployeeResponse employeeResponse = employeeMapper.toResponse(employee);
+        EmployeeResponse employeeResponse = EMPLOYEE_MAPPER.toResponse(employee);
 
         //Then
         assertEquals(employeeId, employeeResponse.getId());
@@ -47,7 +46,7 @@ class EmployeeMapperTest {
         EmployeeRequest employeeRequest = new EmployeeRequest(JUSTINE, AGE_23, MALE, SALARY, companyId);
 
         //When
-        Employee employee = employeeMapper.toEntity(employeeRequest);
+        Employee employee = EMPLOYEE_MAPPER.toEntity(employeeRequest);
 
         //Then
         assertEquals(JUSTINE, employee.getName());
@@ -66,7 +65,7 @@ class EmployeeMapperTest {
         employeeList.add(new Employee(2, JOHN, AGE_23, MALE, SALARY, companyId));
 
         //When
-        List<EmployeeResponse> employeeResponses = employeeMapper.toResponse(employeeList);
+        List<EmployeeResponse> employeeResponses = EMPLOYEE_MAPPER.toResponse(employeeList);
 
         //Then
         assertEquals(employeeList.size(), employeeResponses.size());
