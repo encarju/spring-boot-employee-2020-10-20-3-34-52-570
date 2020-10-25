@@ -4,9 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Collections.emptyList;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -21,27 +21,25 @@ public class Company {
     private List<Employee> employees;
 
     public Company(Integer id, String name, List<Employee> employees) {
-        this(id, name);
-        this.employees = employees;
-    }
-
-    public Company(String name) {
-        this();
+        this.id = id;
         this.name = name;
-    }
-
-    public Company() {
-        employees = new ArrayList<>();
+        this.employees = employees;
     }
 
     public Company(Integer id, String name) {
-        this(name);
-        this.id = id;
+        this(id, name, emptyList());
     }
 
     public Company(String name, List<Employee> employees) {
-        this.name = name;
-        this.employees = employees;
+        this(null, name, employees);
+    }
+
+    public Company(String name) {
+        this(null, name);
+    }
+
+    public Company() {
+        employees = emptyList();
     }
 
     public Integer getId() {
