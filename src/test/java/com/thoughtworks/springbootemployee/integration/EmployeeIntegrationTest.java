@@ -213,7 +213,7 @@ public class EmployeeIntegrationTest {
 
         // when
         // then
-        mockMvc.perform(put("/employees/" + wrongEmployeeId)
+        mockMvc.perform(put(format("/employees/%d", wrongEmployeeId))
                 .contentType(APPLICATION_JSON)
                 .content(employeeJson))
                 .andExpect(status().isNotFound());
