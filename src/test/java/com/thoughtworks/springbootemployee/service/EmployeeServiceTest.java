@@ -1,7 +1,9 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.exception.NoEmployeeFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
+import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,7 @@ import static com.thoughtworks.springbootemployee.TestHelper.FEMALE;
 import static com.thoughtworks.springbootemployee.TestHelper.JUSTINE;
 import static com.thoughtworks.springbootemployee.TestHelper.LILY;
 import static com.thoughtworks.springbootemployee.TestHelper.MALE;
+import static com.thoughtworks.springbootemployee.TestHelper.NONE;
 import static com.thoughtworks.springbootemployee.TestHelper.ONCE;
 import static com.thoughtworks.springbootemployee.TestHelper.SALARY;
 import static com.thoughtworks.springbootemployee.TestHelper.generateDummyEmployees;
@@ -33,13 +36,15 @@ import static org.mockito.Mockito.when;
 
 class EmployeeServiceTest {
 
-    private EmployeeRepository repository;
+    private EmployeeRepository employeeRepository;
+    private CompanyRepository companyRepository;
     private EmployeeService service;
 
     @BeforeEach
     public void setUp() {
-        repository = mock(EmployeeRepository.class);
-        service = new EmployeeService(repository);
+        employeeRepository = mock(EmployeeRepository.class);
+        companyRepository = mock(CompanyRepository.class);
+        service = new EmployeeService(employeeRepository, companyRepository);
     }
 
     @Test
@@ -47,7 +52,7 @@ class EmployeeServiceTest {
         //given
         List<Employee> expectedEmployees = generateDummyEmployees(2);
 
-        when(repository.findAll()).thenReturn(expectedEmployees);
+        when(employeeRepository.findAll()).thenReturn(expectedEmployees);
 
         //when
         List<Employee> actual = service.getAll();
@@ -61,7 +66,7 @@ class EmployeeServiceTest {
         //given
         Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY);
 
-        when(repository.save(employee)).thenReturn(employee);
+        when(employeeRepository.save(employee)).thenReturn(employee);
 
         //when
         Employee actual = service.create(employee);
@@ -71,12 +76,31 @@ class EmployeeServiceTest {
     }
 
     @Test
+    public void should_throw_a_company_not_found_exception_when_create_given_a_non_existing_company_id() {
+        //given
+        Integer companyId = 1;
+        Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY, companyId);
+
+        String expectedMessage = format("Company with ID %d does not exist", companyId);
+
+        //when
+        Executable executable = () -> service.create(employee);
+
+        //then
+        Exception exception = assertThrows(CompanyNotFoundException.class, executable);
+        assertEquals(expectedMessage, exception.getMessage());
+
+        verify(employeeRepository, times(NONE)).save(employee);
+        verify(companyRepository, times(ONCE)).findById(companyId);
+    }
+
+    @Test
     public void should_return_specific_employee_when_get_employee_give_employee_id() {
         //given
         Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY);
         Integer employeeId = employee.getId();
 
-        when(repository.findById(employeeId)).thenReturn(of(employee));
+        when(employeeRepository.findById(employeeId)).thenReturn(of(employee));
 
         //when
         Employee actual = service.getById(employeeId);
@@ -93,8 +117,8 @@ class EmployeeServiceTest {
 
         Employee updatedEmployee = new Employee(1, BRYAN, AGE_23, MALE, SALARY);
 
-        when(repository.findById(employeeId)).thenReturn(of(employee));
-        when(repository.save(updatedEmployee)).thenReturn(updatedEmployee);
+        when(employeeRepository.findById(employeeId)).thenReturn(of(employee));
+        when(employeeRepository.save(updatedEmployee)).thenReturn(updatedEmployee);
 
         //when
         Employee actual = service.update(employeeId, updatedEmployee);
@@ -109,13 +133,13 @@ class EmployeeServiceTest {
         Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY);
         Integer employeeId = employee.getId();
 
-        when(repository.findById(employeeId)).thenReturn(of(employee));
+        when(employeeRepository.findById(employeeId)).thenReturn(of(employee));
 
         //when
         service.remove(employeeId);
 
         //then
-        verify(repository, times(ONCE)).delete(employee);
+        verify(employeeRepository, times(ONCE)).delete(employee);
     }
 
     @Test
@@ -124,14 +148,14 @@ class EmployeeServiceTest {
         List<Employee> returnedEmployees = asList(
                 new Employee(1, JUSTINE, AGE_23, MALE, SALARY));
 
-        when(repository.findByGender(MALE)).thenReturn(returnedEmployees);
+        when(employeeRepository.findByGender(MALE)).thenReturn(returnedEmployees);
 
         //when
         List<Employee> actual = service.getByGender(MALE);
 
         //then
         assertSame(returnedEmployees, actual);
-        verify(repository, times(ONCE)).findByGender(MALE);
+        verify(employeeRepository, times(ONCE)).findByGender(MALE);
     }
 
     @Test
@@ -146,7 +170,7 @@ class EmployeeServiceTest {
 
         Page<Employee> employeePage = mock(Page.class);
 
-        when(repository.findAll(PageRequest.of(page, pageSize))).thenReturn(employeePage);
+        when(employeeRepository.findAll(PageRequest.of(page, pageSize))).thenReturn(employeePage);
         when(employeePage.toList()).thenReturn(returnedEmployees);
 
         //when
@@ -166,7 +190,7 @@ class EmployeeServiceTest {
 
         String expectedMessage = format("Employee with ID %d does not exist", employeeId);
 
-        when(repository.findById(wrongEmployeeId)).thenReturn(of(employee));
+        when(employeeRepository.findById(wrongEmployeeId)).thenReturn(of(employee));
 
         //when
         Executable executable = () -> service.getById(employeeId);
@@ -188,8 +212,8 @@ class EmployeeServiceTest {
 
         String expectedMessage = format("Employee with ID %d does not exist", employeeId);
 
-        when(repository.findById(wrongEmployeeId)).thenReturn(of(employee));
-        when(repository.save(updatedEmployee)).thenReturn(updatedEmployee);
+        when(employeeRepository.findById(wrongEmployeeId)).thenReturn(of(employee));
+        when(employeeRepository.save(updatedEmployee)).thenReturn(updatedEmployee);
 
         //when
         Executable executable = () -> service.update(employeeId, updatedEmployee);

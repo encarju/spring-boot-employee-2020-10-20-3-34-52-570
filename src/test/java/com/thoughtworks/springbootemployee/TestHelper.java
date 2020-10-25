@@ -13,8 +13,10 @@ public final class TestHelper {
     public static final String OOCL = "OOCL";
 
     public static final int AGE_23 = 23;
-    public static final int ONCE = 1;
     public static final int SALARY = 233;
+
+    public static final int NONE = 0;
+    public static final int ONCE = 1;
 
     public static final String BRYAN = "Bryan";
     public static final String JOHN = "John";

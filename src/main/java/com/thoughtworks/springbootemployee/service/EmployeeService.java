@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.exception.NoEmployeeFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
+import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,45 +12,47 @@ import static org.springframework.data.domain.PageRequest.of;
 
 @Service
 public class EmployeeService {
-    private final EmployeeRepository repository;
+    private final EmployeeRepository employeeRepository;
+    private final CompanyRepository companyRepository;
 
-    public EmployeeService(EmployeeRepository repository) {
-        this.repository = repository;
+    public EmployeeService(EmployeeRepository employeeRepository, CompanyRepository companyRepository) {
+        this.employeeRepository = employeeRepository;
+        this.companyRepository = companyRepository;
     }
 
     public List<Employee> getAll() {
-        return repository.findAll();
+        return employeeRepository.findAll();
     }
 
     public Employee create(Employee employee) {
-        return repository.save(employee);
+        return employeeRepository.save(employee);
     }
 
     public Employee getById(Integer employeeId) {
-        return repository.findById(employeeId)
+        return employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new NoEmployeeFoundException(employeeId));
     }
 
     public Employee update(Integer employeeId, Employee updatedEmployee) {
-        return repository.findById(employeeId)
+        return employeeRepository.findById(employeeId)
                 .map(employee -> {
                     updatedEmployee.setId(employeeId);
 
-                    return repository.save(updatedEmployee);
+                    return employeeRepository.save(updatedEmployee);
                 })
                 .orElseThrow(() -> new NoEmployeeFoundException(employeeId));
     }
 
     public void remove(Integer employeeId) {
-        repository.findById(employeeId)
-                .ifPresent(repository::delete);
+        employeeRepository.findById(employeeId)
+                .ifPresent(employeeRepository::delete);
     }
 
     public List<Employee> getByGender(String employeeGender) {
-        return repository.findByGender(employeeGender);
+        return employeeRepository.findByGender(employeeGender);
     }
 
     public List<Employee> getByPage(Integer page, Integer pageSize) {
-        return repository.findAll(of(page, pageSize)).toList();
+        return employeeRepository.findAll(of(page, pageSize)).toList();
     }
 }
