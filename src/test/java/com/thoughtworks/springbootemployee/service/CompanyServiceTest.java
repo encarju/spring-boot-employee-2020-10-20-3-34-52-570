@@ -33,6 +33,7 @@ import static org.mockito.Mockito.when;
 
 class CompanyServiceTest {
 
+    public static final String COMPANY_WITH_ID_D_DOES_NOT_EXIST = "Company with ID %d does not exist";
     private CompanyRepository repository;
     private CompanyService service;
 
@@ -171,9 +172,9 @@ class CompanyServiceTest {
     @Test
     public void should_company_not_found_exception_when_get_company_given_company_id_does_not_exist() {
         //given
-        new Company(1, ALIBABA, generateDummyEmployees(2));
         Integer wrongCompanyId = 2;
-        String expectedMessage = String.format("Company with ID %d does not exist", wrongCompanyId);
+        String expectedMessage = String.format(COMPANY_WITH_ID_D_DOES_NOT_EXIST, wrongCompanyId);
+
         when(repository.findById(wrongCompanyId)).thenReturn(Optional.empty());
 
         //when
@@ -187,11 +188,11 @@ class CompanyServiceTest {
     @Test
     void should_return_company_not_found_exception_when_update_company_given_wrong_company_id() {
         //given
-        Company company = new Company(1, ALIBABA, generateDummyEmployees(2));
         Company updatedCompany = new Company(2, ALIBABAS,
                 asList(new Employee(), new Employee()));
         Integer wrongCompanyId = updatedCompany.getId();
-        String expectedMessage = String.format("Company with ID %d does not exist", wrongCompanyId);
+        String expectedMessage = String.format(COMPANY_WITH_ID_D_DOES_NOT_EXIST, wrongCompanyId);
+
         when(repository.findById(wrongCompanyId)).thenReturn(Optional.empty());
 
         //when
@@ -205,9 +206,8 @@ class CompanyServiceTest {
     @Test
     void should_return_company_not_found_exception_company_when_delete_company_given_wrong_company_id() {
         //given
-        new Company(1, ALIBABA, generateDummyEmployees(2));
         Integer wrongCompanyId = 2;
-        String expectedMessage = String.format("Company with ID %d does not exist", wrongCompanyId);
+        String expectedMessage = String.format(COMPANY_WITH_ID_D_DOES_NOT_EXIST, wrongCompanyId);
 
         when(repository.findById(wrongCompanyId)).thenReturn(Optional.empty());
 
