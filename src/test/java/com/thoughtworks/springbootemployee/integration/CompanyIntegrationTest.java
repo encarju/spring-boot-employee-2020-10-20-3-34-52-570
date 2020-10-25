@@ -52,7 +52,8 @@ public class CompanyIntegrationTest {
     @Test
     public void should_get_all_company_when_get_all() throws Exception {
         // given
-        Company company = new Company(OOCL, emptyList());
+        Company company = new Company(OOCL);
+        company.setEmployees(emptyList());
         companyRepository.save(company);
 
         // when
