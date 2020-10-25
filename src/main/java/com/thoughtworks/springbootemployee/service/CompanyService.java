@@ -40,7 +40,7 @@ public class CompanyService {
 
                     return repository.findById(companyId).get();
                 })
-                .orElse(null);
+                .orElseThrow(()-> new CompanyNotFoundException(companyId));
     }
 
     public Company remove(Integer companyId) {
