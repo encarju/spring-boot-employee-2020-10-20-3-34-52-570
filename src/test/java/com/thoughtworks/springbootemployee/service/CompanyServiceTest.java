@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.thoughtworks.springbootemployee.TestHelper.ALIBABA;
 import static com.thoughtworks.springbootemployee.TestHelper.ALIBABAS;
@@ -22,7 +21,9 @@ import static com.thoughtworks.springbootemployee.TestHelper.MALE;
 import static com.thoughtworks.springbootemployee.TestHelper.ONCE;
 import static com.thoughtworks.springbootemployee.TestHelper.SALARY;
 import static com.thoughtworks.springbootemployee.TestHelper.generateDummyEmployees;
+import static java.lang.String.format;
 import static java.util.Arrays.asList;
+import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -173,9 +174,10 @@ class CompanyServiceTest {
     public void should_company_not_found_exception_when_get_company_given_company_id_does_not_exist() {
         //given
         Integer wrongCompanyId = 2;
-        String expectedMessage = String.format(COMPANY_WITH_ID_D_DOES_NOT_EXIST, wrongCompanyId);
 
-        when(repository.findById(wrongCompanyId)).thenReturn(Optional.empty());
+        String expectedMessage = format(COMPANY_WITH_ID_D_DOES_NOT_EXIST, wrongCompanyId);
+
+        when(repository.findById(wrongCompanyId)).thenReturn(empty());
 
         //when
         Executable executable = () -> service.getById(wrongCompanyId);
@@ -188,12 +190,13 @@ class CompanyServiceTest {
     @Test
     void should_return_company_not_found_exception_when_update_company_given_wrong_company_id() {
         //given
-        Company updatedCompany = new Company(2, ALIBABAS,
+        Integer wrongCompanyId = 2;
+        Company updatedCompany = new Company(wrongCompanyId, ALIBABAS,
                 asList(new Employee(), new Employee()));
-        Integer wrongCompanyId = updatedCompany.getId();
-        String expectedMessage = String.format(COMPANY_WITH_ID_D_DOES_NOT_EXIST, wrongCompanyId);
 
-        when(repository.findById(wrongCompanyId)).thenReturn(Optional.empty());
+        String expectedMessage = format(COMPANY_WITH_ID_D_DOES_NOT_EXIST, wrongCompanyId);
+
+        when(repository.findById(wrongCompanyId)).thenReturn(empty());
 
         //when
         Executable executable = () -> service.update(wrongCompanyId, updatedCompany);
@@ -207,9 +210,9 @@ class CompanyServiceTest {
     void should_return_company_not_found_exception_company_when_delete_company_given_wrong_company_id() {
         //given
         Integer wrongCompanyId = 2;
-        String expectedMessage = String.format(COMPANY_WITH_ID_D_DOES_NOT_EXIST, wrongCompanyId);
+        String expectedMessage = format(COMPANY_WITH_ID_D_DOES_NOT_EXIST, wrongCompanyId);
 
-        when(repository.findById(wrongCompanyId)).thenReturn(Optional.empty());
+        when(repository.findById(wrongCompanyId)).thenReturn(empty());
 
         //when
         Executable executable = () -> service.remove(wrongCompanyId);
