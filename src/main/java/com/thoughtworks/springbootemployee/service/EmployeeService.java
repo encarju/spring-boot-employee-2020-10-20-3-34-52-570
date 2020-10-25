@@ -8,6 +8,7 @@ import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Objects.nonNull;
 import static org.springframework.data.domain.PageRequest.of;
@@ -57,8 +58,12 @@ public class EmployeeService {
     }
 
     public void remove(Integer employeeId) {
-        employeeRepository.findById(employeeId)
-                .ifPresent(employeeRepository::delete);
+        Optional<Employee> optionalEmployee = employeeRepository.findById(employeeId);
+        if (!optionalEmployee.isPresent()) {
+            throw new EmployeeNotFoundException(employeeId);
+        }
+
+        employeeRepository.delete(optionalEmployee.get());
     }
 
     public List<Employee> getByGender(String employeeGender) {
