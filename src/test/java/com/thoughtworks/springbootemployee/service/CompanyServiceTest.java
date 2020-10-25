@@ -3,6 +3,7 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,12 +29,18 @@ import static org.mockito.Mockito.when;
 
 class CompanyServiceTest {
 
+    private CompanyRepository repository;
+    private CompanyService service;
+
+    @BeforeEach
+    void setUp() {
+        repository = mock(CompanyRepository.class);
+        service = new CompanyService(repository);
+    }
+
     @Test
     public void should_return_companies_when_get_all_companies() {
         //given
-        CompanyRepository repository = mock(CompanyRepository.class);
-        CompanyService service = new CompanyService(repository);
-
         List<Company> expectedCompanies = asList(new Company(), new Company());
 
         when(repository.findAll()).thenReturn(expectedCompanies);
@@ -48,9 +55,6 @@ class CompanyServiceTest {
     @Test
     public void should_create_companies_when_create_given_one_companies() {
         //given
-        CompanyRepository repository = mock(CompanyRepository.class);
-        CompanyService service = new CompanyService(repository);
-
         Company company = new Company(1, ALIBABA, asList(new Employee(), new Employee()));
 
         when(repository.save(company)).thenReturn(company);
@@ -65,9 +69,6 @@ class CompanyServiceTest {
     @Test
     public void should_return_specific_company_when_get_company_give_company_id() {
         //given
-        CompanyRepository repository = mock(CompanyRepository.class);
-        CompanyService service = new CompanyService(repository);
-
         Company company = new Company(1, ALIBABA, asList(new Employee(), new Employee()));
         Integer companyId = company.getId();
 
@@ -83,9 +84,6 @@ class CompanyServiceTest {
     @Test
     void should_return_updated_company_when_update_company_given_company_id_updated_name() {
         //given
-        CompanyRepository repository = mock(CompanyRepository.class);
-        CompanyService service = new CompanyService(repository);
-
         Company company = new Company(1, ALIBABA,
                 asList(new Employee(), new Employee()));
         Integer companyId = company.getId();
@@ -106,9 +104,6 @@ class CompanyServiceTest {
     @Test
     void should_delete_company_when_delete_company_given_company_id() {
         //given
-        CompanyRepository repository = mock(CompanyRepository.class);
-        CompanyService service = new CompanyService(repository);
-
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee());
         employees.add(new Employee());
@@ -135,9 +130,6 @@ class CompanyServiceTest {
     @Test
     public void should_return_2_company_when_get_by_page_given_2_page_size() {
         //given
-        CompanyRepository repository = mock(CompanyRepository.class);
-        CompanyService service = new CompanyService(repository);
-
         List<Company> returnedCompanies = asList(
                 new Company(1, ALIBABA, asList(new Employee(), new Employee())),
                 new Company(2, ALIBABAS, asList(new Employee(), new Employee())));
@@ -160,9 +152,6 @@ class CompanyServiceTest {
     @Test
     public void should_return_all_employee_when_get_employees_given_company_id() {
         //given
-        CompanyRepository repository = mock(CompanyRepository.class);
-        CompanyService service = new CompanyService(repository);
-
         List<Employee> employees = asList(
                 new Employee(1, JUSTINE, 2, MALE, SALARY),
                 new Employee(2, LILY, 2, FEMALE, SALARY)

@@ -24,10 +24,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CompanyMapperTest {
 
+    private final CompanyMapper companyMapper = new CompanyMapper();
+
     @Test
     void should_return_company_response_when_to_response_given_company() {
         //Given
-        CompanyMapper companyMapper = new CompanyMapper();
         List<Employee> employeeList = new ArrayList<>();
 
         Company company = new Company(1, OOCL, employeeList);
@@ -60,7 +61,6 @@ class CompanyMapperTest {
     @Test
     void should_return_company_when_to_entity_given_company_request() {
         //Given
-        CompanyMapper companyMapper = new CompanyMapper();
         List<EmployeeRequest> employeeRequests = new ArrayList<>();
 
         employeeRequests.add(new EmployeeRequest(JUSTINE, AGE_23, MALE, SALARY, null));
@@ -89,7 +89,6 @@ class CompanyMapperTest {
     @Test
     void should_return_company_responses_when_to_response_given_companies() {
         //Given
-        CompanyMapper companyMapper = new CompanyMapper();
         List<Employee> employeeList = new ArrayList<>();
 
         Company firstCompany = new Company(1, OOCL, employeeList);

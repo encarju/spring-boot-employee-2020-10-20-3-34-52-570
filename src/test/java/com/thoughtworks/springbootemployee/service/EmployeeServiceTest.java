@@ -3,6 +3,7 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.exception.NoEmployeeFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.springframework.data.domain.Page;
@@ -31,12 +32,18 @@ import static org.mockito.Mockito.when;
 
 class EmployeeServiceTest {
 
+    private EmployeeRepository repository;
+    private EmployeeService service;
+
+    @BeforeEach
+    public void setUp() {
+        repository = mock(EmployeeRepository.class);
+        service = new EmployeeService(repository);
+    }
+
     @Test
     public void should_return_employees_when_get_all_employee() {
         //given
-        EmployeeRepository repository = mock(EmployeeRepository.class);
-        EmployeeService service = new EmployeeService(repository);
-
         List<Employee> expectedEmployees = asList(new Employee(), new Employee());
 
         when(repository.findAll()).thenReturn(expectedEmployees);
@@ -51,9 +58,6 @@ class EmployeeServiceTest {
     @Test
     public void should_create_employee_when_create_given_one_employee() {
         //given
-        EmployeeRepository repository = mock(EmployeeRepository.class);
-        EmployeeService service = new EmployeeService(repository);
-
         Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY);
 
         when(repository.save(employee)).thenReturn(employee);
@@ -68,9 +72,6 @@ class EmployeeServiceTest {
     @Test
     public void should_return_specific_employee_when_get_employee_give_employee_id() {
         //given
-        EmployeeRepository repository = mock(EmployeeRepository.class);
-        EmployeeService service = new EmployeeService(repository);
-
         Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY);
         Integer employeeId = employee.getId();
 
@@ -86,9 +87,6 @@ class EmployeeServiceTest {
     @Test
     void should_return_updated_employee_when_update_employee_given_employee_id_updated_name() {
         //given
-        EmployeeRepository repository = mock(EmployeeRepository.class);
-        EmployeeService service = new EmployeeService(repository);
-
         Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY);
         Integer employeeId = employee.getId();
 
@@ -107,9 +105,6 @@ class EmployeeServiceTest {
     @Test
     void should_delete_employee_when_delete_employee_given_employee_id() {
         //given
-        EmployeeRepository repository = mock(EmployeeRepository.class);
-        EmployeeService service = new EmployeeService(repository);
-
         Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY);
         Integer employeeId = employee.getId();
 
@@ -125,9 +120,6 @@ class EmployeeServiceTest {
     @Test
     public void should_return_employees_when_get_employee_by_gender_given_employee_gender() {
         //given
-        EmployeeRepository repository = mock(EmployeeRepository.class);
-        EmployeeService service = new EmployeeService(repository);
-
         List<Employee> returnedEmployees = asList(
                 new Employee(1, JUSTINE, AGE_23, MALE, SALARY));
 
@@ -144,9 +136,6 @@ class EmployeeServiceTest {
     @Test
     public void should_return_2_employee_when_get_by_page_given_2_page_size() {
         //given
-        EmployeeRepository repository = mock(EmployeeRepository.class);
-        EmployeeService service = new EmployeeService(repository);
-
         List<Employee> returnedEmployees = asList(
                 new Employee(1, JUSTINE, AGE_23, MALE, SALARY),
                 new Employee(2, LILY, AGE_23, FEMALE, SALARY));
@@ -169,9 +158,6 @@ class EmployeeServiceTest {
     @Test
     public void should_return_exception_employee_when_get_employee_given_wrong_employee_id() {
         //given
-        EmployeeRepository repository = mock(EmployeeRepository.class);
-        EmployeeService service = new EmployeeService(repository);
-
         Integer employeeId = 1;
         Employee employee = new Employee(employeeId, JUSTINE, AGE_23, MALE, SALARY);
 
@@ -192,9 +178,6 @@ class EmployeeServiceTest {
     @Test
     public void should_return_exception_employee_when_update_given_wrong_employee_id() {
         //given
-        EmployeeRepository repository = mock(EmployeeRepository.class);
-        EmployeeService service = new EmployeeService(repository);
-
         Integer employeeId = 1;
         Employee employee = new Employee(employeeId, JUSTINE, AGE_23, MALE, SALARY);
 
