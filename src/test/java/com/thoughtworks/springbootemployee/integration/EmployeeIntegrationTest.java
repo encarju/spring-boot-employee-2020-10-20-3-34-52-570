@@ -16,11 +16,15 @@ import java.util.List;
 
 import static com.thoughtworks.springbootemployee.TestHelper.AGE_23;
 import static com.thoughtworks.springbootemployee.TestHelper.FEMALE;
+import static com.thoughtworks.springbootemployee.TestHelper.FORMATTED_COMPANY_EXCEPTION_MESSAGE;
+import static com.thoughtworks.springbootemployee.TestHelper.FORMATTED_EMPLOYEE_EXCEPTION_MESSAGE;
 import static com.thoughtworks.springbootemployee.TestHelper.JUSTINE;
 import static com.thoughtworks.springbootemployee.TestHelper.MALE;
+import static com.thoughtworks.springbootemployee.TestHelper.NOT_FOUND_ERROR;
 import static com.thoughtworks.springbootemployee.TestHelper.OOCL;
 import static com.thoughtworks.springbootemployee.TestHelper.SALARY;
 import static java.lang.String.format;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -243,7 +247,7 @@ public class EmployeeIntegrationTest {
     }
 
     @Test
-    public void should_return_exception_when_get_given_wrong_employee_id() throws Exception {
+    public void should_return_not_found_status_when_get_given_wrong_employee_id() throws Exception {
         // given
         Employee employee = new Employee(JUSTINE, AGE_23, MALE, SALARY);
         Integer returnedEmployeeId = employeeRepository.save(employee).getId();
@@ -253,11 +257,15 @@ public class EmployeeIntegrationTest {
         // when
         // then
         mockMvc.perform(get(format("/employees/%d", wrongEmployeeId)))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.errorCode").value(NOT_FOUND_ERROR))
+                .andExpect(jsonPath("$.errorMessage")
+                        .value(format(FORMATTED_EMPLOYEE_EXCEPTION_MESSAGE, wrongEmployeeId)))
+                .andExpect(jsonPath("$.status").value(NOT_FOUND.value()));
     }
 
     @Test
-    public void should_return_exception_when_update_given_wrong_employee_id_and_updated_employee_request() throws Exception {
+    public void should_return_not_found_status_when_update_given_wrong_employee_id_and_updated_employee_request() throws Exception {
         // given
         Employee employee = new Employee(JUSTINE, 22, MALE, SALARY);
         Integer returnedEmployeeId = employeeRepository.save(employee).getId();
@@ -278,11 +286,15 @@ public class EmployeeIntegrationTest {
         mockMvc.perform(put(format("/employees/%d", wrongEmployeeId))
                 .contentType(APPLICATION_JSON)
                 .content(employeeJson))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.errorCode").value(NOT_FOUND_ERROR))
+                .andExpect(jsonPath("$.errorMessage")
+                        .value(format(FORMATTED_EMPLOYEE_EXCEPTION_MESSAGE, wrongEmployeeId)))
+                .andExpect(jsonPath("$.status").value(NOT_FOUND.value()));
     }
 
     @Test
-    public void should_return_exception_when_update_given_wrong_company_id_and_updated_employee_request() throws Exception {
+    public void should_return_not_found_status_when_update_given_wrong_company_id_and_updated_employee_request() throws Exception {
         // given
         Employee employee = new Employee(JUSTINE, 22, MALE, SALARY);
         Integer returnedEmployeeId = employeeRepository.save(employee).getId();
@@ -302,6 +314,10 @@ public class EmployeeIntegrationTest {
         mockMvc.perform(put(format("/employees/%d", returnedEmployeeId))
                 .contentType(APPLICATION_JSON)
                 .content(employeeJson))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.errorCode").value(NOT_FOUND_ERROR))
+                .andExpect(jsonPath("$.errorMessage")
+                        .value(format(FORMATTED_COMPANY_EXCEPTION_MESSAGE, wrongCompanyId)))
+                .andExpect(jsonPath("$.status").value(NOT_FOUND.value()));
     }
 }

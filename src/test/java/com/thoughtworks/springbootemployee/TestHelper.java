@@ -28,6 +28,7 @@ public final class TestHelper {
 
     public static final String NOT_FOUND_ERROR = "NOT_FOUND_ERROR";
     public static final String FORMATTED_COMPANY_EXCEPTION_MESSAGE = "Company with ID %d does not exist";
+    public static final String FORMATTED_EMPLOYEE_EXCEPTION_MESSAGE = "Employee with ID %d does not exist";
 
     private TestHelper() {
     }
