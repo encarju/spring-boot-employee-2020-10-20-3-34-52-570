@@ -280,4 +280,28 @@ public class EmployeeIntegrationTest {
                 .content(employeeJson))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    public void should_return_exception_when_update_given_wrong_company_id_and_updated_employee_request() throws Exception {
+        // given
+        Employee employee = new Employee(JUSTINE, 22, MALE, SALARY);
+        Integer returnedEmployeeId = employeeRepository.save(employee).getId();
+
+        Integer wrongCompanyId = 0;
+
+        String employeeJson = "{\n" +
+                "            \"name\": \"" + JUSTINE + "\",\n" +
+                "            \"age\": " + AGE_23 + ",\n" +
+                "            \"gender\": \"" + MALE + "\",\n" +
+                "            \"salary\": " + SALARY + ",\n" +
+                "            \"companyId\": " + wrongCompanyId + "\n" +
+                "        }";
+
+        // when
+        // then
+        mockMvc.perform(put(format("/employees/%d", returnedEmployeeId))
+                .contentType(APPLICATION_JSON)
+                .content(employeeJson))
+                .andExpect(status().isNotFound());
+    }
 }

@@ -12,7 +12,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RestControllerAdvice
 public class CustomizedExceptionHandler {
 
-    private final String NOT_FOUND_ERROR = "NOT_FOUND_ERROR";
+    private static final String NOT_FOUND_ERROR = "NOT_FOUND_ERROR";
 
     @ExceptionHandler(value = EmployeeNotFoundException.class)
     @ResponseStatus(NOT_FOUND)
