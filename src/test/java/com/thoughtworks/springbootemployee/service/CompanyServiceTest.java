@@ -132,8 +132,8 @@ class CompanyServiceTest {
     public void should_return_2_company_when_get_by_page_given_2_page_size() {
         //given
         List<Company> returnedCompanies = asList(
-                new Company(1, ALIBABA, asList(new Employee(), new Employee())),
-                new Company(2, ALIBABAS, asList(new Employee(), new Employee())));
+                new Company(1, ALIBABA, generateDummyEmployees(2)),
+                new Company(2, ALIBABAS, generateDummyEmployees(2)));
 
         Integer page = 1;
         Integer pageSize = 2;
