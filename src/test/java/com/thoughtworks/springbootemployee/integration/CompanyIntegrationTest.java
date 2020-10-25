@@ -3,7 +3,6 @@ package com.thoughtworks.springbootemployee.integration;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +38,6 @@ public class CompanyIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Before
-    void setUp() {
-        companyRepository.deleteAll();
-    }
 
     @AfterEach
     void tearDown() {
