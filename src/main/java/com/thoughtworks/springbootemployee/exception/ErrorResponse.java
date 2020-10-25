@@ -24,7 +24,7 @@ public class ErrorResponse {
         return errorCode;
     }
 
-    public String getErrorMsg() {
+    public String getErrorMessage() {
         return errorMessage;
     }
 

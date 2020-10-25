@@ -26,6 +26,9 @@ public final class TestHelper {
     public static final String MALE = "Male";
     public static final String FEMALE = "Female";
 
+    public static final String NOT_FOUND_ERROR = "NOT_FOUND_ERROR";
+    public static final String FORMATTED_COMPANY_EXCEPTION_MESSAGE = "Company with ID %d does not exist";
+
     private TestHelper() {
     }
 
