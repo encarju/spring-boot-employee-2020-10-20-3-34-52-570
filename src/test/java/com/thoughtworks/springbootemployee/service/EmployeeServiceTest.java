@@ -25,6 +25,7 @@ import static com.thoughtworks.springbootemployee.TestHelper.SALARY;
 import static com.thoughtworks.springbootemployee.TestHelper.generateDummyEmployees;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
+import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -140,6 +141,26 @@ class EmployeeServiceTest {
 
         //then
         verify(employeeRepository, times(ONCE)).delete(employee);
+    }
+
+    @Test
+    void should_throw_an_employee_not_found_exception_when_delete_employee_given_non_existing_employee_id() {
+        //given
+        Integer employeeId = 1;
+
+        String expectedMessage = format("Employee with ID %d does not exist", employeeId);
+
+        when(employeeRepository.findById(employeeId)).thenReturn(empty());
+
+        //when
+        Executable executable = () -> {
+            service.remove(employeeId);
+        };
+
+        //then
+        Exception exception = assertThrows(EmployeeNotFoundException.class, executable);
+        assertEquals(expectedMessage, exception.getMessage());
+        verify(employeeRepository, times(ONCE)).findById(employeeId);
     }
 
     @Test
