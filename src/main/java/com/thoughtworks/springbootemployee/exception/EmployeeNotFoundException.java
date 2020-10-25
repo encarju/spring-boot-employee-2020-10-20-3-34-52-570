@@ -2,9 +2,9 @@ package com.thoughtworks.springbootemployee.exception;
 
 import static java.lang.String.format;
 
-public class NoEmployeeFoundException extends RuntimeException {
+public class EmployeeNotFoundException extends RuntimeException {
 
-    public NoEmployeeFoundException(int id) {
+    public EmployeeNotFoundException(int id) {
         super(format("Employee with ID %d does not exist", id));
     }
 }

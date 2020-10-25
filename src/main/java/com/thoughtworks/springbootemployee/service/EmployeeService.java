@@ -1,7 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
-import com.thoughtworks.springbootemployee.exception.NoEmployeeFoundException;
+import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
@@ -38,7 +38,7 @@ public class EmployeeService {
 
     public Employee getById(Integer employeeId) {
         return employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new NoEmployeeFoundException(employeeId));
+                .orElseThrow(() -> new EmployeeNotFoundException(employeeId));
     }
 
     public Employee update(Integer employeeId, Employee updatedEmployee) {
@@ -53,7 +53,7 @@ public class EmployeeService {
 
                     return employeeRepository.save(updatedEmployee);
                 })
-                .orElseThrow(() -> new NoEmployeeFoundException(employeeId));
+                .orElseThrow(() -> new EmployeeNotFoundException(employeeId));
     }
 
     public void remove(Integer employeeId) {

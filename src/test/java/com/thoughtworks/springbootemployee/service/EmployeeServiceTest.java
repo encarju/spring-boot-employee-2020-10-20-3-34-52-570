@@ -1,7 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
-import com.thoughtworks.springbootemployee.exception.NoEmployeeFoundException;
+import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
@@ -196,7 +196,7 @@ class EmployeeServiceTest {
         Executable executable = () -> service.getById(employeeId);
 
         //then
-        Exception exception = assertThrows(NoEmployeeFoundException.class, executable);
+        Exception exception = assertThrows(EmployeeNotFoundException.class, executable);
         assertEquals(expectedMessage, exception.getMessage());
     }
 
@@ -219,7 +219,7 @@ class EmployeeServiceTest {
         Executable executable = () -> service.update(employeeId, updatedEmployee);
 
         //then
-        Exception exception = assertThrows(NoEmployeeFoundException.class, executable);
+        Exception exception = assertThrows(EmployeeNotFoundException.class, executable);
         assertEquals(expectedMessage, exception.getMessage());
     }
 
