@@ -222,4 +222,33 @@ class EmployeeServiceTest {
         Exception exception = assertThrows(NoEmployeeFoundException.class, executable);
         assertEquals(expectedMessage, exception.getMessage());
     }
+
+    @Test
+    public void should_throw_a_company_not_found_exception_when_update_given_a_non_existing_company_id() {
+        //given
+        Integer companyId = 1;
+
+        Integer employeeId = 1;
+        Employee employee = new Employee(employeeId, JUSTINE, AGE_23, MALE, SALARY, companyId);
+
+        Integer nonExistingCompanyId = 0;
+        Employee updatedEmployee = new Employee(employeeId, JUSTINE, AGE_23, MALE, SALARY, nonExistingCompanyId);
+
+        String expectedMessage = format("Company with ID %d does not exist", nonExistingCompanyId);
+
+        when(employeeRepository.findById(employeeId)).thenReturn(of(employee));
+        when(employeeRepository.save(updatedEmployee)).thenReturn(updatedEmployee);
+        when(companyRepository.findById(companyId)).thenReturn(null);
+
+        //when
+        Executable executable = () -> service.update(employeeId, updatedEmployee);
+
+        //then
+        Exception exception = assertThrows(CompanyNotFoundException.class, executable);
+        assertEquals(expectedMessage, exception.getMessage());
+
+        verify(employeeRepository, times(ONCE)).findById(employeeId);
+        verify(companyRepository, times(ONCE)).findById(nonExistingCompanyId);
+        verify(employeeRepository, times(NONE)).save(updatedEmployee);
+    }
 }
