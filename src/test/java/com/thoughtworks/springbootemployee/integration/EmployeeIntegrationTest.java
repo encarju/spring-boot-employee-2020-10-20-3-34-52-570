@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.thoughtworks.springbootemployee.TestConstants.AGE_23;
+import static com.thoughtworks.springbootemployee.TestConstants.FEMALE;
 import static com.thoughtworks.springbootemployee.TestConstants.JUSTINE;
 import static com.thoughtworks.springbootemployee.TestConstants.MALE;
 import static com.thoughtworks.springbootemployee.TestConstants.SALARY;
@@ -135,7 +136,7 @@ public class EmployeeIntegrationTest {
     @Test
     public void should_delete_employee_when_delete_given_employee_id() throws Exception {
         // given
-        Employee employee = new Employee(JUSTINE, 22, MALE, SALARY);
+        Employee employee = new Employee(JUSTINE, AGE_23, MALE, SALARY);
         Integer returnedEmployeeId = employeeRepository.save(employee).getId();
 
         // when
@@ -147,16 +148,15 @@ public class EmployeeIntegrationTest {
     @Test
     public void should_get_employees_when_get_given_gender() throws Exception {
         // given
-        String gender = MALE;
         List<Employee> employeeList = new ArrayList<>();
         employeeList.add(new Employee(JUSTINE, AGE_23, MALE, SALARY));
         employeeList.add(new Employee(JUSTINE, AGE_23, MALE, SALARY));
-        employeeList.add(new Employee(JUSTINE, AGE_23, "Female", SALARY));
+        employeeList.add(new Employee(JUSTINE, AGE_23, FEMALE, SALARY));
         employeeRepository.saveAll(employeeList);
 
         // when
         // then
-        mockMvc.perform(get(format("/employees?gender=%s", gender)))
+        mockMvc.perform(get(format("/employees?gender=%s", MALE)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2));
     }

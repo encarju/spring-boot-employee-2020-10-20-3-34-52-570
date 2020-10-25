@@ -10,6 +10,14 @@ import org.springframework.data.domain.PageRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.thoughtworks.springbootemployee.TestConstants.ALIBABA;
+import static com.thoughtworks.springbootemployee.TestConstants.ALIBABAS;
+import static com.thoughtworks.springbootemployee.TestConstants.FEMALE;
+import static com.thoughtworks.springbootemployee.TestConstants.JUSTINE;
+import static com.thoughtworks.springbootemployee.TestConstants.LILY;
+import static com.thoughtworks.springbootemployee.TestConstants.MALE;
+import static com.thoughtworks.springbootemployee.TestConstants.ONCE;
+import static com.thoughtworks.springbootemployee.TestConstants.SALARY;
 import static java.util.Arrays.asList;
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,8 +47,7 @@ class CompanyServiceTest {
         //given
         CompanyRepository repository = mock(CompanyRepository.class);
         CompanyService service = new CompanyService(repository);
-        Company company = new Company(1, "Alibaba",
-                asList(new Employee(), new Employee()));
+        Company company = new Company(1, ALIBABA, asList(new Employee(), new Employee()));
         when(repository.save(company)).thenReturn(company);
 
         //when
@@ -55,7 +62,7 @@ class CompanyServiceTest {
         //given
         CompanyRepository repository = mock(CompanyRepository.class);
         CompanyService service = new CompanyService(repository);
-        Company company = new Company(1, "Alibaba", asList(new Employee(), new Employee()));
+        Company company = new Company(1, ALIBABA, asList(new Employee(), new Employee()));
         Integer companyId = company.getId();
         when(repository.findById(companyId)).thenReturn(of(company));
 
@@ -71,9 +78,9 @@ class CompanyServiceTest {
         //given
         CompanyRepository repository = mock(CompanyRepository.class);
         CompanyService service = new CompanyService(repository);
-        Company company = new Company(1, "Alibaba",
+        Company company = new Company(1, ALIBABA,
                 asList(new Employee(), new Employee()));
-        Company updatedCompany = new Company(1, "Alibabas",
+        Company updatedCompany = new Company(1, ALIBABAS,
                 asList(new Employee(), new Employee()));
         Integer companyId = company.getId();
         when(repository.findById(companyId)).thenReturn(of(company));
@@ -83,7 +90,7 @@ class CompanyServiceTest {
         Company actual = service.update(companyId, updatedCompany);
 
         //then
-        assertEquals("Alibabas", actual.getName());
+        assertEquals(ALIBABAS, actual.getName());
     }
 
     @Test
@@ -96,7 +103,7 @@ class CompanyServiceTest {
         employees.add(new Employee());
         employees.add(new Employee());
 
-        Company company = new Company(1, "Alibaba", employees);
+        Company company = new Company(1, ALIBABA, employees);
 
         company.getEmployees().clear();
         Company expectedCompany = company;
@@ -109,8 +116,8 @@ class CompanyServiceTest {
         Company actualCompany = service.remove(companyId);
 
         //then
-        verify(repository, times(1)).findById(companyId);
-        verify(repository, times(1)).save(expectedCompany);
+        verify(repository, times(ONCE)).findById(companyId);
+        verify(repository, times(ONCE)).save(expectedCompany);
         assertEquals(expectedCompany, actualCompany);
     }
 
@@ -120,10 +127,8 @@ class CompanyServiceTest {
         CompanyRepository repository = mock(CompanyRepository.class);
         CompanyService service = new CompanyService(repository);
         List<Company> returnedCompanies = asList(
-                new Company(1, "Alibaba",
-                        asList(new Employee(), new Employee())),
-                new Company(2, "Alibabas",
-                        asList(new Employee(), new Employee())));
+                new Company(1, ALIBABA, asList(new Employee(), new Employee())),
+                new Company(2, ALIBABAS, asList(new Employee(), new Employee())));
 
         Integer page = 1;
         Integer pageSize = 2;
@@ -142,11 +147,10 @@ class CompanyServiceTest {
         CompanyRepository repository = mock(CompanyRepository.class);
         CompanyService service = new CompanyService(repository);
         List<Employee> employees = asList(
-                new Employee(1, "Justine", 2, "Male", 2000),
-                new Employee(2, "Lily", 2, "Female", 2000)
+                new Employee(1, JUSTINE, 2, MALE, SALARY),
+                new Employee(2, LILY, 2, FEMALE, SALARY)
         );
-        Company company = new Company(1, "Alibaba",
-                employees);
+        Company company = new Company(1, ALIBABA, employees);
         Integer companyID = company.getId();
 
         when(repository.findById(companyID)).thenReturn(of(company));

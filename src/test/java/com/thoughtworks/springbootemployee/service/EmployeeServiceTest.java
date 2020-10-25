@@ -16,6 +16,7 @@ import static com.thoughtworks.springbootemployee.TestConstants.FEMALE;
 import static com.thoughtworks.springbootemployee.TestConstants.JUSTINE;
 import static com.thoughtworks.springbootemployee.TestConstants.LILY;
 import static com.thoughtworks.springbootemployee.TestConstants.MALE;
+import static com.thoughtworks.springbootemployee.TestConstants.ONCE;
 import static com.thoughtworks.springbootemployee.TestConstants.SALARY;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
@@ -107,7 +108,7 @@ class EmployeeServiceTest {
         service.remove(employeeId);
 
         //then
-        verify(repository, times(1)).delete(employee);
+        verify(repository, times(ONCE)).delete(employee);
     }
 
     @Test
