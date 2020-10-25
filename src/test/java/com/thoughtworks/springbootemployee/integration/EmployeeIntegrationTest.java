@@ -166,14 +166,12 @@ public class EmployeeIntegrationTest {
         // given
         Integer page = 1;
         Integer pageSize = 2;
-        employeeRepository
-                .save(new Employee(JUSTINE, AGE_23, MALE, SALARY))
-                .getId();
-        employeeRepository.save(new Employee(JUSTINE, AGE_23, MALE, SALARY))
-                .getId();
-        Integer thirdEmployeeId = employeeRepository
-                .save(new Employee(JUSTINE, AGE_23, MALE, SALARY))
-                .getId();
+
+        employeeRepository.save(new Employee(JUSTINE, AGE_23, MALE, SALARY));
+        employeeRepository.save(new Employee(JUSTINE, AGE_23, MALE, SALARY));
+
+        Employee thirdEmployee = new Employee(JUSTINE, AGE_23, MALE, SALARY);
+        Integer thirdEmployeeId = employeeRepository.save(thirdEmployee).getId();
 
         // when
         // then
@@ -188,12 +186,13 @@ public class EmployeeIntegrationTest {
         // given
         Employee employee = new Employee(JUSTINE, AGE_23, MALE, SALARY);
         Integer returnedEmployeeId = employeeRepository.save(employee).getId();
+
         Integer wrongEmployeeId = returnedEmployeeId + 1;
+
         // when
         // then
         mockMvc.perform(get(format("/employees/%d", wrongEmployeeId)))
                 .andExpect(status().isNotFound());
-
     }
 
     @Test
@@ -201,7 +200,9 @@ public class EmployeeIntegrationTest {
         // given
         Employee employee = new Employee(JUSTINE, 22, MALE, SALARY);
         Integer returnedEmployeeId = employeeRepository.save(employee).getId();
+
         Integer wrongEmployeeId = returnedEmployeeId + 1;
+
         String employeeJson = "{\n" +
                 "            \"id\": 4,\n" +
                 "            \"name\": \"" + JUSTINE + "\",\n" +

@@ -29,7 +29,9 @@ class CompanyMapperTest {
         //Given
         CompanyMapper companyMapper = new CompanyMapper();
         List<Employee> employeeList = new ArrayList<>();
+
         Company company = new Company(1, OOCL, employeeList);
+
         employeeList.add(new Employee(1, JUSTINE, AGE_23, MALE, SALARY, company));
         employeeList.add(new Employee(2, JOHN, AGE_23, MALE, SALARY, company));
 
@@ -60,8 +62,10 @@ class CompanyMapperTest {
         //Given
         CompanyMapper companyMapper = new CompanyMapper();
         List<EmployeeRequest> employeeRequests = new ArrayList<>();
+
         employeeRequests.add(new EmployeeRequest(JUSTINE, AGE_23, MALE, SALARY, null));
         employeeRequests.add(new EmployeeRequest(JOHN, AGE_23, MALE, SALARY, null));
+
         CompanyRequest companyRequest = new CompanyRequest(OOCL, employeeRequests);
 
         //When
@@ -87,7 +91,9 @@ class CompanyMapperTest {
         //Given
         CompanyMapper companyMapper = new CompanyMapper();
         List<Employee> employeeList = new ArrayList<>();
+
         Company firstCompany = new Company(1, OOCL, employeeList);
+
         employeeList.add(new Employee(1, JUSTINE, AGE_23, MALE, SALARY, firstCompany));
         employeeList.add(new Employee(2, JOHN, AGE_23, MALE, SALARY, firstCompany));
 

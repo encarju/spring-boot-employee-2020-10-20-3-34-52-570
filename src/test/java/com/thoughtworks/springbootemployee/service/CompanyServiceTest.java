@@ -27,13 +27,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class CompanyServiceTest {
+
     @Test
     public void should_return_companies_when_get_all_companies() {
         //given
         CompanyRepository repository = mock(CompanyRepository.class);
-        List<Company> expectedCompanies = asList(new Company(), new Company());
-        when(repository.findAll()).thenReturn(expectedCompanies);
         CompanyService service = new CompanyService(repository);
+
+        List<Company> expectedCompanies = asList(new Company(), new Company());
+
+        when(repository.findAll()).thenReturn(expectedCompanies);
 
         //when
         List<Company> actual = service.getAll();
@@ -47,7 +50,9 @@ class CompanyServiceTest {
         //given
         CompanyRepository repository = mock(CompanyRepository.class);
         CompanyService service = new CompanyService(repository);
+
         Company company = new Company(1, ALIBABA, asList(new Employee(), new Employee()));
+
         when(repository.save(company)).thenReturn(company);
 
         //when
@@ -62,8 +67,10 @@ class CompanyServiceTest {
         //given
         CompanyRepository repository = mock(CompanyRepository.class);
         CompanyService service = new CompanyService(repository);
+
         Company company = new Company(1, ALIBABA, asList(new Employee(), new Employee()));
         Integer companyId = company.getId();
+
         when(repository.findById(companyId)).thenReturn(of(company));
 
         //when
@@ -78,11 +85,14 @@ class CompanyServiceTest {
         //given
         CompanyRepository repository = mock(CompanyRepository.class);
         CompanyService service = new CompanyService(repository);
+
         Company company = new Company(1, ALIBABA,
                 asList(new Employee(), new Employee()));
+        Integer companyId = company.getId();
+
         Company updatedCompany = new Company(1, ALIBABAS,
                 asList(new Employee(), new Employee()));
-        Integer companyId = company.getId();
+
         when(repository.findById(companyId)).thenReturn(of(company));
         when(repository.save(updatedCompany)).thenReturn(updatedCompany);
 
@@ -112,6 +122,7 @@ class CompanyServiceTest {
 
         when(repository.findById(companyId)).thenReturn(of(company));
         when(repository.save(expectedCompany)).thenReturn(expectedCompany);
+
         //when
         Company actualCompany = service.remove(companyId);
 
@@ -126,17 +137,22 @@ class CompanyServiceTest {
         //given
         CompanyRepository repository = mock(CompanyRepository.class);
         CompanyService service = new CompanyService(repository);
+
         List<Company> returnedCompanies = asList(
                 new Company(1, ALIBABA, asList(new Employee(), new Employee())),
                 new Company(2, ALIBABAS, asList(new Employee(), new Employee())));
 
         Integer page = 1;
         Integer pageSize = 2;
+
         Page<Company> companyPage = mock(Page.class);
+
         when(repository.findAll(PageRequest.of(page, pageSize))).thenReturn(companyPage);
         when(companyPage.toList()).thenReturn(returnedCompanies);
+
         //when
         List<Company> actual = service.getByPage(page, pageSize);
+
         //then
         assertEquals(2, actual.size());
     }
@@ -146,16 +162,20 @@ class CompanyServiceTest {
         //given
         CompanyRepository repository = mock(CompanyRepository.class);
         CompanyService service = new CompanyService(repository);
+
         List<Employee> employees = asList(
                 new Employee(1, JUSTINE, 2, MALE, SALARY),
                 new Employee(2, LILY, 2, FEMALE, SALARY)
         );
+
         Company company = new Company(1, ALIBABA, employees);
         Integer companyID = company.getId();
 
         when(repository.findById(companyID)).thenReturn(of(company));
+
         //when
         List<Employee> actual = service.getCompanyEmployees(companyID);
+
         //then
         assertEquals(2, actual.size());
     }

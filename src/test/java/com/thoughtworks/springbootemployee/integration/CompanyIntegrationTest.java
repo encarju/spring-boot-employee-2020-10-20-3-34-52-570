@@ -119,6 +119,7 @@ public class CompanyIntegrationTest {
                 new Employee(JUSTINE, AGE_23, MALE, SALARY),
                 new Employee(JOHN, AGE_23, MALE, SALARY)
         );
+
         Company company = new Company(OOCL, employees);
         Integer returnedCompanyId = companyRepository.save(company).getId();
 
@@ -158,10 +159,13 @@ public class CompanyIntegrationTest {
         // given
         Integer page = 1;
         Integer pageSize = 2;
+
         companyRepository.save(new Company("Oracle", emptyList()));
         companyRepository.save(new Company("Google", emptyList()));
         companyRepository.save(new Company(COSCO, emptyList()));
-        Integer returnedCompanyId = companyRepository.save(new Company(OOCL, emptyList())).getId();
+
+        Company company = new Company(OOCL, emptyList());
+        Integer returnedCompanyId = companyRepository.save(company).getId();
 
         // when
         // then
