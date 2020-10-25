@@ -1,14 +1,17 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.thoughtworks.springbootemployee.TestHelper.ALIBABA;
 import static com.thoughtworks.springbootemployee.TestHelper.ALIBABAS;
@@ -22,6 +25,7 @@ import static com.thoughtworks.springbootemployee.TestHelper.generateDummyEmploy
 import static java.util.Arrays.asList;
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -162,5 +166,22 @@ class CompanyServiceTest {
 
         //then
         assertEquals(2, actual.size());
+    }
+
+    @Test
+    public void should_company_not_found_exception_when_get_company_given_company_id_does_not_exist() {
+        //given
+        new Company(1, ALIBABA, generateDummyEmployees(2));
+        Integer wrongCompanyId = 2;
+        String expectedMessage = String.format("Company with ID %d does not exist",wrongCompanyId);
+        when(repository.findById(wrongCompanyId)).thenReturn(Optional.empty());
+
+        //when
+        Executable executable = () -> service.getById(wrongCompanyId);
+
+        //then
+
+        Exception exception = assertThrows(CompanyNotFoundException.class,executable);
+        assertEquals(expectedMessage,exception.getMessage());
     }
 }
