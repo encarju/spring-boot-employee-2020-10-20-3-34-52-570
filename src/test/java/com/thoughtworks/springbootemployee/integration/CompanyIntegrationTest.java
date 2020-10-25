@@ -5,7 +5,6 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,7 +22,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,7 +53,7 @@ public class CompanyIntegrationTest {
     @Test
     public void should_get_all_company_when_get_all() throws Exception {
         // given
-        Company company = new Company("OOCL", emptyList());
+        Company company = new Company(OOCL, emptyList());
         companyRepository.save(company);
 
         // when
@@ -63,7 +61,7 @@ public class CompanyIntegrationTest {
         mockMvc.perform(get("/companies"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").isNumber())
-                .andExpect(jsonPath("$[0].name").value("OOCL"))
+                .andExpect(jsonPath("$[0].name").value(OOCL))
                 .andExpect(jsonPath("$[0].employees").isArray());
     }
 
@@ -102,7 +100,7 @@ public class CompanyIntegrationTest {
     @Test
     public void should_get_company_when_get_company_given_company_id() throws Exception {
         // given
-        Company company = new Company("OOCL", emptyList());
+        Company company = new Company(OOCL, emptyList());
         Integer returnedCompanyId = companyRepository.save(company).getId();
 
         // when
@@ -110,7 +108,7 @@ public class CompanyIntegrationTest {
         mockMvc.perform(get(format("/companies/%d", returnedCompanyId)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("OOCL"))
+                .andExpect(jsonPath("$.name").value(OOCL))
                 .andExpect(jsonPath("$.employees").isArray());
     }
 
@@ -121,7 +119,7 @@ public class CompanyIntegrationTest {
                 new Employee(JUSTINE, AGE_23, MALE, SALARY),
                 new Employee(JOHN, AGE_23, MALE, SALARY)
         );
-        Company company = new Company("OOCL", employees);
+        Company company = new Company(OOCL, employees);
         Integer returnedCompanyId = companyRepository.save(company).getId();
 
         // when
@@ -143,7 +141,7 @@ public class CompanyIntegrationTest {
     @Test
     public void should_delete_company_when_delete_given_company_id() throws Exception {
         // given
-        Company company = new Company("OOCL", emptyList());
+        Company company = new Company(OOCL, emptyList());
         Integer returnedCompanyId = companyRepository.save(company).getId();
 
         // when
