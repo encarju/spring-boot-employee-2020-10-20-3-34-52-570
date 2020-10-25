@@ -44,6 +44,11 @@ public class EmployeeService {
     public Employee update(Integer employeeId, Employee updatedEmployee) {
         return employeeRepository.findById(employeeId)
                 .map(employee -> {
+                    Integer companyId = updatedEmployee.getCompanyId();
+                    if (nonNull(companyId)) {
+                        companyRepository.findById(companyId).orElseThrow(() -> new CompanyNotFoundException(companyId));
+                    }
+
                     updatedEmployee.setId(employeeId);
 
                     return employeeRepository.save(updatedEmployee);
