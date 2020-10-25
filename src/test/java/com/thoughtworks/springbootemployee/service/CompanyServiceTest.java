@@ -180,8 +180,27 @@ class CompanyServiceTest {
         Executable executable = () -> service.getById(wrongCompanyId);
 
         //then
-
         Exception exception = assertThrows(CompanyNotFoundException.class,executable);
         assertEquals(expectedMessage,exception.getMessage());
     }
+
+    @Test
+    void should_return_company_not_found_exception_when_update_company_given_wrong_company_id() {
+        //given
+        Company company = new Company(1, ALIBABA, generateDummyEmployees(2));
+        Company updatedCompany = new Company(2, ALIBABAS,
+                asList(new Employee(), new Employee()));
+        Integer wrongCompanyId = updatedCompany.getId();
+        String expectedMessage = String.format("Company with ID %d does not exist",wrongCompanyId);
+        when(repository.findById(wrongCompanyId)).thenReturn(Optional.empty());
+
+        //when
+        Executable executable = ()-> service.update(wrongCompanyId, updatedCompany);
+
+        //then
+        Exception exception = assertThrows(CompanyNotFoundException.class,executable);
+        assertEquals(expectedMessage,exception.getMessage());
+
+    }
+
 }
