@@ -13,8 +13,13 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static com.thoughtworks.springbootemployee.TestConstants.AGE_23;
 import static com.thoughtworks.springbootemployee.TestConstants.COSCO;
 import static com.thoughtworks.springbootemployee.TestConstants.JOHN;
+import static com.thoughtworks.springbootemployee.TestConstants.JUSTINE;
+import static com.thoughtworks.springbootemployee.TestConstants.MALE;
+import static com.thoughtworks.springbootemployee.TestConstants.OOCL;
+import static com.thoughtworks.springbootemployee.TestConstants.SALARY;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -28,11 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class CompanyIntegrationTest {
-    private static final String JUSTINE = "Justine";
-    private static final int AGE_23 = 23;
-    private static final String MALE = "Male";
-    private static final int SALARY = 2000000;
-    private static final String OOCL = "OOCL";
 
     @Autowired
     private CompanyRepository companyRepository;
