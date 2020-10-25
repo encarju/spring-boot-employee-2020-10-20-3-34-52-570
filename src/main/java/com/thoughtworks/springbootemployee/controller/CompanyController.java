@@ -50,7 +50,6 @@ public class CompanyController {
 
     @GetMapping("/{companyId}")
     public CompanyResponse getCompany(@PathVariable Integer companyId) {
-
         return companyMapper.toResponse(companyService.getById(companyId));
     }
 
