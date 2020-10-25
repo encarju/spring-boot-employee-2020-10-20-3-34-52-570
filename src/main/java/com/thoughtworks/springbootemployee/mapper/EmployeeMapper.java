@@ -6,9 +6,9 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
+import static java.util.stream.Collectors.toList;
 import static org.springframework.beans.BeanUtils.copyProperties;
 
 @Component
@@ -35,6 +35,6 @@ public class EmployeeMapper {
     public List<EmployeeResponse> toResponse(List<Employee> employeeList) {
         return employeeList.stream()
                 .map(this::toResponse)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 }
