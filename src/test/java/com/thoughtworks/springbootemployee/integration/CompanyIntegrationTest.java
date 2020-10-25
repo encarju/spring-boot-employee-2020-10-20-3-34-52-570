@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.thoughtworks.springbootemployee.TestConstants.AGE_23;
@@ -136,7 +137,10 @@ public class CompanyIntegrationTest {
     @Test
     public void should_delete_company_when_delete_given_company_id() throws Exception {
         // given
-        Company company = new Company(OOCL, emptyList());
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(JOHN, AGE_23, MALE, SALARY));
+
+        Company company = new Company(OOCL, employees);
         Integer returnedCompanyId = companyRepository.save(company).getId();
 
         // when
@@ -145,7 +149,10 @@ public class CompanyIntegrationTest {
                 .andExpect(status().isOk());
 
         mockMvc.perform(get(format("/companies/%d", returnedCompanyId)))
-                .andExpect(jsonPath("$.id").isEmpty());
+                .andExpect(jsonPath("$.id").value(returnedCompanyId))
+                .andExpect(jsonPath("$.name").value(OOCL))
+                .andExpect(jsonPath("$.employeesNumber").value(0))
+                .andExpect(jsonPath("$.employees").isEmpty());
     }
 
     @Test
