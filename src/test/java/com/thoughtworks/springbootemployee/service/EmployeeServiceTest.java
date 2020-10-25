@@ -131,20 +131,14 @@ class EmployeeServiceTest {
         List<Employee> returnedEmployees = asList(
                 new Employee(1, JUSTINE, AGE_23, MALE, SALARY));
 
-        Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY);
-        Employee employee2 = new Employee(2, LILY, AGE_23, FEMALE, SALARY);
-
-        String employeeGender = MALE;
-
-        when(repository.save(employee)).thenReturn(employee);
-        when(repository.save(employee)).thenReturn(employee2);
-        when(repository.findByGender(employeeGender)).thenReturn(returnedEmployees);
+        when(repository.findByGender(MALE)).thenReturn(returnedEmployees);
 
         //when
-        List<Employee> actual = service.getByGender(employeeGender);
+        List<Employee> actual = service.getByGender(MALE);
 
         //then
         assertSame(returnedEmployees, actual);
+        verify(repository, times(ONCE)).findByGender(MALE);
     }
 
     @Test
