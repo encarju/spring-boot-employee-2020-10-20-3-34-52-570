@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.exception.NoEmployeeFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static java.util.Objects.nonNull;
 import static org.springframework.data.domain.PageRequest.of;
 
 @Service
@@ -25,6 +27,12 @@ public class EmployeeService {
     }
 
     public Employee create(Employee employee) {
+        Integer companyId = employee.getCompanyId();
+        if (nonNull(companyId)) {
+            companyRepository.findById(companyId)
+                    .orElseThrow(() -> new CompanyNotFoundException(companyId));
+        }
+
         return employeeRepository.save(employee);
     }
 
