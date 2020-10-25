@@ -1,7 +1,7 @@
 package com.thoughtworks.springbootemployee.advice;
 
-import com.thoughtworks.springbootemployee.exception.ErrorResponse;
 import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
+import com.thoughtworks.springbootemployee.exception.ErrorResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

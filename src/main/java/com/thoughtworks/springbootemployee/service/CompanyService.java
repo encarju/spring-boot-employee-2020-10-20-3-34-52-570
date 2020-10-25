@@ -43,7 +43,7 @@ public class CompanyService {
                 .orElseThrow(() -> new CompanyNotFoundException(companyId));
     }
 
-    public Company remove(Integer companyId) {
+    public Company removeCompanyEmployees(Integer companyId) {
         return repository.findById(companyId)
                 .map(company -> {
                     company.getEmployees().clear();

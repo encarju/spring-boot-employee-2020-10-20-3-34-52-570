@@ -120,7 +120,7 @@ class CompanyServiceTest {
         when(repository.save(expectedCompany)).thenReturn(expectedCompany);
 
         //when
-        Company actualCompany = service.remove(companyId);
+        Company actualCompany = service.removeCompanyEmployees(companyId);
 
         //then
         verify(repository, times(ONCE)).findById(companyId);
@@ -215,7 +215,7 @@ class CompanyServiceTest {
         when(repository.findById(wrongCompanyId)).thenReturn(empty());
 
         //when
-        Executable executable = () -> service.remove(wrongCompanyId);
+        Executable executable = () -> service.removeCompanyEmployees(wrongCompanyId);
 
         //then
         Exception exception = assertThrows(CompanyNotFoundException.class, executable);
