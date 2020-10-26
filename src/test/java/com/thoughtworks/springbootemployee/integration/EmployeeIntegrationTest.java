@@ -15,8 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.thoughtworks.springbootemployee.TestHelper.AGE_23;
+import static com.thoughtworks.springbootemployee.TestHelper.ASSOCIATION_ERROR;
 import static com.thoughtworks.springbootemployee.TestHelper.FEMALE;
-import static com.thoughtworks.springbootemployee.TestHelper.FORMATTED_COMPANY_EXCEPTION_MESSAGE;
+import static com.thoughtworks.springbootemployee.TestHelper.FORMATTED_COMPANY_ASSOCIATION_EXCEPTION_MESSAGE;
 import static com.thoughtworks.springbootemployee.TestHelper.FORMATTED_EMPLOYEE_EXCEPTION_MESSAGE;
 import static com.thoughtworks.springbootemployee.TestHelper.JUSTINE;
 import static com.thoughtworks.springbootemployee.TestHelper.MALE;
@@ -24,6 +25,7 @@ import static com.thoughtworks.springbootemployee.TestHelper.NOT_FOUND_ERROR;
 import static com.thoughtworks.springbootemployee.TestHelper.OOCL;
 import static com.thoughtworks.springbootemployee.TestHelper.SALARY;
 import static java.lang.String.format;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -314,10 +316,10 @@ public class EmployeeIntegrationTest {
         mockMvc.perform(put(format("/employees/%d", returnedEmployeeId))
                 .contentType(APPLICATION_JSON)
                 .content(employeeJson))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.errorCode").value(NOT_FOUND_ERROR))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errorCode").value(ASSOCIATION_ERROR))
                 .andExpect(jsonPath("$.errorMessage")
-                        .value(format(FORMATTED_COMPANY_EXCEPTION_MESSAGE, wrongCompanyId)))
-                .andExpect(jsonPath("$.status").value(NOT_FOUND.value()));
+                        .value(format(FORMATTED_COMPANY_ASSOCIATION_EXCEPTION_MESSAGE, wrongCompanyId)))
+                .andExpect(jsonPath("$.status").value(BAD_REQUEST.value()));
     }
 }
