@@ -1,7 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
-import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
+import com.thoughtworks.springbootemployee.exception.InvalidCompanyAssociationException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
@@ -30,7 +30,7 @@ public class EmployeeService {
         Integer companyId = employee.getCompanyId();
         if (nonNull(companyId)) {
             companyRepository.findById(companyId)
-                    .orElseThrow(() -> new CompanyNotFoundException(companyId));
+                    .orElseThrow(() -> new InvalidCompanyAssociationException(companyId));
         }
 
         return employeeRepository.save(employee);
@@ -46,7 +46,8 @@ public class EmployeeService {
                 .map(employee -> {
                     Integer companyId = updatedEmployee.getCompanyId();
                     if (nonNull(companyId)) {
-                        companyRepository.findById(companyId).orElseThrow(() -> new CompanyNotFoundException(companyId));
+                        companyRepository.findById(companyId)
+                                .orElseThrow(() -> new InvalidCompanyAssociationException(companyId));
                     }
 
                     updatedEmployee.setId(employeeId);
