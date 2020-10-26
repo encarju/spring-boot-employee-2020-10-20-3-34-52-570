@@ -32,7 +32,8 @@ class CompanyMapperTest {
         List<Employee> employeeList = new ArrayList<>();
 
         Integer companyId = 1;
-        Company company = new Company(companyId, OOCL, employeeList);
+        Company company = new Company(OOCL, employeeList);
+        company.setId(companyId);
 
         employeeList.add(new Employee(1, JUSTINE, AGE_23, MALE, SALARY, companyId));
         employeeList.add(new Employee(2, JOHN, AGE_23, MALE, SALARY, companyId));
