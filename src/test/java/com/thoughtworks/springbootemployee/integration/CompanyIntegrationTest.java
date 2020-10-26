@@ -48,7 +48,7 @@ public class CompanyIntegrationTest {
     private MockMvc mockMvc;
 
     @BeforeEach
-    void tearDown() {
+    void setUp() {
         companyRepository.deleteAll();
     }
 
