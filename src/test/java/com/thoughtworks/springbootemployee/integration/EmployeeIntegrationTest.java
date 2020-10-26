@@ -125,6 +125,31 @@ public class EmployeeIntegrationTest {
     }
 
     @Test
+    public void should_return_bad_request_status_when_create_given_employee_request_with_wrong_company_id() throws Exception {
+        // given
+        Integer wrongCompanyId = 0;
+
+        String employeeJson = "{\n" +
+                "            \"name\": \"" + JUSTINE + "\",\n" +
+                "            \"age\": " + AGE_23 + ",\n" +
+                "            \"gender\": \"" + MALE + "\",\n" +
+                "            \"salary\": " + SALARY + ",\n" +
+                "            \"companyId\": " + wrongCompanyId + "\n" +
+                "        }";
+
+        // when
+        // then
+        mockMvc.perform(post("/employees")
+                .contentType(APPLICATION_JSON)
+                .content(employeeJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errorCode").value(ASSOCIATION_ERROR))
+                .andExpect(jsonPath("$.errorMessage")
+                        .value(format(FORMATTED_COMPANY_ASSOCIATION_EXCEPTION_MESSAGE, wrongCompanyId)))
+                .andExpect(jsonPath("$.status").value(BAD_REQUEST.value()));
+    }
+
+    @Test
     public void should_get_employee_when_get_given_employee_id() throws Exception {
         // given
         Employee employee = new Employee(JUSTINE, AGE_23, MALE, SALARY);
