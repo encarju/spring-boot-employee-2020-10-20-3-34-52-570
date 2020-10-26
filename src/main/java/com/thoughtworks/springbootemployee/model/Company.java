@@ -13,6 +13,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 public class Company {
+    public static final int ZERO = 0;
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Integer id;
@@ -68,6 +70,6 @@ public class Company {
     }
 
     public Integer getEmployeesNumber() {
-        return (isNull(employees)) ? 0 : employees.size();
+        return (isNull(employees)) ? ZERO : employees.size();
     }
 }
