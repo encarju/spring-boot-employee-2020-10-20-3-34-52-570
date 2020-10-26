@@ -153,7 +153,7 @@ public class CompanyIntegrationTest {
     }
 
     @Test
-    public void should_delete_company_when_delete_given_company_id() throws Exception {
+    public void should_remove_company_employees_when_delete_given_company_id() throws Exception {
         // given
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(JOHN, AGE_23, MALE, SALARY));
