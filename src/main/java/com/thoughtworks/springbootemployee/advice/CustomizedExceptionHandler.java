@@ -12,15 +12,9 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RestControllerAdvice
 public class CustomizedExceptionHandler {
 
-    @ExceptionHandler(value = EmployeeNotFoundException.class)
+    @ExceptionHandler(value = {EmployeeNotFoundException.class, CompanyNotFoundException.class})
     @ResponseStatus(NOT_FOUND)
-    public ErrorResponse handleEmployeeNotFoundException(Exception e) {
-        return new ErrorResponse(e.getMessage(), NOT_FOUND.value());
-    }
-
-    @ExceptionHandler(value = CompanyNotFoundException.class)
-    @ResponseStatus(NOT_FOUND)
-    public ErrorResponse handleCompanyNotFoundException(Exception e) {
+    public ErrorResponse handleNotFoundException(Exception e) {
         return new ErrorResponse(e.getMessage(), NOT_FOUND.value());
     }
 }
