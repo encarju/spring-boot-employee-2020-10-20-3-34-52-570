@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
+import com.thoughtworks.springbootemployee.exception.InvalidCompanyAssociationException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
@@ -255,7 +256,8 @@ class EmployeeServiceTest {
         Integer nonExistingCompanyId = 0;
         Employee updatedEmployee = new Employee(employeeId, JUSTINE, AGE_23, MALE, SALARY, nonExistingCompanyId);
 
-        String expectedMessage = format("Company with ID %d does not exist", nonExistingCompanyId);
+        String expectedMessage = format("Unable to associate with non-existing company of ID %d",
+                nonExistingCompanyId);
 
         when(employeeRepository.findById(employeeId)).thenReturn(of(employee));
         when(employeeRepository.save(updatedEmployee)).thenReturn(updatedEmployee);
@@ -265,7 +267,7 @@ class EmployeeServiceTest {
         Executable executable = () -> service.update(employeeId, updatedEmployee);
 
         //then
-        Exception exception = assertThrows(CompanyNotFoundException.class, executable);
+        Exception exception = assertThrows(InvalidCompanyAssociationException.class, executable);
         assertEquals(expectedMessage, exception.getMessage());
 
         verify(employeeRepository, times(ONCE)).findById(employeeId);
