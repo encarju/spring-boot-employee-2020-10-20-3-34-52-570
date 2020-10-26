@@ -35,10 +35,9 @@ public class CompanyService {
     public Company update(Integer companyId, Company updatedCompany) {
         return repository.findById(companyId)
                 .map(company -> {
-                    updatedCompany.setId(companyId);
-                    repository.save(updatedCompany);
+                    company.setName(updatedCompany.getName());
 
-                    return repository.findById(companyId).get();
+                    return repository.save(company);
                 })
                 .orElseThrow(() -> new CompanyNotFoundException(companyId));
     }

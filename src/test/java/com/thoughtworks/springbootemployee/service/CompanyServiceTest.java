@@ -96,8 +96,8 @@ class CompanyServiceTest {
         Company updatedCompany = new Company(1, ALIBABAS,
                 asList(new Employee(), new Employee()));
 
-        when(repository.findById(companyId)).thenReturn(of(company), of(updatedCompany));
-        when(repository.save(updatedCompany)).thenReturn(updatedCompany);
+        when(repository.findById(companyId)).thenReturn(of(company));
+        when(repository.save(company)).thenReturn(updatedCompany);
 
         //when
         Company actual = service.update(companyId, updatedCompany);
