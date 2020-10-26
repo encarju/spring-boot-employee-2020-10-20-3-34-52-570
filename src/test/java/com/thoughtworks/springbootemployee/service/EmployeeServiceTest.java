@@ -1,6 +1,5 @@
 package com.thoughtworks.springbootemployee.service;
 
-import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.exception.InvalidCompanyAssociationException;
 import com.thoughtworks.springbootemployee.model.Employee;
@@ -17,6 +16,7 @@ import java.util.List;
 import static com.thoughtworks.springbootemployee.TestHelper.AGE_23;
 import static com.thoughtworks.springbootemployee.TestHelper.BRYAN;
 import static com.thoughtworks.springbootemployee.TestHelper.FEMALE;
+import static com.thoughtworks.springbootemployee.TestHelper.FORMATTED_COMPANY_ASSOCIATION_EXCEPTION_MESSAGE;
 import static com.thoughtworks.springbootemployee.TestHelper.JUSTINE;
 import static com.thoughtworks.springbootemployee.TestHelper.LILY;
 import static com.thoughtworks.springbootemployee.TestHelper.MALE;
@@ -83,13 +83,13 @@ class EmployeeServiceTest {
         Integer companyId = 1;
         Employee employee = new Employee(1, JUSTINE, AGE_23, MALE, SALARY, companyId);
 
-        String expectedMessage = format("Company with ID %d does not exist", companyId);
+        String expectedMessage = format(FORMATTED_COMPANY_ASSOCIATION_EXCEPTION_MESSAGE, companyId);
 
         //when
         Executable executable = () -> service.create(employee);
 
         //then
-        Exception exception = assertThrows(CompanyNotFoundException.class, executable);
+        Exception exception = assertThrows(InvalidCompanyAssociationException.class, executable);
         assertEquals(expectedMessage, exception.getMessage());
 
         verify(employeeRepository, times(NONE)).save(employee);
@@ -256,8 +256,7 @@ class EmployeeServiceTest {
         Integer nonExistingCompanyId = 0;
         Employee updatedEmployee = new Employee(employeeId, JUSTINE, AGE_23, MALE, SALARY, nonExistingCompanyId);
 
-        String expectedMessage = format("Unable to associate with non-existing company of ID %d",
-                nonExistingCompanyId);
+        String expectedMessage = format(FORMATTED_COMPANY_ASSOCIATION_EXCEPTION_MESSAGE, nonExistingCompanyId);
 
         when(employeeRepository.findById(employeeId)).thenReturn(of(employee));
         when(employeeRepository.save(updatedEmployee)).thenReturn(updatedEmployee);
