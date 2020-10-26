@@ -15,11 +15,11 @@ public class ErrorResponse {
     @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     private final LocalDateTime timestamp;
 
-    public ErrorResponse(String errorMessage, int status) {
+    public ErrorResponse(String errorCode, String errorMessage, int status) {
+        this.errorCode = errorCode;
         this.errorMessage = errorMessage;
         this.status = status;
 
-        errorCode = "NOT_FOUND_ERROR";
         timestamp = now();
     }
 
