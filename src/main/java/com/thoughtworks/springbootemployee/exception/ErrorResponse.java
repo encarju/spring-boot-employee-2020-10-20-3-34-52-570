@@ -5,19 +5,22 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
+import static java.time.LocalDateTime.now;
 
 public class ErrorResponse {
     private final String errorCode;
     private final String errorMessage;
     private final int status;
+
     @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     private final LocalDateTime timestamp;
 
-    public ErrorResponse(String errorCode, String errorMessage, int status, LocalDateTime timestamp) {
-        this.errorCode = errorCode;
+    public ErrorResponse(String errorMessage, int status) {
         this.errorMessage = errorMessage;
         this.status = status;
-        this.timestamp = timestamp;
+
+        errorCode = "NOT_FOUND_ERROR";
+        timestamp = now();
     }
 
     public String getErrorCode() {
