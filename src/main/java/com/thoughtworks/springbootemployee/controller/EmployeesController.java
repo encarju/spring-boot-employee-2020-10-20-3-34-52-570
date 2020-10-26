@@ -23,7 +23,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequestMapping("/employees")
 public class EmployeesController {
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
     public EmployeesController(EmployeeService employeeService) {
         this.employeeService = employeeService;
