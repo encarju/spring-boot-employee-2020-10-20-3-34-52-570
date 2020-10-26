@@ -296,7 +296,7 @@ public class EmployeeIntegrationTest {
     }
 
     @Test
-    public void should_return_not_found_status_when_update_given_wrong_company_id_and_updated_employee_request() throws Exception {
+    public void should_return_bad_request_status_when_update_given_wrong_company_id_and_updated_employee_request() throws Exception {
         // given
         Employee employee = new Employee(JUSTINE, 22, MALE, SALARY);
         Integer returnedEmployeeId = employeeRepository.save(employee).getId();
